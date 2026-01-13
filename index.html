@@ -221,20 +221,20 @@ section{padding:100px 24px}
 .contact-form{background:var(--card);border:2px solid var(--card-border);border-radius:24px;padding:32px;transition:all .3s}
 .contact-form:focus-within{border-color:var(--mint)}
 .form-group{margin-bottom:20px}
-.form-group label{display:block;font-family:'BMJUA',sans-serif;font-size:.95rem;margin-bottom:8px;color:var(--gray-300)}
+.form-group label{display:block;font-family:'Pretendard',sans-serif;font-size:.9rem;margin-bottom:8px;color:var(--white);font-weight:600}
 .form-tabs{display:flex;gap:8px;margin-bottom:24px}
 .form-tab{flex:1}
 .form-tab input{display:none}
-.form-tab span{display:block;padding:16px 12px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;text-align:center;font-family:'BMJUA',sans-serif;font-size:.95rem;color:var(--gray-400);cursor:pointer;transition:all .3s}
+.form-tab span{display:block;padding:14px 12px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;text-align:center;font-family:'Pretendard',sans-serif;font-size:.9rem;color:var(--gray-300);cursor:pointer;transition:all .3s;font-weight:600}
 .form-tab input:checked+span{background:var(--mint);border-color:var(--mint);color:#000}
 .form-tab span:hover{border-color:var(--mint)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 18px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;color:#fff;font-size:1rem;transition:all .3s}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 18px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;color:#fff;font-family:'Pretendard',sans-serif;font-size:.95rem;transition:all .3s}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--mint)}
 .form-group textarea{resize:vertical;min-height:100px}
 .form-group select{cursor:pointer}
 .form-group select option{background:var(--bg);color:#fff}
-.form-submit{width:100%;padding:18px;background:var(--mint);border:none;border-radius:14px;font-family:'BMJUA',sans-serif;font-size:1.1rem;color:#000;cursor:pointer;transition:all .3s}
+.form-submit{width:100%;padding:18px;background:var(--mint);border:none;border-radius:14px;font-family:'Pretendard',sans-serif;font-size:1rem;font-weight:700;color:#000;cursor:pointer;transition:all .3s}
 .form-submit:hover{transform:translateY(-3px)}
 .form-submit:disabled{opacity:.6;cursor:not-allowed}
 
@@ -374,7 +374,7 @@ body.has-notice .scroll-indicator{top:44px}
             <li><a href="#partner" onclick="closeMobileMenu()">협력사 모집</a></li>
             <li><a href="#contact" onclick="closeMobileMenu()">문의하기</a></li>
         </ul>
-        <a href="#contact" class="mobile-nav-cta" onclick="closeMobileMenu()">제휴 문의</a>
+        <a href="#contact" class="mobile-nav-cta" onclick="closeMobileMenu()">상담 요청</a>
     </div>
 
     <div class="floating-btns">
@@ -392,7 +392,7 @@ body.has-notice .scroll-indicator{top:44px}
                 <li><a href="#partner">협력사 모집</a></li>
                 <li><a href="#contact">문의하기</a></li>
             </ul>
-            <a href="#contact" class="nav-cta">제휴 문의</a>
+            <a href="#contact" class="nav-cta">상담 요청</a>
             <div class="mobile-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()">☰</div>
         </nav>
     </header>
@@ -410,7 +410,7 @@ body.has-notice .scroll-indicator{top:44px}
                 <h1>배민커넥트비즈+<br><em>협력사 모집</em> 중개사</h1>
                 <p class="hero-desc">TEAM BRO는 배민커넥트비즈+ 공식 중개사입니다.<br>협력사가 되고 싶은 분들을 배민과 연결해드립니다.</p>
                 <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">상담 신청하기 →</a>
+                    <a href="#contact" class="btn btn-primary">상담 요청하기 →</a>
                     <a href="about.html" class="btn btn-outline">중개사 안내</a>
                 </div>
                 <div class="social-proof">
@@ -575,7 +575,7 @@ body.has-notice .scroll-indicator{top:44px}
                     <p>신차 리스 & 렌트 전문 팀브로 (신용 상관없음)</p>
                 </div>
             </div>
-            <div class="section-cta"><a href="#contact" class="btn btn-primary">상담 신청하기 →</a></div>
+            <div class="section-cta"><a href="#contact" class="btn btn-primary">상담 요청하기 →</a></div>
         </div>
     </section>
 
@@ -601,7 +601,7 @@ body.has-notice .scroll-indicator{top:44px}
                     <h3>24/7 실시간 상담</h3>
                     <ul>
                         <li>✓ 연중무휴 상담 채널 제공</li>
-                        <li>✓ 운영·제휴 문의 즉시 연결</li>
+                        <li>✓ 운영·상담 요청 즉시 연결</li>
                         <li>✓ 협력사 상황에 맞춘 실무 안내</li>
                     </ul>
                 </div>
@@ -623,7 +623,7 @@ body.has-notice .scroll-indicator{top:44px}
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Contact</span>
-                <h2>상담 신청</h2>
+                <h2>상담 요청</h2>
                 <p>협력사, 라이더, 선정산 신청을 받습니다</p>
             </div>
             <div class="contact-grid">
@@ -651,27 +651,27 @@ body.has-notice .scroll-indicator{top:44px}
                             <div class="channel-icon">✉️</div>
                             <div class="channel-info">
                                 <h3>이메일</h3>
-                                <p>pro_5211@naver.com</p>
+                                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e9999b86b6dcdbd8d8a987889f8c9bc78a8684">[email&#160;protected]</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="contact-form-wrap">
-                    <h2>상담 신청</h2>
+                    <h2>상담 요청</h2>
                     <form class="contact-form" id="contactForm">
                         <!-- 타입 선택 탭 -->
                         <div class="form-tabs">
                             <label class="form-tab">
                                 <input type="radio" name="type" value="협력사 신청" checked onchange="switchForm('partner')">
-                                <span>🏢 협력사</span>
+                                <span>🏢 협력사 신청</span>
                             </label>
                             <label class="form-tab">
                                 <input type="radio" name="type" value="라이더 신청" onchange="switchForm('rider')">
-                                <span>🛵 라이더</span>
+                                <span>🛵 라이더 신청</span>
                             </label>
                             <label class="form-tab">
                                 <input type="radio" name="type" value="선정산 신청" onchange="switchForm('settlement')">
-                                <span>💰 선정산</span>
+                                <span>💰 선정산 신청</span>
                             </label>
                         </div>
 
@@ -787,7 +787,7 @@ body.has-notice .scroll-indicator{top:44px}
                             </div>
                         </div>
 
-                        <button type="submit" class="form-submit" id="submitBtn">상담 신청하기</button>
+                        <button type="submit" class="form-submit" id="submitBtn">상담 요청하기</button>
                     </form>
                 </div>
             </div>
@@ -799,7 +799,7 @@ body.has-notice .scroll-indicator{top:44px}
             <h2>배민커넥트비즈+ 협력사, 지금 신청하세요</h2>
             <p>TEAM BRO가 배민과 연결해드립니다.</p>
             <div class="cta-buttons">
-                <a href="#contact" class="btn btn-dark">상담 신청</a>
+                <a href="#contact" class="btn btn-dark">상담 요청</a>
                 <a href="tel:1660-3543" class="btn btn-light">📞 1660-3543</a>
             </div>
         </div>
@@ -814,8 +814,8 @@ body.has-notice .scroll-indicator{top:44px}
                     <div class="footer-social"><a href="#">📸</a><a href="#">💬</a></div>
                 </div>
                 <div class="footer-links"><h4>안내</h4><ul><li><a href="about.html">중개사 안내</a></li><li><a href="#process">진행 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
-                <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 신청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
-                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ pro_5211@naver.com</li><li>🕐 09:00~익일 08:00</li></ul></div>
+                <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 요청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
+                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e8989a87b7dddad9d9a886899e8d9ac68b8785">[email&#160;protected]</a></li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
             <div class="footer-bottom">
                 <div class="footer-company">
@@ -832,7 +832,7 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         const SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3NTYyMjAsImV4cCI6MjA1MjMzMjIyMH0.Ur_aRxihGz8aFj_VCl_gxLWKNyJAGnlFi4vY_KwDNME';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -859,7 +859,7 @@ body.has-notice .scroll-indicator{top:44px}
             
             // 버튼 텍스트 변경
             const btn = document.getElementById('submitBtn');
-            btn.textContent = '상담 신청하기';
+            btn.textContent = '상담 요청하기';
         }
 
         function toast(msg, type='success') {
@@ -1034,16 +1034,3 @@ body.has-notice .scroll-indicator{top:44px}
             document.getElementById('termsContent').innerHTML = data.content;
             document.getElementById('termsModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-        }
-
-        function closeTerms() {
-            document.getElementById('termsModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('termsModal').addEventListener('click', function(e) {
-            if (e.target === this) closeTerms();
-        });
-    </script>
-</body>
-</html>
