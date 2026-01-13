@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중개사 소개 | TEAM BRO</title>
+    <style>
+@font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
+@font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
+@font-face{font-family:'Pretendard';src:url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff')}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg-light:#12121a;--card:#16161f;--card-border:#252530;--white:#fff;--gray-300:#b0b0c0;--gray-400:#808090;--gray-500:#606070;--mint:#2dd4bf;--mint-light:#5eead4;--mint-glow:rgba(45,212,191,.2);--orange:#f97316;--red:#ef4444}
+html{scroll-behavior:smooth}body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--white);line-height:1.8;font-size:15px}.container{max-width:900px;margin:0 auto;padding:0 24px}
+
+/* 헤더 */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border)}
+nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'BMHANNAPro',sans-serif;font-size:1.6rem;color:var(--mint);text-decoration:none}
+.nav-cta{background:var(--mint);color:#000;padding:12px 24px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.95rem;text-decoration:none}
+
+/* 페이지 히어로 */
+.page-hero{padding:140px 24px 80px;text-align:center;background:linear-gradient(180deg,var(--bg-light) 0%,var(--bg) 100%)}
+.page-badge{display:inline-block;background:var(--mint);padding:8px 20px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.9rem;color:#000;margin-bottom:20px}
+.page-hero h1{font-family:'BMHANNAPro',sans-serif;font-size:2.8rem;margin-bottom:16px}
+.page-hero .subtitle{font-size:1.2rem;color:var(--gray-300);max-width:600px;margin:0 auto}
+
+/* 섹션 공통 */
+section{padding:80px 24px}
+.section-num{display:inline-block;background:var(--card);border:2px solid var(--mint);width:40px;height:40px;border-radius:50%;font-family:'BMJUA',sans-serif;font-size:1rem;color:var(--mint);line-height:36px;text-align:center;margin-bottom:16px}
+.section-title{font-family:'BMHANNAPro',sans-serif;font-size:1.8rem;margin-bottom:12px}
+.section-desc{color:var(--gray-300);margin-bottom:32px}
+
+/* 1. 한 줄 소개 */
+.intro-section{background:var(--bg-light)}
+.intro-box{background:var(--card);border:2px solid var(--mint);border-radius:24px;padding:48px;text-align:center}
+.intro-box h2{font-family:'BMHANNAPro',sans-serif;font-size:2rem;margin-bottom:16px}
+.intro-box h2 em{color:var(--mint);font-style:normal}
+.intro-box p{color:var(--gray-300);font-size:1.1rem;margin-bottom:24px}
+.intro-tags{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.intro-tag{background:rgba(45,212,191,.1);border:1px solid var(--mint);color:var(--mint);padding:8px 20px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.9rem}
+
+/* 2. 하는 역할 */
+.role-section{background:var(--bg)}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.role-card{background:var(--card);border:2px solid var(--card-border);border-radius:20px;padding:28px;text-align:center;transition:all .3s}
+.role-card:hover{border-color:var(--mint)}
+.role-icon{font-size:2.5rem;margin-bottom:16px}
+.role-card h3{font-family:'BMJUA',sans-serif;font-size:1.1rem;margin-bottom:8px}
+.role-card p{font-size:.9rem;color:var(--gray-400)}
+
+/* 3. 중개 범위 */
+.scope-section{background:var(--bg-light)}
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.scope-card{border-radius:20px;padding:32px}
+.scope-card.include{background:rgba(45,212,191,.1);border:2px solid var(--mint)}
+.scope-card.exclude{background:rgba(239,68,68,.1);border:2px solid var(--red)}
+.scope-card h3{font-family:'BMJUA',sans-serif;font-size:1.2rem;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.scope-card.include h3{color:var(--mint)}
+.scope-card.exclude h3{color:var(--red)}
+.scope-card ul{list-style:none}
+.scope-card li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.95rem}
+.scope-card li:last-child{border-bottom:none}
+.scope-card.include li::before{content:'✓';color:var(--mint);margin-right:10px;font-weight:bold}
+.scope-card.exclude li::before{content:'✕';color:var(--red);margin-right:10px;font-weight:bold}
+
+/* 4. 왜 TEAM BRO */
+.why-section{background:var(--bg)}
+.why-list{display:flex;flex-direction:column;gap:16px}
+.why-item{background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;display:flex;align-items:flex-start;gap:16px}
+.why-num{background:var(--mint);color:#000;width:32px;height:32px;border-radius:50%;font-family:'BMJUA',sans-serif;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-item h4{font-family:'BMJUA',sans-serif;font-size:1.05rem;margin-bottom:4px}
+.why-item p{color:var(--gray-400);font-size:.9rem}
+
+/* 5. 적합한 협력사 */
+.fit-section{background:var(--bg-light)}
+.fit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.fit-card{background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;display:flex;align-items:center;gap:16px}
+.fit-icon{font-size:2rem}
+.fit-card h4{font-family:'BMJUA',sans-serif;font-size:1rem;margin-bottom:4px}
+.fit-card p{font-size:.85rem;color:var(--gray-400)}
+
+/* 6. 중개 절차 */
+.process-section{background:var(--bg)}
+.process-box{background:var(--card);border:2px solid var(--mint);border-radius:24px;padding:40px;box-shadow:0 0 40px rgba(45,212,191,.1)}
+.process-steps{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.p-step{flex:1;text-align:center}
+.p-step-icon{width:80px;height:80px;background:var(--bg);border:3px solid var(--mint);border-radius:20px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative}
+.p-step-num{position:absolute;top:-8px;right:-8px;width:28px;height:28px;background:var(--mint);border-radius:50%;font-family:'BMJUA',sans-serif;font-size:.85rem;color:#000;display:flex;align-items:center;justify-content:center}
+.p-step h4{font-family:'BMJUA',sans-serif;font-size:1rem;margin-bottom:4px}
+.p-step p{font-size:.8rem;color:var(--gray-500)}
+.p-arrow{color:var(--mint);font-size:1.5rem}
+
+/* 7. 운영 원칙 */
+.principle-section{background:var(--bg-light)}
+.principle-box{background:var(--card);border:2px solid var(--orange);border-radius:20px;padding:32px}
+.principle-box h3{font-family:'BMJUA',sans-serif;font-size:1.2rem;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.principle-list{list-style:none}
+.principle-list li{padding:12px 0;border-bottom:1px solid var(--card-border);color:var(--gray-300);font-size:.95rem}
+.principle-list li:last-child{border-bottom:none}
+.principle-list li strong{color:#fff}
+
+/* 8. CTA */
+.cta-section{background:var(--mint);padding:80px 24px;text-align:center}
+.cta-section h2{font-family:'BMHANNAPro',sans-serif;font-size:2rem;color:#000;margin-bottom:12px}
+.cta-section p{color:rgba(0,0,0,.7);margin-bottom:28px;font-size:1.1rem}
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border-radius:14px;font-family:'BMJUA',sans-serif;font-size:1rem;text-decoration:none;transition:all .3s}
+.btn-dark{background:#000;color:#fff}
+.btn-light{background:rgba(255,255,255,.3);color:#000}
+
+/* 푸터 */
+footer{background:#000;padding:40px 24px;text-align:center;border-top:1px solid var(--card-border)}
+footer p{color:var(--gray-500);font-size:.9rem}
+footer .logo{display:block;margin-bottom:12px}
+
+/* 반응형 */
+@media(max-width:768px){
+    .role-grid,.scope-grid,.fit-grid{grid-template-columns:1fr}
+    .process-steps{flex-direction:column;gap:20px}
+    .p-arrow{transform:rotate(90deg)}
+    .page-hero h1{font-size:2rem}
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">TEAM BRO</a>
+            <a href="#cta" class="nav-cta">제휴 문의</a>
+        </nav>
+    </header>
+
+    <!-- 페이지 히어로 -->
+    <section class="page-hero">
+        <span class="page-badge">About TEAM BRO</span>
+        <h1>중개사 소개</h1>
+        <p class="subtitle">TEAM BRO는 배민커넥트비즈+ 협력사를 모집하고 연결하는 중개사입니다.<br>협력사 운영은 대행하지 않습니다.</p>
+    </section>
+
+    <!-- 1. 한 줄 소개 -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-box">
+                <span class="section-num">1</span>
+                <h2>TEAM BRO는 <em>중개사</em>입니다</h2>
+                <p>배민커넥트비즈+ 협력사가 되고 싶은 분들을 모집하고,<br>배민과 연결해드리는 역할만 합니다.</p>
+                <div class="intro-tags">
+                    <span class="intro-tag">협력사 모집</span>
+                    <span class="intro-tag">배민 연결</span>
+                    <span class="intro-tag">제휴 상담</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 하는 역할 -->
+    <section class="role-section">
+        <div class="container">
+            <span class="section-num">2</span>
+            <h2 class="section-title">TEAM BRO가 하는 일</h2>
+            <p class="section-desc">중개와 연결, 그게 전부입니다.</p>
+            <div class="role-grid">
+                <div class="role-card">
+                    <div class="role-icon">📢</div>
+                    <h3>협력사 모집</h3>
+                    <p>배민커넥트비즈+ 협력사가 되고 싶은 사업자를 모집합니다.</p>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">🤝</div>
+                    <h3>배민 연결</h3>
+                    <p>모집한 사업자를 배민과 연결하여 협력사 계약이 진행되도록 합니다.</p>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">💬</div>
+                    <h3>제휴 상담</h3>
+                    <p>협력사 등록 조건, 절차, 지역 등 궁금한 사항을 안내합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 중개 범위 -->
+    <section class="scope-section">
+        <div class="container">
+            <span class="section-num">3</span>
+            <h2 class="section-title">중개 범위</h2>
+            <p class="section-desc">TEAM BRO가 하는 것과 하지 않는 것을 명확히 합니다.</p>
+            <div class="scope-grid">
+                <div class="scope-card include">
+                    <h3>✓ TEAM BRO가 하는 것</h3>
+                    <ul>
+                        <li>협력사 모집 및 상담</li>
+                        <li>배민커넥트비즈+ 연결</li>
+                        <li>협력사 등록 절차 안내</li>
+                        <li>지역별 협력사 매칭</li>
+                        <li>제휴 관련 문의 응대</li>
+                    </ul>
+                </div>
+                <div class="scope-card exclude">
+                    <h3>✕ TEAM BRO가 하지 않는 것</h3>
+                    <ul>
+                        <li>협력사 직접 운영</li>
+                        <li>라이더 채용·관리</li>
+                        <li>배차 운영</li>
+                        <li>정산 대행</li>
+                        <li>협력사 매출·수익 보장</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 왜 TEAM BRO -->
+    <section class="why-section">
+        <div class="container">
+            <span class="section-num">4</span>
+            <h2 class="section-title">왜 TEAM BRO인가</h2>
+            <p class="section-desc">과장 없이, 실무 기준으로 말합니다.</p>
+            <div class="why-list">
+                <div class="why-item">
+                    <span class="why-num">1</span>
+                    <div>
+                        <h4>공식 중개사</h4>
+                        <p>배민커넥트비즈+ 공식 중개사로 등록되어 있습니다.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <span class="why-num">2</span>
+                    <div>
+                        <h4>빠른 연결</h4>
+                        <p>문의부터 배민 연결까지 불필요한 절차 없이 진행합니다.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <span class="why-num">3</span>
+                    <div>
+                        <h4>명확한 안내</h4>
+                        <p>협력사 조건, 절차, 지역 등 필요한 정보를 정확히 안내합니다.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <span class="why-num">4</span>
+                    <div>
+                        <h4>전국 모집</h4>
+                        <p>대한민국 전국 지역에서 협력사를 모집하고 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 적합한 협력사 -->
+    <section class="fit-section">
+        <div class="container">
+            <span class="section-num">5</span>
+            <h2 class="section-title">이런 분들이 연락합니다</h2>
+            <p class="section-desc">TEAM BRO를 통해 협력사가 된 분들의 공통점입니다.</p>
+            <div class="fit-grid">
+                <div class="fit-card">
+                    <div class="fit-icon">📄</div>
+                    <div>
+                        <h4>사업자등록증 보유자</h4>
+                        <p>개인사업자, 법인사업자 모두 가능</p>
+                    </div>
+                </div>
+                <div class="fit-card">
+                    <div class="fit-icon">🚀</div>
+                    <div>
+                        <h4>배달대행 창업 희망자</h4>
+                        <p>신규 창업도 가능</p>
+                    </div>
+                </div>
+                <div class="fit-card">
+                    <div class="fit-icon">📍</div>
+                    <div>
+                        <h4>특정 지역에서 사업하고 싶은 분</h4>
+                        <p>본인 지역 기반으로 시작</p>
+                    </div>
+                </div>
+                <div class="fit-card">
+                    <div class="fit-icon">🏢</div>
+                    <div>
+                        <h4>배민 플랫폼 활용하고 싶은 분</h4>
+                        <p>배민커넥트비즈+ 시스템 이용</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 중개 절차 -->
+    <section class="process-section">
+        <div class="container">
+            <span class="section-num">6</span>
+            <h2 class="section-title">중개 절차</h2>
+            <p class="section-desc">문의부터 협력사 등록까지, 이렇게 진행됩니다.</p>
+            <div class="process-box">
+                <div class="process-steps">
+                    <div class="p-step">
+                        <div class="p-step-icon">📞<span class="p-step-num">1</span></div>
+                        <h4>문의</h4>
+                        <p>전화·카톡·폼</p>
+                    </div>
+                    <span class="p-arrow">→</span>
+                    <div class="p-step">
+                        <div class="p-step-icon">💬<span class="p-step-num">2</span></div>
+                        <h4>상담</h4>
+                        <p>조건·절차 안내</p>
+                    </div>
+                    <span class="p-arrow">→</span>
+                    <div class="p-step">
+                        <div class="p-step-icon">🤝<span class="p-step-num">3</span></div>
+                        <h4>연결</h4>
+                        <p>배민과 연결</p>
+                    </div>
+                    <span class="p-arrow">→</span>
+                    <div class="p-step">
+                        <div class="p-step-icon">✅<span class="p-step-num">4</span></div>
+                        <h4>완료</h4>
+                        <p>협력사 등록</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 운영 원칙 -->
+    <section class="principle-section">
+        <div class="container">
+            <span class="section-num">7</span>
+            <h2 class="section-title">중개사 운영 원칙</h2>
+            <p class="section-desc">TEAM BRO의 역할과 책임 범위를 명확히 합니다.</p>
+            <div class="principle-box">
+                <h3>⚠️ 반드시 확인하세요</h3>
+                <ul class="principle-list">
+                    <li><strong>TEAM BRO는 중개사입니다.</strong> 협력사 모집과 배민 연결만 합니다.</li>
+                    <li><strong>협력사 운영은 협력사 본인이 합니다.</strong> 라이더 채용, 배차, 정산은 협력사가 직접 진행합니다.</li>
+                    <li><strong>매출·수익을 보장하지 않습니다.</strong> 협력사 실적은 협력사의 운영에 따라 달라집니다.</li>
+                    <li><strong>배민과의 계약은 협력사와 배민 간 직접 체결됩니다.</strong> TEAM BRO는 연결 역할만 합니다.</li>
+                    <li><strong>중개 이후 협력사 운영 책임은 협력사에 있습니다.</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. CTA -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <h2>협력사 등록, 지금 문의하세요</h2>
+            <p>TEAM BRO가 배민과 연결해드립니다.</p>
+            <div class="cta-buttons">
+                <a href="tel:1660-3543" class="btn btn-dark">📞 1660-3543</a>
+                <a href="https://pf.kakao.com/_xxxxx" class="btn btn-light">💬 카카오톡 상담</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <span class="logo">TEAM BRO</span>
+            <p>배민커넥트비즈+ 공식 중개사 | (주)팀브로</p>
+        </div>
+    </footer>
+</body>
+</html>
