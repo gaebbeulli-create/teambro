@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEAM BRO | 배민커넥트비즈+ 공식 중개사</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
 @font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
 @font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
@@ -16,37 +18,14 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--white)
 body.has-notice{padding-top:44px}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
 
-/* 애니메이션 키프레임 */
-@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
-@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+/* 애니메이션 */
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(45,212,191,.3)}50%{box-shadow:0 0 40px rgba(45,212,191,.6)}}
 @keyframes rgb-flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes wave{0%,100%{transform:rotate(0deg)}25%{transform:rotate(20deg)}75%{transform:rotate(-20deg)}}
 @keyframes heartbeat{0%,100%{transform:scale(1)}25%{transform:scale(1.1)}50%{transform:scale(1)}75%{transform:scale(1.1)}}
-
-/* 애니메이션 클래스 - 기본은 보이게, 스크롤 시 애니메이션 */
-[data-aos]{opacity:0;transition:all 0.6s ease}
-[data-aos].aos-animate{opacity:1}
-[data-aos="fade-up"]{transform:translateY(40px)}
-[data-aos="fade-up"].aos-animate{transform:translateY(0)}
-[data-aos="fade-left"]{transform:translateX(-40px)}
-[data-aos="fade-left"].aos-animate{transform:translateX(0)}
-[data-aos="fade-right"]{transform:translateX(40px)}
-[data-aos="fade-right"].aos-animate{transform:translateX(0)}
-[data-aos="zoom-in"]{transform:scale(0.8)}
-[data-aos="zoom-in"].aos-animate{transform:scale(1)}
-[data-aos-delay="100"]{transition-delay:0.1s}
-[data-aos-delay="200"]{transition-delay:0.2s}
-[data-aos-delay="300"]{transition-delay:0.3s}
-[data-aos-delay="400"]{transition-delay:0.4s}
-[data-aos-delay="500"]{transition-delay:0.5s}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 
 /* 공지 배너 */
 .notice-banner{background:linear-gradient(90deg,var(--mint),var(--mint-light));padding:12px 24px;text-align:center;position:fixed;top:0;left:0;right:0;z-index:200;animation:slideDown .5s ease}
@@ -57,11 +36,11 @@ body.has-notice{padding-top:44px}
 .notice-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.2rem;cursor:pointer;color:#000}
 
 /* 팝업 */
-.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);animation:fadeIn .3s ease}
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
 .popup-overlay.hidden{display:none}
-.popup-container{position:relative;width:90%;max-width:480px;animation:scaleIn .4s ease}
+.popup-container{position:relative;width:90%;max-width:480px}
 .popup-slide{display:none;background:var(--card);border:2px solid var(--mint);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.popup-slide.active{display:block;animation:scaleIn .3s ease}
+.popup-slide.active{display:block}
 .popup-image{width:100%;height:250px;background:var(--bg-light);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .popup-image img{width:100%;height:100%;object-fit:cover}
 .popup-image .no-image{font-size:4rem;animation:float 3s ease-in-out infinite}
@@ -311,13 +290,11 @@ body.has-notice .scroll-indicator{top:44px}
     <div class="toast" id="toast"></div>
     <div class="scroll-indicator" id="scrollIndicator"></div>
 
-    <!-- 공지 배너 -->
     <div class="notice-banner hidden" id="noticeBanner">
         <span class="notice-text" id="noticeText"></span>
         <button class="notice-close" onclick="closeBanner()">✕</button>
     </div>
 
-    <!-- 팝업 -->
     <div class="popup-overlay hidden" id="popupOverlay">
         <button class="popup-close" onclick="closePopup()">✕</button>
         <button class="popup-arrow prev" onclick="prevPopup()">‹</button>
@@ -352,7 +329,6 @@ body.has-notice .scroll-indicator{top:44px}
         </nav>
     </header>
 
-    <!-- 히어로 -->
     <section class="hero" id="home">
         <div class="hero-bg"></div>
         <div class="hero-content">
@@ -418,7 +394,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- 서비스 -->
     <section class="services-preview" id="about">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
@@ -456,7 +431,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- 프로세스 -->
     <section class="process-section" id="process">
         <div class="container">
             <div class="process-box" data-aos="fade-up">
@@ -494,7 +468,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- 파트너 -->
     <section class="partner-section" id="partner">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
@@ -528,7 +501,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- 혜택 -->
     <section class="benefit-section" id="benefit">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
@@ -569,7 +541,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- 문의 -->
     <section class="contact-section" id="contact">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
@@ -632,7 +603,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-section" data-aos="fade-up">
         <div class="container">
             <h2>배민커넥트비즈+ 협력사, 지금 신청하세요</h2>
@@ -644,7 +614,6 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </section>
 
-    <!-- 푸터 -->
     <footer>
         <div class="container">
             <div class="footer-top">
@@ -662,12 +631,10 @@ body.has-notice .scroll-indicator{top:44px}
     </footer>
 
     <script>
-        // Supabase 설정
         const SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_Y5_bkSlpijEX16UIGoLzDw_ZY4iAdxJ';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 토스트
         function toast(msg, type='success') {
             const t = document.getElementById('toast');
             t.textContent = msg;
@@ -675,7 +642,6 @@ body.has-notice .scroll-indicator{top:44px}
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // 팝업
         let currentPopup = 0;
         let popups = [];
 
@@ -683,12 +649,10 @@ body.has-notice .scroll-indicator{top:44px}
             try {
                 const { data } = await supabase.from('popups').select('*').eq('active', true);
                 popups = data || [];
-                
                 if (popups.length === 0 || localStorage.getItem('popupClosed') === new Date().toDateString()) {
                     document.getElementById('popupOverlay').classList.add('hidden');
                     return;
                 }
-                
                 document.getElementById('popupOverlay').classList.remove('hidden');
                 document.getElementById('popupSlides').innerHTML = popups.map((p, i) => `
                     <div class="popup-slide ${i===0?'active':''}" data-popup="${i}">
@@ -702,7 +666,6 @@ body.has-notice .scroll-indicator{top:44px}
                         </div>
                     </div>
                 `).join('');
-                
                 document.getElementById('popupNav').innerHTML = popups.map((_, i) => `
                     <button class="popup-dot ${i===0?'active':''}" onclick="goToPopup(${i})"></button>
                 `).join('');
@@ -722,7 +685,6 @@ body.has-notice .scroll-indicator{top:44px}
             if(document.getElementById('todayClose').checked) localStorage.setItem('popupClosed', new Date().toDateString());
         }
 
-        // 공지
         async function loadNotice() {
             try {
                 const { data } = await supabase.from('notice').select('*').limit(1).single();
@@ -740,13 +702,11 @@ body.has-notice .scroll-indicator{top:44px}
             document.body.classList.remove('has-notice');
         }
 
-        // 폼 제출
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.textContent = '신청 중...';
-            
             const formData = {
                 type: document.querySelector('input[name="type"]:checked').value,
                 name: document.querySelector('input[name="name"]').value,
@@ -756,42 +716,15 @@ body.has-notice .scroll-indicator{top:44px}
                 message: document.querySelector('textarea[name="message"]').value,
                 status: '신규'
             };
-            
             try {
                 const { error } = await supabase.from('submissions').insert([formData]);
-                if (error) {
-                    toast('신청 실패. 다시 시도해주세요.', 'error');
-                } else {
-                    toast('✅ 신청 완료! 담당자가 연락드리겠습니다.');
-                    this.reset();
-                }
-            } catch(e) {
-                toast('신청 실패. 다시 시도해주세요.', 'error');
-            }
-            
+                if (error) { toast('신청 실패. 다시 시도해주세요.', 'error'); }
+                else { toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); this.reset(); }
+            } catch(e) { toast('신청 실패. 다시 시도해주세요.', 'error'); }
             btn.disabled = false;
             btn.textContent = '협력사 신청하기';
         });
 
-        // 스크롤 애니메이션 (직접 구현 - 라이브러리 없이)
-        function initAOS() {
-            const elements = document.querySelectorAll('[data-aos]');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('aos-animate');
-                    }
-                });
-            }, { 
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-            
-            elements.forEach(el => observer.observe(el));
-        }
-
-        // 스크롤 인디케이터
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -799,7 +732,6 @@ body.has-notice .scroll-indicator{top:44px}
             document.getElementById('header').classList.toggle('scrolled', scrollTop > 50);
         });
 
-        // 스무스 스크롤
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -808,10 +740,15 @@ body.has-notice .scroll-indicator{top:44px}
             });
         });
 
-        // 초기화
+        // AOS 초기화
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
         loadPopups();
         loadNotice();
-        initAOS();
     </script>
 </body>
 </html>
