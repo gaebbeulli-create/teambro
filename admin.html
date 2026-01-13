@@ -1,198 +1,674 @@
-        async function loadSubmissions() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const typeF = document.getElementById('filterType').value;
-            const statusF = document.getElementById('filterStatus').value;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 | TEAM BRO</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+@font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
+@font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
+@font-face{font-family:'Pretendard';src:url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff')}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg-light:#12121a;--card:#16161f;--card-border:#252530;--white:#fff;--gray-300:#b0b0c0;--gray-400:#808090;--gray-500:#606070;--mint:#2dd4bf;--mint-light:#5eead4;--orange:#f97316;--red:#ef4444;--green:#22c55e}
+body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--white);line-height:1.6;font-size:15px;min-height:100vh}
 
-            let query = supabase.from('submissions').select('*').order('created_at', { ascending: false });
-            if (typeF) query = query.eq('type', typeF);
-            if (statusF) query = query.eq('status', statusF);
+/* 로그인 화면 */
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:var(--card);border:2px solid var(--card-border);border-radius:24px;padding:48px;width:100%;max-width:400px;text-align:center}
+.login-box h1{font-family:'BMHANNAPro',sans-serif;font-size:2rem;color:var(--mint);margin-bottom:8px}
+.login-box p{color:var(--gray-400);margin-bottom:32px}
+.login-input{width:100%;padding:16px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;color:#fff;font-size:1rem;margin-bottom:16px;text-align:center;letter-spacing:8px;font-family:'BMJUA',sans-serif}
+.login-input:focus{outline:none;border-color:var(--mint)}
+.login-btn{width:100%;padding:16px;background:var(--mint);border:none;border-radius:12px;font-family:'BMJUA',sans-serif;font-size:1.1rem;color:#000;cursor:pointer;transition:all .3s}
+.login-btn:hover{background:var(--mint-light)}
+.login-error{color:var(--red);margin-top:16px;font-size:.9rem}
 
-            const { data } = await query;
-            let list = data || [];
+/* 대시보드 */
+.dashboard{display:none}
+.dashboard.active{display:block}
+.header{background:var(--card);border-bottom:1px solid var(--card-border);padding:16px 24px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'BMHANNAPro',sans-serif;font-size:1.5rem;color:var(--mint);text-decoration:none}
+.header-right{display:flex;align-items:center;gap:16px}
+.logout-btn{background:var(--card-border);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'BMJUA',sans-serif;cursor:pointer;transition:all .3s}
+.logout-btn:hover{background:var(--red)}
 
-            if (search) {
-                list = list.filter(d => d.name.toLowerCase().includes(search) || d.phone.includes(search));
-            }
+/* 탭 */
+.tabs{display:flex;gap:8px;padding:24px;max-width:1400px;margin:0 auto;flex-wrap:wrap}
+.tab{padding:12px 24px;background:var(--card);border:2px solid var(--card-border);border-radius:12px;font-family:'BMJUA',sans-serif;color:var(--gray-400);cursor:pointer;transition:all .3s}
+.tab:hover{border-color:var(--mint)}
+.tab.active{background:var(--mint);border-color:var(--mint);color:#000}
 
-            const tbody = document.getElementById('listTable');
-            if (!list.length) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-light);padding:32px">신청 내역이 없습니다</td></tr>';
+/* 콘텐츠 */
+.content{max-width:1400px;margin:0 auto;padding:0 24px 48px}
+.panel{display:none}
+.panel.active{display:block}
+
+/* 통계 카드 */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;text-align:center;transition:all .3s}
+.stat-card:hover{border-color:var(--mint)}
+.stat-value{font-family:'BMHANNAPro',sans-serif;font-size:2.5rem;color:var(--mint);display:block}
+.stat-label{color:var(--gray-400);font-size:.9rem;margin-top:4px}
+
+/* 테이블 */
+.table-wrap{background:var(--card);border:2px solid var(--card-border);border-radius:16px;overflow:hidden}
+.table-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border);flex-wrap:wrap;gap:12px}
+.table-title{font-family:'BMJUA',sans-serif;font-size:1.2rem}
+.table-filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{padding:8px 16px;background:var(--bg);border:1px solid var(--card-border);border-radius:8px;color:var(--gray-400);font-size:.85rem;cursor:pointer;transition:all .3s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--mint);color:var(--mint)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:16px 20px;text-align:left;border-bottom:1px solid var(--card-border)}
+th{background:var(--bg);font-family:'BMJUA',sans-serif;font-size:.9rem;color:var(--gray-400)}
+tr:hover{background:var(--bg-light)}
+.badge{padding:4px 12px;border-radius:100px;font-size:.8rem;font-family:'BMJUA',sans-serif}
+.badge.new{background:rgba(34,197,94,.2);color:var(--green)}
+.badge.progress{background:rgba(249,115,22,.2);color:var(--orange)}
+.badge.done{background:rgba(45,212,191,.2);color:var(--mint)}
+.badge.type-partner{background:rgba(45,212,191,.2);color:var(--mint)}
+.badge.type-rider{background:rgba(249,115,22,.2);color:var(--orange)}
+.badge.type-settlement{background:rgba(139,92,246,.2);color:#a78bfa}
+.action-btn{padding:6px 12px;border-radius:6px;border:none;font-size:.8rem;cursor:pointer;margin-right:4px;transition:all .3s}
+.action-btn.view{background:var(--mint);color:#000}
+.action-btn.delete{background:var(--red);color:#fff}
+.action-btn:hover{opacity:.8}
+
+/* 폼 섹션 */
+.form-section{background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;margin-bottom:24px}
+.form-section h3{font-family:'BMJUA',sans-serif;font-size:1.1rem;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--card-border)}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-family:'BMJUA',sans-serif;font-size:.9rem;margin-bottom:8px;color:var(--gray-300)}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;background:var(--bg);border:2px solid var(--card-border);border-radius:10px;color:#fff;font-size:.95rem;transition:all .3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--mint)}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-actions{display:flex;gap:12px;margin-top:20px}
+.btn{padding:12px 24px;border-radius:10px;font-family:'BMJUA',sans-serif;font-size:1rem;cursor:pointer;transition:all .3s;border:none}
+.btn-primary{background:var(--mint);color:#000}
+.btn-secondary{background:var(--card-border);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn:hover{opacity:.9;transform:translateY(-2px)}
+
+/* 모달 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:all .3s}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal{background:var(--card);border:2px solid var(--card-border);border-radius:20px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border)}
+.modal-header h3{font-family:'BMJUA',sans-serif;font-size:1.2rem}
+.modal-close{width:36px;height:36px;background:var(--bg);border:none;border-radius:8px;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .3s}
+.modal-close:hover{background:var(--red)}
+.modal-body{padding:24px}
+.detail-row{display:flex;padding:12px 0;border-bottom:1px solid var(--card-border)}
+.detail-label{width:120px;color:var(--gray-400);font-size:.9rem;flex-shrink:0}
+.detail-value{flex:1;color:#fff}
+.status-select{padding:8px 16px;background:var(--bg);border:2px solid var(--card-border);border-radius:8px;color:#fff;font-size:.9rem}
+
+/* 토스트 */
+.toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:16px 24px;border-radius:12px;font-family:'BMJUA',sans-serif;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+
+/* 반응형 */
+@media(max-width:900px){
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .form-grid{grid-template-columns:1fr}
+    table{font-size:.85rem}
+    th,td{padding:12px}
+}
+@media(max-width:600px){
+    .stats-grid{grid-template-columns:1fr}
+    .header-inner{flex-direction:column;gap:12px}
+    .tabs{justify-content:center}
+    .table-header{flex-direction:column;align-items:stretch}
+    .table-filters{justify-content:center}
+}
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+
+    <!-- 로그인 화면 -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>TEAM BRO</h1>
+            <p>관리자 로그인</p>
+            <input type="password" class="login-input" id="pinInput" placeholder="••••" maxlength="4" autofocus>
+            <button class="login-btn" onclick="login()">로그인</button>
+            <div class="login-error" id="loginError"></div>
+        </div>
+    </div>
+
+    <!-- 대시보드 -->
+    <div class="dashboard" id="dashboard">
+        <header class="header">
+            <div class="header-inner">
+                <a href="index.html" class="logo">TEAM BRO 관리자</a>
+                <div class="header-right">
+                    <span id="currentTime"></span>
+                    <button class="logout-btn" onclick="logout()">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('submissions')">📋 신청 관리</div>
+            <div class="tab" onclick="switchTab('popups')">🎉 팝업 관리</div>
+            <div class="tab" onclick="switchTab('notice')">📢 공지 배너</div>
+        </div>
+
+        <div class="content">
+            <!-- 신청 관리 -->
+            <div class="panel active" id="submissionsPanel">
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <span class="stat-value" id="statTotal">0</span>
+                        <span class="stat-label">전체 신청</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="statNew">0</span>
+                        <span class="stat-label">신규</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="statProgress">0</span>
+                        <span class="stat-label">진행중</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="statDone">0</span>
+                        <span class="stat-label">완료</span>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <div class="table-header">
+                        <h3 class="table-title">신청 목록</h3>
+                        <div class="table-filters">
+                            <button class="filter-btn active" onclick="filterSubmissions('all')">전체</button>
+                            <button class="filter-btn" onclick="filterSubmissions('협력사 신청')">협력사</button>
+                            <button class="filter-btn" onclick="filterSubmissions('라이더 신청')">라이더</button>
+                            <button class="filter-btn" onclick="filterSubmissions('선정산 신청')">선정산</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>유형</th>
+                                <th>이름</th>
+                                <th>연락처</th>
+                                <th>지역/상세</th>
+                                <th>상태</th>
+                                <th>신청일</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissionsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 팝업 관리 -->
+            <div class="panel" id="popupsPanel">
+                <div class="form-section">
+                    <h3>새 팝업 등록</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>제목 *</label>
+                            <input type="text" id="popupTitle" placeholder="팝업 제목">
+                        </div>
+                        <div class="form-group">
+                            <label>아이콘 (이모지)</label>
+                            <input type="text" id="popupIcon" placeholder="📢">
+                        </div>
+                        <div class="form-group">
+                            <label>이미지 URL</label>
+                            <input type="text" id="popupImage" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>버튼 텍스트</label>
+                            <input type="text" id="popupBtnText" placeholder="자세히 보기 →">
+                        </div>
+                        <div class="form-group">
+                            <label>버튼 링크</label>
+                            <input type="text" id="popupBtnLink" placeholder="#contact">
+                        </div>
+                        <div class="form-group">
+                            <label>활성화</label>
+                            <select id="popupActive">
+                                <option value="true">활성</option>
+                                <option value="false">비활성</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>설명</label>
+                        <textarea id="popupDesc" placeholder="팝업 설명 내용"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="savePopup()">팝업 저장</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <div class="table-header">
+                        <h3 class="table-title">팝업 목록</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>아이콘</th>
+                                <th>상태</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="popupsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 공지 배너 -->
+            <div class="panel" id="noticePanel">
+                <div class="form-section">
+                    <h3>공지 배너 설정</h3>
+                    <div class="form-group">
+                        <label>공지 내용</label>
+                        <input type="text" id="noticeText" placeholder="공지 배너에 표시될 내용">
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>배너 색상</label>
+                            <select id="noticeColor">
+                                <option value="mint">민트 (기본)</option>
+                                <option value="orange">오렌지</option>
+                                <option value="red">빨강</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>표시 여부</label>
+                            <select id="noticeShow">
+                                <option value="true">표시</option>
+                                <option value="false">숨김</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveNotice()">저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세 모달 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>신청 상세</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3NTYyMjAsImV4cCI6MjA1MjMzMjIyMH0.Ur_aRxihGz8aFj_VCl_gxLWKNyJAGnlFi4vY_KwDNME';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const ADMIN_PIN = '1234';
+
+        let submissions = [];
+        let currentFilter = 'all';
+
+        function toast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show ' + type;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // 로그인
+        function login() {
+            const pin = document.getElementById('pinInput').value;
+            if (pin === ADMIN_PIN) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                sessionStorage.setItem('admin', 'true');
+                loadData();
             } else {
-                tbody.innerHTML = list.map(d => `<tr>
-                    <td>${new Date(d.created_at).toLocaleString('ko-KR')}</td>
-                    <td>${d.type}</td>
-                    <td>${d.name}</td>
-                    <td>${d.phone}</td>
-                    <td>${d.region || '-'}</td>
-                    <td>
-                        <select onchange="updateStatus(${d.id},this.value)" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.8rem">
-                            <option value="신규" ${d.status==='신규'?'selected':''}>신규</option>
-                            <option value="진행중" ${d.status==='진행중'?'selected':''}>진행중</option>
-                            <option value="완료" ${d.status==='완료'?'selected':''}>완료</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline btn-sm" onclick="viewDetail(${d.id})">상세</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteItem(${d.id})">삭제</button>
-                    </td>
-                </tr>`).join('');
+                document.getElementById('loginError').textContent = '비밀번호가 틀렸습니다';
             }
+        }
+
+        document.getElementById('pinInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+
+        function logout() {
+            sessionStorage.removeItem('admin');
+            location.reload();
+        }
+
+        // 세션 체크
+        if (sessionStorage.getItem('admin')) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            loadData();
+        }
+
+        // 탭 전환
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Panel').classList.add('active');
+        }
+
+        // 데이터 로드
+        async function loadData() {
+            await loadSubmissions();
+            await loadPopups();
+            await loadNotice();
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleString('ko-KR');
+        }
+
+        // 신청 관리
+        async function loadSubmissions() {
+            try {
+                const { data, error } = await supabase
+                    .from('submissions')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                submissions = data || [];
+                updateStats();
+                renderSubmissions();
+            } catch (e) {
+                console.error(e);
+                toast('데이터 로드 실패', 'error');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('statTotal').textContent = submissions.length;
+            document.getElementById('statNew').textContent = submissions.filter(s => s.status === '신규').length;
+            document.getElementById('statProgress').textContent = submissions.filter(s => s.status === '진행중').length;
+            document.getElementById('statDone').textContent = submissions.filter(s => s.status === '완료').length;
+        }
+
+        function filterSubmissions(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderSubmissions();
+        }
+
+        function renderSubmissions() {
+            const filtered = currentFilter === 'all' 
+                ? submissions 
+                : submissions.filter(s => s.type === currentFilter);
+
+            document.getElementById('submissionsTable').innerHTML = filtered.map(s => {
+                const typeClass = s.type === '협력사 신청' ? 'type-partner' : 
+                                  s.type === '라이더 신청' ? 'type-rider' : 'type-settlement';
+                const statusClass = s.status === '신규' ? 'new' : 
+                                    s.status === '진행중' ? 'progress' : 'done';
+                const detail = s.region || s.platform || '-';
+                const date = new Date(s.created_at).toLocaleDateString('ko-KR');
+
+                return `
+                    <tr>
+                        <td><span class="badge ${typeClass}">${s.type?.replace(' 신청', '') || '-'}</span></td>
+                        <td>${s.name || '-'}</td>
+                        <td>${s.phone || '-'}</td>
+                        <td>${detail}</td>
+                        <td><span class="badge ${statusClass}">${s.status || '신규'}</span></td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="action-btn view" onclick="viewDetail(${s.id})">상세</button>
+                            <button class="action-btn delete" onclick="deleteSubmission(${s.id})">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function viewDetail(id) {
+            const s = submissions.find(x => x.id === id);
+            if (!s) return;
+
+            let html = `
+                <div class="detail-row">
+                    <span class="detail-label">유형</span>
+                    <span class="detail-value">${s.type || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">이름</span>
+                    <span class="detail-value">${s.name || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">연락처</span>
+                    <span class="detail-value">${s.phone || '-'}</span>
+                </div>
+            `;
+
+            if (s.type === '협력사 신청') {
+                html += `
+                    <div class="detail-row">
+                        <span class="detail-label">사업자번호</span>
+                        <span class="detail-value">${s.biz_num || '-'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">희망 지역</span>
+                        <span class="detail-value">${s.region || '-'}</span>
+                    </div>
+                `;
+            } else if (s.type === '라이더 신청') {
+                html += `
+                    <div class="detail-row">
+                        <span class="detail-label">활동 지역</span>
+                        <span class="detail-value">${s.region || '-'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">경력</span>
+                        <span class="detail-value">${s.experience || '-'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">근무 시간대</span>
+                        <span class="detail-value">${s.work_time || '-'}</span>
+                    </div>
+                `;
+            } else if (s.type === '선정산 신청') {
+                html += `
+                    <div class="detail-row">
+                        <span class="detail-label">상호</span>
+                        <span class="detail-value">${s.company || '-'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">신청 구분</span>
+                        <span class="detail-value">${s.settlement_type || '-'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">플랫폼</span>
+                        <span class="detail-value">${s.platform || '-'}</span>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="detail-row">
+                    <span class="detail-label">문의 내용</span>
+                    <span class="detail-value">${s.message || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">신청일</span>
+                    <span class="detail-value">${new Date(s.created_at).toLocaleString('ko-KR')}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">상태 변경</span>
+                    <span class="detail-value">
+                        <select class="status-select" onchange="updateStatus(${s.id}, this.value)">
+                            <option value="신규" ${s.status === '신규' ? 'selected' : ''}>신규</option>
+                            <option value="진행중" ${s.status === '진행중' ? 'selected' : ''}>진행중</option>
+                            <option value="완료" ${s.status === '완료' ? 'selected' : ''}>완료</option>
+                        </select>
+                    </span>
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
         }
 
         async function updateStatus(id, status) {
-            await supabase.from('submissions').update({ status }).eq('id', id);
-            loadSubmissions();
-            loadDashboard();
-            toast('상태 변경됨');
-        }
-
-        async function viewDetail(id) {
-            const { data } = await supabase.from('submissions').select('*').eq('id', id).single();
-            if (data) {
-                document.getElementById('modalBody').innerHTML = `
-                    <div class="form-group"><label>날짜</label><input value="${new Date(data.created_at).toLocaleString('ko-KR')}" readonly></div>
-                    <div class="form-group"><label>유형</label><input value="${data.type}" readonly></div>
-                    <div class="form-group"><label>이름/상호</label><input value="${data.name}" readonly></div>
-                    <div class="form-group"><label>연락처</label><input value="${data.phone}" readonly></div>
-                    <div class="form-group"><label>사업자번호</label><input value="${data.biz_num || '-'}" readonly></div>
-                    <div class="form-group"><label>희망지역</label><input value="${data.region || '-'}" readonly></div>
-                    <div class="form-group"><label>문의내용</label><textarea readonly>${data.message || '-'}</textarea></div>
-                `;
-                document.getElementById('detailModal').classList.add('show');
+            try {
+                const { error } = await supabase
+                    .from('submissions')
+                    .update({ status })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                toast('상태가 변경되었습니다');
+                loadSubmissions();
+            } catch (e) {
+                toast('변경 실패', 'error');
             }
         }
 
-        function closeModal() { document.getElementById('detailModal').classList.remove('show'); }
-
-        async function deleteItem(id) {
-            if (!confirm('삭제하시겠습니까?')) return;
-            await supabase.from('submissions').delete().eq('id', id);
-            loadSubmissions();
-            loadDashboard();
-            toast('삭제됨');
+        async function deleteSubmission(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+            try {
+                const { error } = await supabase
+                    .from('submissions')
+                    .delete()
+                    .eq('id', id);
+                
+                if (error) throw error;
+                toast('삭제되었습니다');
+                loadSubmissions();
+            } catch (e) {
+                toast('삭제 실패', 'error');
+            }
         }
 
-        // 팝업
+        // 팝업 관리
         async function loadPopups() {
-            const { data } = await supabase.from('popups').select('*').order('id', { ascending: false });
-            const list = data || [];
-            const container = document.getElementById('popupList');
-
-            if (!list.length) {
-                container.innerHTML = '<div class="empty"><div class="icon">🎯</div><p>등록된 팝업이 없습니다</p></div>';
-            } else {
-                container.innerHTML = list.map(p => `<div class="popup-item">
-                    <div class="popup-thumb">${p.image_url ? `<img src="${p.image_url}">` : (p.icon || '📢')}</div>
-                    <div class="popup-info"><h4>${p.title}</h4><p>${p.description || ''}</p></div>
-                    <div class="popup-actions">
-                        <div class="toggle ${p.active ? 'on' : ''}" onclick="togglePopup(${p.id}, ${p.active})"></div>
-                        <button class="btn btn-danger btn-sm" onclick="deletePopup(${p.id})">삭제</button>
-                    </div>
-                </div>`).join('');
+            try {
+                const { data } = await supabase.from('popups').select('*').order('id', { ascending: false });
+                document.getElementById('popupsTable').innerHTML = (data || []).map(p => `
+                    <tr>
+                        <td>${p.title}</td>
+                        <td>${p.icon || '📢'}</td>
+                        <td><span class="badge ${p.active ? 'new' : 'done'}">${p.active ? '활성' : '비활성'}</span></td>
+                        <td>
+                            <button class="action-btn view" onclick="togglePopup(${p.id}, ${!p.active})">${p.active ? '비활성화' : '활성화'}</button>
+                            <button class="action-btn delete" onclick="deletePopup(${p.id})">삭제</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                console.error(e);
             }
         }
 
-        async function togglePopup(id, current) {
-            await supabase.from('popups').update({ active: !current }).eq('id', id);
-            loadPopups();
-            toast('팝업 상태 변경됨');
+        async function savePopup() {
+            const popup = {
+                title: document.getElementById('popupTitle').value,
+                icon: document.getElementById('popupIcon').value || '📢',
+                image_url: document.getElementById('popupImage').value,
+                description: document.getElementById('popupDesc').value,
+                btn_text: document.getElementById('popupBtnText').value || '자세히 보기 →',
+                btn_link: document.getElementById('popupBtnLink').value || '#contact',
+                active: document.getElementById('popupActive').value === 'true'
+            };
+
+            if (!popup.title) {
+                toast('제목을 입력하세요', 'error');
+                return;
+            }
+
+            try {
+                const { error } = await supabase.from('popups').insert([popup]);
+                if (error) throw error;
+                toast('팝업이 저장되었습니다');
+                document.getElementById('popupTitle').value = '';
+                document.getElementById('popupIcon').value = '';
+                document.getElementById('popupImage').value = '';
+                document.getElementById('popupDesc').value = '';
+                document.getElementById('popupBtnText').value = '';
+                document.getElementById('popupBtnLink').value = '';
+                loadPopups();
+            } catch (e) {
+                toast('저장 실패', 'error');
+            }
         }
 
-        async function addPopup() {
-            const title = document.getElementById('popupTitle').value.trim();
-            const icon = document.getElementById('popupIcon').value.trim() || '📢';
-            const description = document.getElementById('popupDesc').value.trim();
-            const btn_text = document.getElementById('popupBtn').value.trim() || '자세히 보기 →';
-            const btn_link = document.getElementById('popupLink').value.trim() || '#contact';
-            const image_url = document.getElementById('popupImage').value.trim();
-
-            if (!title || !description) { toast('제목과 내용을 입력하세요', 'error'); return; }
-
-            await supabase.from('popups').insert([{ title, icon, description, btn_text, btn_link, image_url, active: true }]);
-
-            document.getElementById('popupTitle').value = '';
-            document.getElementById('popupIcon').value = '';
-            document.getElementById('popupDesc').value = '';
-            document.getElementById('popupBtn').value = '';
-            document.getElementById('popupLink').value = '';
-            document.getElementById('popupImage').value = '';
-
-            loadPopups();
-            toast('팝업 추가됨');
+        async function togglePopup(id, active) {
+            try {
+                const { error } = await supabase.from('popups').update({ active }).eq('id', id);
+                if (error) throw error;
+                toast('변경되었습니다');
+                loadPopups();
+            } catch (e) {
+                toast('변경 실패', 'error');
+            }
         }
 
         async function deletePopup(id) {
-            if (!confirm('삭제하시겠습니까?')) return;
-            await supabase.from('popups').delete().eq('id', id);
-            loadPopups();
-            toast('삭제됨');
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+            try {
+                const { error } = await supabase.from('popups').delete().eq('id', id);
+                if (error) throw error;
+                toast('삭제되었습니다');
+                loadPopups();
+            } catch (e) {
+                toast('삭제 실패', 'error');
+            }
         }
 
-        // 공지
+        // 공지 배너
         async function loadNotice() {
-            const { data } = await supabase.from('notice').select('*').limit(1).single();
-            if (data) {
-                document.getElementById('noticeText').value = data.text || '';
-                document.getElementById('noticeShow').value = data.show ? 'true' : 'false';
-                document.getElementById('noticeColor').value = data.color || 'mint';
+            try {
+                const { data } = await supabase.from('notice').select('*').limit(1).single();
+                if (data) {
+                    document.getElementById('noticeText').value = data.text || '';
+                    document.getElementById('noticeColor').value = data.color || 'mint';
+                    document.getElementById('noticeShow').value = data.show ? 'true' : 'false';
+                }
+            } catch (e) {
+                console.log('No notice data');
             }
         }
 
         async function saveNotice() {
-            const text = document.getElementById('noticeText').value;
-            const show = document.getElementById('noticeShow').value === 'true';
-            const color = document.getElementById('noticeColor').value;
+            const notice = {
+                text: document.getElementById('noticeText').value,
+                color: document.getElementById('noticeColor').value,
+                show: document.getElementById('noticeShow').value === 'true'
+            };
 
-            const { data } = await supabase.from('notice').select('*').limit(1).single();
-            if (data) {
-                await supabase.from('notice').update({ text, show, color }).eq('id', data.id);
-            } else {
-                await supabase.from('notice').insert([{ text, show, color }]);
+            try {
+                // 기존 데이터 삭제 후 새로 삽입
+                await supabase.from('notice').delete().neq('id', 0);
+                const { error } = await supabase.from('notice').insert([notice]);
+                if (error) throw error;
+                toast('공지가 저장되었습니다');
+            } catch (e) {
+                toast('저장 실패', 'error');
+                console.error(e);
             }
-            toast('공지 저장됨');
-        }
-
-        // 설정
-        async function loadSettings() {
-            const { data } = await supabase.from('settings').select('*').limit(1).single();
-            if (data) {
-                document.getElementById('setPhone').value = data.phone || '';
-                document.getElementById('setEmail').value = data.email || '';
-                document.getElementById('setKakao').value = data.kakao || '';
-                document.getElementById('setHours').value = data.hours || '';
-            }
-        }
-
-        async function saveSettings() {
-            const phone = document.getElementById('setPhone').value;
-            const email = document.getElementById('setEmail').value;
-            const kakao = document.getElementById('setKakao').value;
-            const hours = document.getElementById('setHours').value;
-
-            const { data } = await supabase.from('settings').select('*').limit(1).single();
-            if (data) {
-                await supabase.from('settings').update({ phone, email, kakao, hours }).eq('id', data.id);
-            } else {
-                await supabase.from('settings').insert([{ phone, email, kakao, hours }]);
-            }
-            toast('설정 저장됨');
-        }
-
-        async function changePw() {
-            const newPw = document.getElementById('newPw').value;
-            const confirmPw = document.getElementById('confirmPw').value;
-
-            if (!newPw || newPw.length < 4) { toast('4자 이상 입력하세요', 'error'); return; }
-            if (newPw !== confirmPw) { toast('비밀번호가 일치하지 않습니다', 'error'); return; }
-
-            const { data } = await supabase.from('admin').select('*').eq('username', 'admin').single();
-            if (data) {
-                await supabase.from('admin').update({ password: newPw }).eq('id', data.id);
-            }
-
-            document.getElementById('newPw').value = '';
-            document.getElementById('confirmPw').value = '';
-            toast('비밀번호 변경됨');
         }
     </script>
 </body>
