@@ -213,18 +213,25 @@ section{padding:100px 24px}
 .contact-form:focus-within{border-color:var(--mint)}
 .form-group{margin-bottom:20px}
 .form-group label{display:block;font-family:'BMJUA',sans-serif;font-size:.95rem;margin-bottom:8px;color:var(--gray-300)}
-.form-tabs{display:flex;gap:8px}
+.form-tabs{display:flex;gap:8px;margin-bottom:24px}
 .form-tab{flex:1}
 .form-tab input{display:none}
-.form-tab span{display:block;padding:14px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;text-align:center;font-family:'BMJUA',sans-serif;font-size:.9rem;color:var(--gray-400);cursor:pointer;transition:all .3s}
+.form-tab span{display:block;padding:16px 12px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;text-align:center;font-family:'BMJUA',sans-serif;font-size:.95rem;color:var(--gray-400);cursor:pointer;transition:all .3s}
 .form-tab input:checked+span{background:var(--mint);border-color:var(--mint);color:#000}
+.form-tab span:hover{border-color:var(--mint)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 18px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;color:#fff;font-size:1rem;transition:all .3s}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--mint)}
-.form-group textarea{resize:vertical;min-height:120px}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-group select{cursor:pointer}
+.form-group select option{background:var(--bg);color:#fff}
 .form-submit{width:100%;padding:18px;background:var(--mint);border:none;border-radius:14px;font-family:'BMJUA',sans-serif;font-size:1.1rem;color:#000;cursor:pointer;transition:all .3s}
 .form-submit:hover{transform:translateY(-3px)}
 .form-submit:disabled{opacity:.6;cursor:not-allowed}
+
+/* 동적 폼 필드 */
+.form-fields{display:none}
+.form-fields.active{display:block}
 
 /* CTA */
 .cta-section{background:var(--mint);text-align:center;padding:80px 24px}
@@ -281,6 +288,7 @@ body.has-notice .scroll-indicator{top:44px}
     .cta-buttons,.hero-buttons{flex-direction:column}
     .p-step{min-width:100%}
     .hero h1{font-size:2.2rem}
+    .form-tabs{flex-direction:column}
 }
     </style>
 </head>
@@ -318,7 +326,7 @@ body.has-notice .scroll-indicator{top:44px}
             <ul class="nav-links">
                 <li><a href="#home" class="active">홈</a></li>
                 <li><a href="about.html">중개사 소개</a></li>
-                <li><a href="#process">연결 절차</a></li>
+                <li><a href="#process">진행 절차</a></li>
                 <li><a href="#partner">협력사 모집</a></li>
                 <li><a href="#contact">문의하기</a></li>
             </ul>
@@ -434,7 +442,7 @@ body.has-notice .scroll-indicator{top:44px}
             <div class="process-box">
                 <div class="section-header">
                     <span class="section-badge">Partnership Process</span>
-                    <h2>협력사 연결 절차</h2>
+                    <h2>협력사 진행 절차</h2>
                     <p>TEAM BRO가 배민과 연결해드립니다</p>
                 </div>
                 <div class="process-steps-visual">
@@ -543,8 +551,8 @@ body.has-notice .scroll-indicator{top:44px}
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Contact</span>
-                <h2>협력사 신청 · 문의</h2>
-                <p>배민커넥트비즈+ 협력사 되고 싶으면 연락주세요</p>
+                <h2>신청 · 문의</h2>
+                <p>협력사, 라이더, 선정산 신청을 받습니다</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-channels">
@@ -577,24 +585,137 @@ body.has-notice .scroll-indicator{top:44px}
                     </div>
                 </div>
                 <div class="contact-form-wrap">
-                    <h2>협력사 신청 폼</h2>
+                    <h2>신청 폼</h2>
                     <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <label>문의 유형 *</label>
-                            <div class="form-tabs">
-                                <label class="form-tab"><input type="radio" name="type" value="협력사 신청" checked><span>협력사 신청</span></label>
-                                <label class="form-tab"><input type="radio" name="type" value="라이더 지원"><span>라이더 지원</span></label>
-                                <label class="form-tab"><input type="radio" name="type" value="선정산 신청"><span>선정산 신청</span></label>
+                        <!-- 타입 선택 탭 -->
+                        <div class="form-tabs">
+                            <label class="form-tab">
+                                <input type="radio" name="type" value="협력사 신청" checked onchange="switchForm('partner')">
+                                <span>🏢 협력사 신청</span>
+                            </label>
+                            <label class="form-tab">
+                                <input type="radio" name="type" value="라이더 신청" onchange="switchForm('rider')">
+                                <span>🛵 라이더 신청</span>
+                            </label>
+                            <label class="form-tab">
+                                <input type="radio" name="type" value="선정산 신청" onchange="switchForm('settlement')">
+                                <span>💰 선정산 신청</span>
+                            </label>
+                        </div>
+
+                        <!-- 협력사 신청 폼 -->
+                        <div class="form-fields active" id="partnerForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>이름/상호 *</label>
+                                    <input type="text" name="partner_name" placeholder="상호명 또는 대표자명">
+                                </div>
+                                <div class="form-group">
+                                    <label>연락처 *</label>
+                                    <input type="tel" name="partner_phone" placeholder="010-0000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>사업자등록번호</label>
+                                <input type="text" name="partner_biznum" placeholder="000-00-00000 (없어도 가능)">
+                            </div>
+                            <div class="form-group">
+                                <label>희망 지역</label>
+                                <input type="text" name="partner_region" placeholder="ex) 서울 강남구, 경기 수원시">
+                            </div>
+                            <div class="form-group">
+                                <label>문의 내용</label>
+                                <textarea name="partner_message" placeholder="궁금한 점이나 요청사항을 적어주세요"></textarea>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>이름/상호 *</label><input type="text" name="name" required placeholder="상호명 또는 대표자명"></div>
-                            <div class="form-group"><label>연락처 *</label><input type="tel" name="phone" required placeholder="010-0000-0000"></div>
+
+                        <!-- 라이더 신청 폼 -->
+                        <div class="form-fields" id="riderForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>이름 *</label>
+                                    <input type="text" name="rider_name" placeholder="이름">
+                                </div>
+                                <div class="form-group">
+                                    <label>연락처 *</label>
+                                    <input type="tel" name="rider_phone" placeholder="010-0000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>활동 지역 *</label>
+                                <input type="text" name="rider_region" placeholder="ex) 서울 강남구, 경기 수원시">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>경력 여부 *</label>
+                                    <select name="rider_experience">
+                                        <option value="">선택하세요</option>
+                                        <option value="신입">신입</option>
+                                        <option value="경력">경력</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>근무 가능 시간대 *</label>
+                                    <select name="rider_time">
+                                        <option value="">선택하세요</option>
+                                        <option value="오전 (06:00~12:00)">오전 (06:00~12:00)</option>
+                                        <option value="오후 (12:00~18:00)">오후 (12:00~18:00)</option>
+                                        <option value="저녁 (18:00~24:00)">저녁 (18:00~24:00)</option>
+                                        <option value="심야 (24:00~06:00)">심야 (24:00~06:00)</option>
+                                        <option value="풀타임">풀타임</option>
+                                        <option value="협의 가능">협의 가능</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>문의 내용</label>
+                                <textarea name="rider_message" placeholder="추가 문의사항이 있으시면 적어주세요"></textarea>
+                            </div>
                         </div>
-                        <div class="form-group"><label>사업자등록번호</label><input type="text" name="bizNum" placeholder="000-00-00000 (없어도 가능)"></div>
-                        <div class="form-group"><label>희망 지역</label><input type="text" name="region" placeholder="ex) 서울 강남구, 경기 수원시"></div>
-                        <div class="form-group"><label>문의 내용</label><textarea name="message" placeholder="궁금한 점이나 요청사항을 적어주세요"></textarea></div>
-                        <button type="submit" class="form-submit" id="submitBtn">협력사 신청하기</button>
+
+                        <!-- 선정산 신청 폼 -->
+                        <div class="form-fields" id="settlementForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>이름 *</label>
+                                    <input type="text" name="settlement_name" placeholder="이름">
+                                </div>
+                                <div class="form-group">
+                                    <label>상호</label>
+                                    <input type="text" name="settlement_company" placeholder="상호명 (없으면 생략)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>연락처 *</label>
+                                <input type="tel" name="settlement_phone" placeholder="010-0000-0000">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>신청 구분 *</label>
+                                    <select name="settlement_type">
+                                        <option value="">선택하세요</option>
+                                        <option value="라이더">라이더</option>
+                                        <option value="협력사">협력사</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>이용 플랫폼 *</label>
+                                    <select name="settlement_platform">
+                                        <option value="">선택하세요</option>
+                                        <option value="배민">배민</option>
+                                        <option value="쿠팡">쿠팡</option>
+                                        <option value="배민+쿠팡">배민+쿠팡</option>
+                                        <option value="기타">기타</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>문의 내용</label>
+                                <textarea name="settlement_message" placeholder="추가 문의사항이 있으시면 적어주세요"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="form-submit" id="submitBtn">신청하기</button>
                     </form>
                 </div>
             </div>
@@ -620,7 +741,7 @@ body.has-notice .scroll-indicator{top:44px}
                     <p>배민커넥트비즈+ 공식 중개사<br>(주)팀브로</p>
                     <div class="footer-social"><a href="#">📸</a><a href="#">💬</a></div>
                 </div>
-                <div class="footer-links"><h4>소개</h4><ul><li><a href="about.html">중개사 소개</a></li><li><a href="#process">연결 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
+                <div class="footer-links"><h4>소개</h4><ul><li><a href="about.html">중개사 소개</a></li><li><a href="#process">진행 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
                 <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">협력사 신청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
                 <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ pro_5211@naver.com</li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
@@ -632,6 +753,18 @@ body.has-notice .scroll-indicator{top:44px}
         const SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3NTYyMjAsImV4cCI6MjA1MjMzMjIyMH0.Ur_aRxihGz8aFj_VCl_gxLWKNyJAGnlFi4vY_KwDNME';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 폼 전환 함수
+        function switchForm(formType) {
+            document.querySelectorAll('.form-fields').forEach(f => f.classList.remove('active'));
+            document.getElementById(formType + 'Form').classList.add('active');
+            
+            // 버튼 텍스트 변경
+            const btn = document.getElementById('submitBtn');
+            if (formType === 'partner') btn.textContent = '협력사 신청하기';
+            else if (formType === 'rider') btn.textContent = '라이더 신청하기';
+            else if (formType === 'settlement') btn.textContent = '선정산 신청하기';
+        }
 
         function toast(msg, type='success') {
             const t = document.getElementById('toast');
@@ -700,27 +833,56 @@ body.has-notice .scroll-indicator{top:44px}
             document.body.classList.remove('has-notice');
         }
 
+        // 폼 제출
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
+            const originalText = btn.textContent;
             btn.textContent = '신청 중...';
-            const formData = {
-                type: document.querySelector('input[name="type"]:checked').value,
-                name: document.querySelector('input[name="name"]').value,
-                phone: document.querySelector('input[name="phone"]').value,
-                biz_num: document.querySelector('input[name="bizNum"]').value,
-                region: document.querySelector('input[name="region"]').value,
-                message: document.querySelector('textarea[name="message"]').value,
-                status: '신규'
-            };
+
+            const formType = document.querySelector('input[name="type"]:checked').value;
+            let formData = { type: formType, status: '신규' };
+
+            // 타입별 데이터 수집
+            if (formType === '협력사 신청') {
+                formData.name = document.querySelector('input[name="partner_name"]').value;
+                formData.phone = document.querySelector('input[name="partner_phone"]').value;
+                formData.biz_num = document.querySelector('input[name="partner_biznum"]').value;
+                formData.region = document.querySelector('input[name="partner_region"]').value;
+                formData.message = document.querySelector('textarea[name="partner_message"]').value;
+            } else if (formType === '라이더 신청') {
+                formData.name = document.querySelector('input[name="rider_name"]').value;
+                formData.phone = document.querySelector('input[name="rider_phone"]').value;
+                formData.region = document.querySelector('input[name="rider_region"]').value;
+                formData.experience = document.querySelector('select[name="rider_experience"]').value;
+                formData.work_time = document.querySelector('select[name="rider_time"]').value;
+                formData.message = document.querySelector('textarea[name="rider_message"]').value;
+            } else if (formType === '선정산 신청') {
+                formData.name = document.querySelector('input[name="settlement_name"]').value;
+                formData.company = document.querySelector('input[name="settlement_company"]').value;
+                formData.phone = document.querySelector('input[name="settlement_phone"]').value;
+                formData.settlement_type = document.querySelector('select[name="settlement_type"]').value;
+                formData.platform = document.querySelector('select[name="settlement_platform"]').value;
+                formData.message = document.querySelector('textarea[name="settlement_message"]').value;
+            }
+
             try {
                 const { error } = await supabase.from('submissions').insert([formData]);
-                if (error) { toast('신청 실패. 다시 시도해주세요.', 'error'); }
-                else { toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); this.reset(); }
-            } catch(e) { toast('신청 실패. 다시 시도해주세요.', 'error'); }
+                if (error) { 
+                    toast('신청 실패. 다시 시도해주세요.', 'error'); 
+                    console.log(error);
+                } else { 
+                    toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); 
+                    this.reset();
+                    switchForm('partner');
+                }
+            } catch(e) { 
+                toast('신청 실패. 다시 시도해주세요.', 'error'); 
+                console.log(e);
+            }
             btn.disabled = false;
-            btn.textContent = '협력사 신청하기';
+            btn.textContent = originalText;
         });
 
         window.addEventListener('scroll', () => {
