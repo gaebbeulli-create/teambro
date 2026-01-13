@@ -261,8 +261,12 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
 .footer-links li{margin-bottom:10px}
 .footer-links a{color:var(--gray-500);text-decoration:none;font-size:.9rem;transition:color .3s}
 .footer-links a:hover{color:var(--mint)}
-.footer-bottom{padding-top:24px;display:flex;justify-content:space-between;font-size:.85rem;color:var(--gray-500);flex-wrap:wrap;gap:12px}
-.footer-legal a{color:var(--gray-500);text-decoration:none;margin-left:16px}
+.footer-bottom{padding-top:24px;font-size:.85rem;color:var(--gray-500)}
+.footer-company{margin-bottom:16px;line-height:1.8}
+.footer-company p{margin:0}
+.footer-legal{display:flex;gap:16px;flex-wrap:wrap}
+.footer-legal a{color:var(--gray-500);text-decoration:none;transition:color .3s}
+.footer-legal a:hover{color:var(--mint)}
 
 /* 스크롤 인디케이터 */
 .scroll-indicator{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--mint),var(--mint-light));z-index:9999}
@@ -273,6 +277,19 @@ body.has-notice .scroll-indicator{top:44px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:#22c55e}
 .toast.error{background:#ef4444}
+
+/* 약관 모달 */
+.terms-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:all .3s}
+.terms-modal.active{opacity:1;visibility:visible}
+.terms-box{background:var(--card);border:2px solid var(--card-border);border-radius:24px;width:100%;max-width:600px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+.terms-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border)}
+.terms-header h3{font-family:'BMHANNAPro',sans-serif;font-size:1.3rem}
+.terms-close{width:40px;height:40px;background:var(--bg);border:none;border-radius:10px;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .3s}
+.terms-close:hover{background:#ef4444}
+.terms-content{padding:24px;overflow-y:auto;line-height:1.8;color:var(--gray-300);font-size:.95rem}
+.terms-content h4{font-family:'BMJUA',sans-serif;color:#fff;margin:20px 0 12px;font-size:1.1rem}
+.terms-content h4:first-child{margin-top:0}
+.terms-content p{margin-bottom:12px}
 
 /* 반응형 */
 @media(max-width:900px){
@@ -317,6 +334,17 @@ body.has-notice .scroll-indicator{top:44px}
 <body>
     <div class="toast" id="toast"></div>
     <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <!-- 약관 모달 -->
+    <div class="terms-modal" id="termsModal">
+        <div class="terms-box">
+            <div class="terms-header">
+                <h3 id="termsTitle">이용약관</h3>
+                <button class="terms-close" onclick="closeTerms()">✕</button>
+            </div>
+            <div class="terms-content" id="termsContent"></div>
+        </div>
+    </div>
 
     <div class="notice-banner hidden" id="noticeBanner">
         <span class="notice-text" id="noticeText"></span>
@@ -789,7 +817,18 @@ body.has-notice .scroll-indicator{top:44px}
                 <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 신청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
                 <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ pro_5211@naver.com</li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
-            <div class="footer-bottom"><p>© 2025 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p><div class="footer-legal"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="admin.html">관리자</a></div></div>
+            <div class="footer-bottom">
+                <div class="footer-company">
+                    <p>© 2024 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p>
+                    <p>상호명 : 주식회사 팀브로 | 사업자등록번호 : 445-87-03031</p>
+                    <p>주소 : 대구광역시 달서구 야외음악당로7길 57</p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#" onclick="openTerms('terms'); return false;">이용약관</a>
+                    <a href="#" onclick="openTerms('privacy'); return false;">개인정보처리방침</a>
+                    <a href="admin.html">관리자</a>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -965,6 +1004,46 @@ body.has-notice .scroll-indicator{top:44px}
 
         loadPopups();
         loadNotice();
+
+        // 약관 모달
+        const termsData = {
+            terms: {
+                title: '이용약관',
+                content: `
+                    <h4>이용약관</h4>
+                    <p>본 약관은 주식회사 팀브로(이하 "회사")가 제공하는 배달 중개 및 관련 서비스의 이용과 관련하여 회사와 이용자 간의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+                    <p>회사는 라이더와 협력사를 연결하는 중개 플랫폼으로서, 라이더와 협력사 간의 개별 계약, 거래, 정산에 직접 관여하지 않습니다. 서비스 이용자는 본 약관에 동의함으로써 관련 법령 및 본 약관을 준수할 의무가 있습니다.</p>
+                    <p>본 약관에 명시되지 않은 사항은 관계 법령 및 상관례에 따릅니다.</p>
+                `
+            },
+            privacy: {
+                title: '개인정보처리방침',
+                content: `
+                    <h4>개인정보처리방침</h4>
+                    <p>주식회사 팀브로(이하 "회사")는 「개인정보 보호법」 등 관련 법령을 준수하며, 이용자의 개인정보를 보호하기 위하여 최선을 다하고 있습니다.</p>
+                    <p>회사는 서비스 제공을 위하여 최소한의 개인정보를 수집·이용하며, 수집된 개인정보는 목적 외 용도로 이용되지 않습니다. 이용자는 언제든지 개인정보 열람, 정정, 삭제를 요청할 수 있습니다.</p>
+                    <p>회사는 개인정보 보호를 위하여 기술적·관리적 보호조치를 시행하고 있습니다.</p>
+                `
+            }
+        };
+
+        function openTerms(type) {
+            const data = termsData[type];
+            if (!data) return;
+            document.getElementById('termsTitle').textContent = data.title;
+            document.getElementById('termsContent').innerHTML = data.content;
+            document.getElementById('termsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTerms() {
+            document.getElementById('termsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('termsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTerms();
+        });
     </script>
 </body>
 </html>
