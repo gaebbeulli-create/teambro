@@ -13,23 +13,19 @@
 :root{--bg:#0a0a0f;--bg-light:#12121a;--card:#16161f;--card-border:#252530;--white:#fff;--gray-300:#b0b0c0;--gray-400:#808090;--gray-500:#606070;--mint:#2dd4bf;--mint-light:#5eead4;--mint-glow:rgba(45,212,191,.2);--orange:#f97316;--orange-glow:rgba(249,115,22,.2)}
 html{scroll-behavior:smooth}
 body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--white);line-height:1.7;font-size:15px;overflow-x:hidden}
+body.menu-open{overflow:hidden}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
 
-/* 애니메이션 */
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
 @keyframes rgb-flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes shine{0%{background-position:-200% center}100%{background-position:200% center}}
 
-/* 플로팅 버튼 */
 .floating-btns{position:fixed;right:20px;bottom:20px;z-index:1000;display:flex;flex-direction:column;gap:10px}
 .float-btn{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:24px;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .float-btn:hover{transform:translateY(-5px) scale(1.1)}
 .float-btn.kakao{background:#FEE500;color:#391B1B}
 .float-btn.phone{background:var(--mint);color:#000}
 
-/* 헤더 */
-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background:rgba(10,10,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .3s}
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .3s}
 header.scrolled{border-bottom-color:var(--card-border)}
 nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'BMHANNAPro',sans-serif;font-size:1.6rem;color:var(--mint);text-decoration:none}
@@ -40,16 +36,21 @@ nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-conte
 .nav-links a:hover,.nav-links a.active{color:var(--mint)}
 .nav-cta{background:var(--mint);color:#000;padding:12px 24px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.95rem;text-decoration:none;font-weight:600;transition:all .3s}
 .nav-cta:hover{transform:scale(1.05);background:var(--mint-light)}
-.mobile-menu{display:none;font-size:1.5rem;color:#fff;cursor:pointer}
+.mobile-menu{display:none;font-size:1.8rem;color:#fff;cursor:pointer;z-index:101;padding:8px}
 
-/* 버튼 */
+.mobile-nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
+.mobile-nav-overlay.active{opacity:1;visibility:visible}
+.mobile-nav-links{list-style:none;text-align:center;display:flex;flex-direction:column;gap:24px}
+.mobile-nav-links a{color:#fff;text-decoration:none;font-family:'BMJUA',sans-serif;font-size:1.5rem;transition:all .3s;display:block;padding:12px 24px}
+.mobile-nav-links a:hover,.mobile-nav-links a.active{color:var(--mint)}
+.mobile-nav-cta{margin-top:32px;background:var(--mint);color:#000;padding:16px 40px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:1.1rem;text-decoration:none;display:inline-block}
+
 .btn{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border-radius:14px;font-family:'BMJUA',sans-serif;font-size:1rem;text-decoration:none;transition:all .3s;font-weight:600}
 .btn-primary{background:var(--mint);color:#000}
 .btn-primary:hover{background:var(--mint-light);transform:translateY(-3px)}
 .btn-outline{background:transparent;color:var(--white);border:2px solid var(--card-border)}
 .btn-outline:hover{border-color:var(--mint);color:var(--mint)}
 
-/* 히어로 */
 .hero{min-height:70vh;display:flex;align-items:center;padding:140px 24px 80px;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0}
 .hero-bg::before{content:'';position:absolute;top:-20%;left:-10%;width:50%;height:50%;background:radial-gradient(circle,var(--mint-glow),transparent 60%);filter:blur(100px);animation:float 6s ease-in-out infinite}
@@ -61,14 +62,12 @@ nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-conte
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--mint),var(--mint-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-desc{color:var(--gray-300);font-size:1.15rem;margin-bottom:32px;line-height:1.8;max-width:600px;margin-left:auto;margin-right:auto}
 
-/* 섹션 */
 section{padding:100px 24px}
 .section-header{text-align:center;margin-bottom:48px}
 .section-badge{display:inline-block;background:var(--card);border:1px solid var(--card-border);padding:8px 18px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.85rem;color:var(--mint);margin-bottom:16px}
 .section-header h2{font-family:'BMHANNAPro',sans-serif;font-size:2.2rem;margin-bottom:12px}
 .section-header p{color:var(--gray-400);font-size:1.05rem}
 
-/* 중개사 하는 일 */
 .what-we-do{background:var(--bg-light)}
 .work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .work-card{background:var(--card);border:2px solid var(--card-border);border-radius:24px;padding:32px;text-align:center;transition:all .4s}
@@ -77,7 +76,6 @@ section{padding:100px 24px}
 .work-card h3{font-family:'BMJUA',sans-serif;font-size:1.3rem;margin-bottom:12px;color:#fff}
 .work-card p{font-size:.95rem;color:var(--gray-400);line-height:1.6}
 
-/* 진행 절차 */
 .process-section{background:var(--bg)}
 .process-timeline{position:relative;max-width:800px;margin:0 auto}
 .process-timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--mint),var(--orange));transform:translateX(-50%);border-radius:4px}
@@ -92,7 +90,6 @@ section{padding:100px 24px}
 .step-card h3{font-family:'BMJUA',sans-serif;font-size:1.2rem;margin-bottom:8px;color:#fff}
 .step-card p{color:var(--gray-400);font-size:.95rem}
 
-/* 타겟 섹션 */
 .target-section{background:var(--bg-light)}
 .target-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .target-card{background:var(--card);border:2px solid var(--card-border);border-radius:20px;padding:28px;text-align:center;transition:all .4s;position:relative;overflow:hidden}
@@ -103,7 +100,6 @@ section{padding:100px 24px}
 .target-card h3{font-family:'BMJUA',sans-serif;font-size:1.15rem;margin-bottom:8px;color:#fff}
 .target-card p{font-size:.9rem;color:var(--gray-400)}
 
-/* 왜 팀브로 */
 .why-section{background:linear-gradient(135deg,var(--mint),var(--mint-light));position:relative;overflow:hidden}
 .why-section .section-header h2,.why-section .section-header p{color:#000}
 .why-section .section-badge{background:rgba(0,0,0,.2);color:#000;border:none}
@@ -114,7 +110,6 @@ section{padding:100px 24px}
 .why-card h3{font-family:'BMJUA',sans-serif;font-size:1.2rem;margin-bottom:12px;color:#000}
 .why-card p{color:rgba(0,0,0,.7);font-size:.95rem}
 
-/* CTA */
 .cta-section{background:var(--bg);text-align:center;padding:80px 24px}
 .cta-box{background:var(--card);border:2px solid var(--mint);border-radius:32px;padding:60px 40px;max-width:800px;margin:0 auto;position:relative;overflow:hidden}
 .cta-box::before{content:'';position:absolute;inset:-2px;border-radius:34px;background:linear-gradient(45deg,var(--mint),var(--orange),var(--mint));background-size:200% 200%;animation:rgb-flow 3s ease infinite;z-index:-1;opacity:.3}
@@ -122,7 +117,6 @@ section{padding:100px 24px}
 .cta-section p{color:var(--gray-300);margin-bottom:32px;font-size:1.1rem}
 .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
-/* 푸터 */
 footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-border)}
 .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--card-border)}
 .footer-brand .logo{display:block;margin-bottom:12px}
@@ -135,10 +129,26 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
 .footer-links li{margin-bottom:10px}
 .footer-links a{color:var(--gray-500);text-decoration:none;font-size:.9rem;transition:color .3s}
 .footer-links a:hover{color:var(--mint)}
-.footer-bottom{padding-top:24px;display:flex;justify-content:space-between;font-size:.85rem;color:var(--gray-500)}
-.footer-legal a{color:var(--gray-500);text-decoration:none;margin-left:16px}
+.footer-bottom{padding-top:24px;font-size:.85rem;color:var(--gray-500)}
+.footer-company{margin-bottom:16px;line-height:1.8}
+.footer-company p{margin:0}
+.footer-legal{display:flex;gap:16px;flex-wrap:wrap}
+.footer-legal a{color:var(--gray-500);text-decoration:none;transition:color .3s}
+.footer-legal a:hover{color:var(--mint)}
 
-/* 반응형 */
+/* 약관 모달 */
+.terms-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:all .3s}
+.terms-modal.active{opacity:1;visibility:visible}
+.terms-box{background:var(--card);border:2px solid var(--card-border);border-radius:24px;width:100%;max-width:600px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+.terms-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border)}
+.terms-header h3{font-family:'BMHANNAPro',sans-serif;font-size:1.3rem}
+.terms-close{width:40px;height:40px;background:var(--bg);border:none;border-radius:10px;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .3s}
+.terms-close:hover{background:#ef4444}
+.terms-content{padding:24px;overflow-y:auto;line-height:1.8;color:var(--gray-300);font-size:.95rem}
+.terms-content h4{font-family:'BMJUA',sans-serif;color:#fff;margin:20px 0 12px;font-size:1.1rem}
+.terms-content h4:first-child{margin-top:0}
+.terms-content p{margin-bottom:12px}
+
 @media(max-width:900px){
     .work-grid,.target-cards,.why-cards{grid-template-columns:1fr 1fr}
     .footer-top{grid-template-columns:1fr 1fr}
@@ -150,229 +160,13 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
     .step-content{padding-left:80px;padding-right:0}
 }
 @media(max-width:600px){
-    .work-grid,.target-cards,.why-cards{grid-template-columns:1fr}
-    .footer-top{grid-template-columns:1fr}
-    .footer-bottom{flex-direction:column;gap:12px;text-align:center}
-    .cta-buttons{flex-direction:column}
+    .hero{padding:120px 16px 60px}
     .hero h1{font-size:2rem}
-}
-    </style>
-</head>
-<body>
-    <div class="floating-btns">
-        <a href="https://pf.kakao.com/_xxxxx" class="float-btn kakao">💬</a>
-        <a href="tel:1660-3543" class="float-btn phone">📞</a>
-    </div>
-
-    <header id="header">
-        <nav>
-            <a href="index.html" class="logo">TEAM BRO</a>
-            <ul class="nav-links">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="about.html" class="active">중개사 안내</a></li>
-                <li><a href="index.html#process">진행 절차</a></li>
-                <li><a href="index.html#partner">협력사 모집</a></li>
-                <li><a href="index.html#contact">문의하기</a></li>
-            </ul>
-            <a href="index.html#contact" class="nav-cta">제휴 문의</a>
-            <div class="mobile-menu">☰</div>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content" data-aos="fade-up">
-            <div class="hero-badge">
-                <span class="badge-text">배민커넥트비즈+ 공식 중개사</span>
-            </div>
-            <h1>TEAM BRO <em>중개사 안내</em></h1>
-            <p class="hero-desc">TEAM BRO는 배민커넥트비즈+ 협력사가 되고 싶은 분들을<br>배민과 연결해드리는 공식 중개사입니다.</p>
-        </div>
-    </section>
-
-    <section class="what-we-do">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-badge">What We Do</span>
-                <h2>중개사 하는 일</h2>
-                <p>TEAM BRO는 딱 하나의 일만 합니다</p>
-            </div>
-            <div class="work-grid">
-                <div class="work-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="work-icon">🤝</div>
-                    <h3>협력사 모집</h3>
-                    <p>배민커넥트비즈+ 협력사가 되고 싶은 사업자를 모집합니다.</p>
-                </div>
-                <div class="work-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="work-icon">📋</div>
-                    <h3>상담 · 안내</h3>
-                    <p>협력사 조건, 절차, 혜택 등을 상세히 안내해드립니다.</p>
-                </div>
-                <div class="work-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="work-icon">🔗</div>
-                    <h3>배민 연결</h3>
-                    <p>모집된 협력사를 배민과 연결하여 계약을 진행합니다.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="process-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-badge">Process</span>
-                <h2>진행 절차</h2>
-                <p>간단한 4단계로 협력사가 됩니다</p>
-            </div>
-            <div class="process-timeline">
-                <div class="process-step" data-aos="fade-right">
-                    <div class="step-content">
-                        <div class="step-card">
-                            <h3>📞 문의하기</h3>
-                            <p>전화, 카카오톡, 또는 홈페이지 폼으로 문의해주세요.</p>
-                        </div>
-                    </div>
-                    <div class="step-num">1</div>
-                    <div class="step-content"></div>
-                </div>
-                <div class="process-step" data-aos="fade-left">
-                    <div class="step-content">
-                        <div class="step-card">
-                            <h3>💬 상담 진행</h3>
-                            <p>협력사 조건, 혜택, 절차 등을 상세히 안내해드립니다.</p>
-                        </div>
-                    </div>
-                    <div class="step-num">2</div>
-                    <div class="step-content"></div>
-                </div>
-                <div class="process-step" data-aos="fade-right">
-                    <div class="step-content">
-                        <div class="step-card">
-                            <h3>🤝 배민 연결</h3>
-                            <p>TEAM BRO가 배민과의 계약을 연결해드립니다.</p>
-                        </div>
-                    </div>
-                    <div class="step-num">3</div>
-                    <div class="step-content"></div>
-                </div>
-                <div class="process-step" data-aos="fade-left">
-                    <div class="step-content">
-                        <div class="step-card">
-                            <h3>✅ 협력사 등록</h3>
-                            <p>계약 완료 후 정식 협력사로 등록됩니다.</p>
-                        </div>
-                    </div>
-                    <div class="step-num">4</div>
-                    <div class="step-content"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="target-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-badge">Target</span>
-                <h2>이런 분들이 연락합니다</h2>
-                <p>TEAM BRO를 통해 협력사가 된 분들의 공통점입니다.</p>
-            </div>
-            <div class="target-cards">
-                <div class="target-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="target-icon">📄</div>
-                    <h3>사업자 없어도 OK</h3>
-                    <p>개인사업자, 법인사업자 없어도 가능</p>
-                </div>
-                <div class="target-card" data-aos="zoom-in" data-aos-delay="150">
-                    <div class="target-icon">🚀</div>
-                    <h3>배달대행 창업 희망자</h3>
-                    <p>기사만 있으면 창업 가능!</p>
-                </div>
-                <div class="target-card" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="target-icon">📍</div>
-                    <h3>특정 지역에서 사업하고 싶은 분</h3>
-                    <p>본인 지역 기반으로 시작</p>
-                </div>
-                <div class="target-card" data-aos="zoom-in" data-aos-delay="250">
-                    <div class="target-icon">🏢</div>
-                    <h3>배민 플랫폼 활용하고 싶은 분</h3>
-                    <p>배민커넥트비즈+ 시스템 이용</p>
-                </div>
-                <div class="target-card" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="target-icon">💰</div>
-                    <h3>선정산(익일정산)</h3>
-                    <p>오늘 일한거 내일 받자!</p>
-                </div>
-                <div class="target-card" data-aos="zoom-in" data-aos-delay="350">
-                    <div class="target-icon">🛵</div>
-                    <h3>이륜차 리스 & 렌트</h3>
-                    <p>신차 리스 & 렌트 전문 팀브로 (신용 상관없음)</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="why-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-badge">Why TEAM BRO</span>
-                <h2>왜 TEAM BRO인가요?</h2>
-                <p>중개사 TEAM BRO를 선택하는 이유</p>
-            </div>
-            <div class="why-cards">
-                <div class="why-card" data-aos="flip-left" data-aos-delay="100">
-                    <div class="why-icon">🏆</div>
-                    <h3>공식 중개사</h3>
-                    <p>배민커넥트비즈+ 공식 인증 중개사로 신뢰할 수 있습니다.</p>
-                </div>
-                <div class="why-card" data-aos="flip-left" data-aos-delay="200">
-                    <div class="why-icon">⚡</div>
-                    <h3>빠른 진행</h3>
-                    <p>문의부터 계약까지 신속하게 진행해드립니다.</p>
-                </div>
-                <div class="why-card" data-aos="flip-left" data-aos-delay="300">
-                    <div class="why-icon">📞</div>
-                    <h3>24시간 상담</h3>
-                    <p>언제든 편하게 문의하실 수 있습니다.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-box" data-aos="zoom-in">
-                <h2>지금 바로 상담받아보세요</h2>
-                <p>협력사 신청부터 계약까지 TEAM BRO가 도와드립니다.</p>
-                <div class="cta-buttons">
-                    <a href="index.html#contact" class="btn btn-primary">상담 신청하기 →</a>
-                    <a href="tel:1660-3543" class="btn btn-outline">📞 1660-3543</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <span class="logo">TEAM BRO</span>
-                    <p>배민커넥트비즈+ 공식 중개사<br>(주)팀브로</p>
-                    <div class="footer-social"><a href="#">📸</a><a href="#">💬</a></div>
-                </div>
-                <div class="footer-links"><h4>안내</h4><ul><li><a href="about.html">중개사 안내</a></li><li><a href="index.html#process">진행 절차</a></li><li><a href="index.html#partner">협력사 모집</a></li></ul></div>
-                <div class="footer-links"><h4>문의</h4><ul><li><a href="index.html#contact">상담 신청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
-                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3c4c4e5363090e0d0d7c525d4a594e125f5351">[email&#160;protected]</a></li><li>🕐 09:00~익일 08:00</li></ul></div>
-            </div>
-            <div class="footer-bottom"><p>© 2025 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p><div class="footer-legal"><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div></div>
-        </div>
-    </footer>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: tru-columns:1fr}
-    .footer-bottom{flex-direction:column;text-align:center}
+    .work-grid,.why-cards{grid-template-columns:1fr}
+    .target-cards{grid-template-columns:1fr 1fr}
+    .footer-top{grid-template-columns:1fr}
+    .footer-bottom{text-align:center}
+    .footer-legal{justify-content:center}
     .cta-buttons{flex-direction:column}
     section{padding:60px 16px}
     .section-header h2{font-size:1.8rem}
@@ -383,6 +177,17 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
     </style>
 </head>
 <body>
+    <!-- 약관 모달 -->
+    <div class="terms-modal" id="termsModal">
+        <div class="terms-box">
+            <div class="terms-header">
+                <h3 id="termsTitle">이용약관</h3>
+                <button class="terms-close" onclick="closeTerms()">✕</button>
+            </div>
+            <div class="terms-content" id="termsContent"></div>
+        </div>
+    </div>
+
     <!-- 모바일 메뉴 오버레이 -->
     <div class="mobile-nav-overlay" id="mobileNav">
         <ul class="mobile-nav-links">
@@ -599,19 +404,24 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
                 <div class="footer-links"><h4>문의</h4><ul><li><a href="index.html#contact">상담 신청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
                 <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ pro_5211@naver.com</li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
-            <div class="footer-bottom"><p>© 2025 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p><div class="footer-legal"><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div></div>
+            <div class="footer-bottom">
+                <div class="footer-company">
+                    <p>© 2024 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p>
+                    <p>상호명 : 주식회사 팀브로 | 사업자등록번호 : 445-87-03031</p>
+                    <p>주소 : 대구광역시 달서구 야외음악당로7길 57</p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#" onclick="openTerms('terms'); return false;">이용약관</a>
+                    <a href="#" onclick="openTerms('privacy'); return false;">개인정보처리방침</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100
-        });
+        AOS.init({ duration: 800, once: true, offset: 100 });
 
-        // 모바일 메뉴 토글
         function toggleMobileMenu() {
             const nav = document.getElementById('mobileNav');
             const btn = document.getElementById('mobileMenuBtn');
@@ -628,6 +438,46 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
 
         window.addEventListener('scroll', () => {
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // 약관 모달
+        const termsData = {
+            terms: {
+                title: '이용약관',
+                content: `
+                    <h4>이용약관</h4>
+                    <p>본 약관은 주식회사 팀브로(이하 "회사")가 제공하는 배달 중개 및 관련 서비스의 이용과 관련하여 회사와 이용자 간의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+                    <p>회사는 라이더와 협력사를 연결하는 중개 플랫폼으로서, 라이더와 협력사 간의 개별 계약, 거래, 정산에 직접 관여하지 않습니다. 서비스 이용자는 본 약관에 동의함으로써 관련 법령 및 본 약관을 준수할 의무가 있습니다.</p>
+                    <p>본 약관에 명시되지 않은 사항은 관계 법령 및 상관례에 따릅니다.</p>
+                `
+            },
+            privacy: {
+                title: '개인정보처리방침',
+                content: `
+                    <h4>개인정보처리방침</h4>
+                    <p>주식회사 팀브로(이하 "회사")는 「개인정보 보호법」 등 관련 법령을 준수하며, 이용자의 개인정보를 보호하기 위하여 최선을 다하고 있습니다.</p>
+                    <p>회사는 서비스 제공을 위하여 최소한의 개인정보를 수집·이용하며, 수집된 개인정보는 목적 외 용도로 이용되지 않습니다. 이용자는 언제든지 개인정보 열람, 정정, 삭제를 요청할 수 있습니다.</p>
+                    <p>회사는 개인정보 보호를 위하여 기술적·관리적 보호조치를 시행하고 있습니다.</p>
+                `
+            }
+        };
+
+        function openTerms(type) {
+            const data = termsData[type];
+            if (!data) return;
+            document.getElementById('termsTitle').textContent = data.title;
+            document.getElementById('termsContent').innerHTML = data.content;
+            document.getElementById('termsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTerms() {
+            document.getElementById('termsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('termsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTerms();
         });
     </script>
 </body>
