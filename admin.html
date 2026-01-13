@@ -317,14 +317,14 @@
         let currentFilter = 'all';
 
         function toast(msg, type) {
-            const t = document.getElementById('toast');
+            var t = document.getElementById('toast');
             t.textContent = msg;
             t.className = 'toast show ' + (type || 'success');
             setTimeout(function() { t.classList.remove('show'); }, 3000);
         }
 
-        function login() {
-            const pin = document.getElementById('pinInput').value;
+        window.login = function() {
+            var pin = document.getElementById('pinInput').value;
             if (pin === ADMIN_PIN) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').classList.add('active');
@@ -336,10 +336,10 @@
         }
 
         document.getElementById('pinInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') login();
+            if (e.key === 'Enter') window.login();
         });
 
-        function logout() {
+        window.logout = function() {
             sessionStorage.removeItem('admin');
             location.reload();
         }
@@ -435,7 +435,7 @@
             tbody.innerHTML = html;
         }
 
-        function viewDetail(id) {
+        window.viewDetail = function(id) {
             var s = submissions.find(function(x) { return x.id === id; });
             if (!s) return;
 
@@ -478,7 +478,7 @@
             if (e.target === this) this.classList.remove('active');
         });
 
-        async function updateStatus(id, status) {
+        window.updateStatus = async function(id, status) {
             try {
                 await supabase.from('submissions').update({ status: status }).eq('id', id);
                 toast('상태가 변경되었습니다');
@@ -488,7 +488,7 @@
             }
         }
 
-        async function deleteSubmission(id) {
+        window.deleteSubmission = async function(id) {
             if (!confirm('정말 삭제하시겠습니까?')) return;
             try {
                 await supabase.from('submissions').delete().eq('id', id);
@@ -565,7 +565,7 @@
             }
         });
 
-        async function togglePopup(id, active) {
+        window.togglePopup = async function(id, active) {
             try {
                 await supabase.from('popups').update({ active: active }).eq('id', id);
                 toast('변경되었습니다');
@@ -575,7 +575,7 @@
             }
         }
 
-        async function deletePopup(id) {
+        window.deletePopup = async function(id) {
             if (!confirm('정말 삭제하시겠습니까?')) return;
             try {
                 await supabase.from('popups').delete().eq('id', id);
