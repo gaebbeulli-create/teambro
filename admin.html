@@ -6,613 +6,437 @@
     <title>관리자 | TEAM BRO</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        @font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
-        @font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
-        @font-face{font-family:'Pretendard';src:url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff')}
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#0a0a0f;--bg-light:#12121a;--card:#16161f;--card-border:#252530;--white:#fff;--gray-300:#b0b0c0;--gray-400:#808090;--gray-500:#606070;--mint:#2dd4bf;--mint-light:#5eead4;--orange:#f97316;--red:#ef4444;--green:#22c55e;--purple:#a78bfa}
-        body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--white);line-height:1.6;font-size:15px;min-height:100vh}
-
-        .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-        .login-box{background:var(--card);border:2px solid var(--card-border);border-radius:24px;padding:48px;width:100%;max-width:400px;text-align:center}
-        .login-box h1{font-family:'BMHANNAPro',sans-serif;font-size:2rem;color:var(--mint);margin-bottom:8px}
-        .login-box p{color:var(--gray-400);margin-bottom:32px}
-        .login-input{width:100%;padding:16px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;color:#fff;font-size:1.2rem;margin-bottom:16px;text-align:center;letter-spacing:8px;font-family:'BMJUA',sans-serif}
-        .login-input:focus{outline:none;border-color:var(--mint)}
-        .login-btn{width:100%;padding:16px;background:var(--mint);border:none;border-radius:12px;font-family:'BMJUA',sans-serif;font-size:1.1rem;color:#000;cursor:pointer;transition:all .3s}
-        .login-btn:hover{background:var(--mint-light)}
-        .login-error{color:var(--red);margin-top:16px;font-size:.9rem}
-
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#fff;min-height:100vh}
+        .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        .login-box{background:#16161f;border:2px solid #252530;border-radius:20px;padding:40px;width:100%;max-width:360px;text-align:center}
+        .login-box h1{color:#2dd4bf;font-size:1.8rem;margin-bottom:8px}
+        .login-box p{color:#808090;margin-bottom:24px}
+        .login-box input{width:100%;padding:14px;background:#0a0a0f;border:2px solid #252530;border-radius:10px;color:#fff;font-size:1.2rem;text-align:center;letter-spacing:6px;margin-bottom:16px}
+        .login-box input:focus{outline:none;border-color:#2dd4bf}
+        .login-box button{width:100%;padding:14px;background:#2dd4bf;border:none;border-radius:10px;color:#000;font-size:1rem;font-weight:bold;cursor:pointer}
+        .login-box button:hover{background:#5eead4}
+        .error{color:#ef4444;margin-top:12px;font-size:.9rem}
+        
         .dashboard{display:none}
-        .dashboard.active{display:block}
-
-        .header{background:var(--card);border-bottom:1px solid var(--card-border);padding:16px 24px;position:sticky;top:0;z-index:100}
-        .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-        .logo{font-family:'BMHANNAPro',sans-serif;font-size:1.5rem;color:var(--mint);text-decoration:none}
-        .header-right{display:flex;align-items:center;gap:16px}
-        .logout-btn{background:var(--card-border);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'BMJUA',sans-serif;cursor:pointer;transition:all .3s}
-        .logout-btn:hover{background:var(--red)}
-
-        .tabs{display:flex;gap:8px;padding:24px;max-width:1400px;margin:0 auto;flex-wrap:wrap}
-        .tab{padding:12px 24px;background:var(--card);border:2px solid var(--card-border);border-radius:12px;font-family:'BMJUA',sans-serif;color:var(--gray-400);cursor:pointer;transition:all .3s}
-        .tab:hover{border-color:var(--mint)}
-        .tab.active{background:var(--mint);border-color:var(--mint);color:#000}
-
-        .content{max-width:1400px;margin:0 auto;padding:0 24px 48px}
+        .header{background:#16161f;padding:16px 20px;border-bottom:1px solid #252530;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .header h2{color:#2dd4bf;font-size:1.3rem}
+        .header button{padding:10px 20px;background:#252530;border:none;border-radius:8px;color:#fff;cursor:pointer}
+        .header button:hover{background:#ef4444}
+        
+        .tabs{display:flex;gap:8px;padding:20px;flex-wrap:wrap}
+        .tabs button{padding:12px 20px;background:#16161f;border:2px solid #252530;border-radius:10px;color:#808090;cursor:pointer;font-size:.9rem}
+        .tabs button:hover{border-color:#2dd4bf}
+        .tabs button.active{background:#2dd4bf;border-color:#2dd4bf;color:#000}
+        
+        .content{padding:0 20px 40px}
         .panel{display:none}
         .panel.active{display:block}
-
-        .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-        .stat-card{background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;text-align:center;transition:all .3s}
-        .stat-card:hover{border-color:var(--mint)}
-        .stat-value{font-family:'BMHANNAPro',sans-serif;font-size:2.5rem;color:var(--mint);display:block}
-        .stat-label{color:var(--gray-400);font-size:.9rem;margin-top:4px}
-
-        .table-wrap{background:var(--card);border:2px solid var(--card-border);border-radius:16px;overflow:hidden}
-        .table-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border);flex-wrap:wrap;gap:12px}
-        .table-title{font-family:'BMJUA',sans-serif;font-size:1.2rem}
-        .table-filters{display:flex;gap:8px;flex-wrap:wrap}
-        .filter-btn{padding:8px 16px;background:var(--bg);border:1px solid var(--card-border);border-radius:8px;color:var(--gray-400);font-size:.85rem;cursor:pointer;transition:all .3s}
-        .filter-btn:hover,.filter-btn.active{border-color:var(--mint);color:var(--mint)}
         
-        .table-container{overflow-x:auto}
-        table{width:100%;border-collapse:collapse;min-width:700px}
-        th,td{padding:16px 20px;text-align:left;border-bottom:1px solid var(--card-border)}
-        th{background:var(--bg);font-family:'BMJUA',sans-serif;font-size:.9rem;color:var(--gray-400);white-space:nowrap}
-        tr:hover{background:var(--bg-light)}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+        .stat{background:#16161f;border:2px solid #252530;border-radius:12px;padding:20px;text-align:center}
+        .stat span{display:block;font-size:2rem;color:#2dd4bf;font-weight:bold}
+        .stat small{color:#808090}
         
-        .badge{padding:4px 12px;border-radius:100px;font-size:.8rem;font-family:'BMJUA',sans-serif;white-space:nowrap}
-        .badge.new{background:rgba(34,197,94,.2);color:var(--green)}
-        .badge.progress{background:rgba(249,115,22,.2);color:var(--orange)}
-        .badge.done{background:rgba(45,212,191,.2);color:var(--mint)}
-        .badge.type-partner{background:rgba(45,212,191,.2);color:var(--mint)}
-        .badge.type-rider{background:rgba(249,115,22,.2);color:var(--orange)}
-        .badge.type-settlement{background:rgba(167,139,250,.2);color:var(--purple)}
+        .table-box{background:#16161f;border:2px solid #252530;border-radius:12px;overflow:hidden}
+        .table-head{padding:16px;border-bottom:1px solid #252530;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .table-head h3{font-size:1rem}
+        .filters{display:flex;gap:6px;flex-wrap:wrap}
+        .filters button{padding:6px 12px;background:#0a0a0f;border:1px solid #252530;border-radius:6px;color:#808090;font-size:.8rem;cursor:pointer}
+        .filters button:hover,.filters button.active{border-color:#2dd4bf;color:#2dd4bf}
         
-        .action-btn{padding:6px 12px;border-radius:6px;border:none;font-size:.8rem;cursor:pointer;margin-right:4px;transition:all .3s;font-family:'BMJUA',sans-serif}
-        .action-btn.view{background:var(--mint);color:#000}
-        .action-btn.delete{background:var(--red);color:#fff}
-        .action-btn:hover{opacity:.8}
-
-        .form-section{background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;margin-bottom:24px}
-        .form-section h3{font-family:'BMJUA',sans-serif;font-size:1.1rem;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--card-border)}
-        .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-        .form-group{margin-bottom:16px}
-        .form-group label{display:block;font-family:'BMJUA',sans-serif;font-size:.9rem;margin-bottom:8px;color:var(--gray-300)}
-        .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;background:var(--bg);border:2px solid var(--card-border);border-radius:10px;color:#fff;font-size:.95rem;transition:all .3s}
-        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--mint)}
-        .form-group textarea{min-height:100px;resize:vertical}
-        .form-actions{display:flex;gap:12px;margin-top:20px}
+        .table-wrap{overflow-x:auto}
+        table{width:100%;border-collapse:collapse;min-width:600px}
+        th,td{padding:12px 16px;text-align:left;border-bottom:1px solid #252530}
+        th{background:#0a0a0f;color:#808090;font-size:.85rem}
+        tr:hover{background:#0a0a0f}
         
-        .btn{padding:12px 24px;border-radius:10px;font-family:'BMJUA',sans-serif;font-size:1rem;cursor:pointer;transition:all .3s;border:none}
-        .btn-primary{background:var(--mint);color:#000}
-        .btn-secondary{background:var(--card-border);color:#fff}
-        .btn-danger{background:var(--red);color:#fff}
-        .btn:hover{opacity:.9;transform:translateY(-2px)}
-
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:all .3s}
-        .modal-overlay.active{opacity:1;visibility:visible}
-        .modal{background:var(--card);border:2px solid var(--card-border);border-radius:20px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border)}
-        .modal-header h3{font-family:'BMJUA',sans-serif;font-size:1.2rem}
-        .modal-close{width:36px;height:36px;background:var(--bg);border:none;border-radius:8px;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .3s}
-        .modal-close:hover{background:var(--red)}
-        .modal-body{padding:24px}
-        .detail-row{display:flex;padding:12px 0;border-bottom:1px solid var(--card-border)}
-        .detail-label{width:120px;color:var(--gray-400);font-size:.9rem;flex-shrink:0}
-        .detail-value{flex:1;color:#fff;word-break:break-all}
-        .status-select{padding:8px 16px;background:var(--bg);border:2px solid var(--card-border);border-radius:8px;color:#fff;font-size:.9rem}
-
-        .toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:16px 24px;border-radius:12px;font-family:'BMJUA',sans-serif;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
+        .badge{padding:4px 10px;border-radius:20px;font-size:.75rem}
+        .badge.new{background:rgba(34,197,94,.2);color:#22c55e}
+        .badge.progress{background:rgba(249,115,22,.2);color:#f97316}
+        .badge.done{background:rgba(45,212,191,.2);color:#2dd4bf}
+        .badge.partner{background:rgba(45,212,191,.2);color:#2dd4bf}
+        .badge.rider{background:rgba(249,115,22,.2);color:#f97316}
+        .badge.settlement{background:rgba(167,139,250,.2);color:#a78bfa}
+        
+        .btn{padding:6px 10px;border-radius:6px;border:none;font-size:.8rem;cursor:pointer;margin-right:4px}
+        .btn-view{background:#2dd4bf;color:#000}
+        .btn-del{background:#ef4444;color:#fff}
+        
+        .form-box{background:#16161f;border:2px solid #252530;border-radius:12px;padding:20px;margin-bottom:20px}
+        .form-box h3{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #252530;font-size:1rem}
+        .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+        .form-group{margin-bottom:12px}
+        .form-group label{display:block;margin-bottom:6px;color:#b0b0c0;font-size:.85rem}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;background:#0a0a0f;border:2px solid #252530;border-radius:8px;color:#fff;font-size:.9rem}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#2dd4bf}
+        .form-group textarea{min-height:80px;resize:vertical}
+        .form-btn{padding:12px 24px;background:#2dd4bf;border:none;border-radius:8px;color:#000;font-weight:bold;cursor:pointer;margin-top:12px}
+        
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
+        .modal.show{display:flex}
+        .modal-box{background:#16161f;border:2px solid #252530;border-radius:16px;width:100%;max-width:500px;max-height:80vh;overflow-y:auto}
+        .modal-head{padding:16px 20px;border-bottom:1px solid #252530;display:flex;justify-content:space-between;align-items:center}
+        .modal-head h3{font-size:1rem}
+        .modal-close{width:32px;height:32px;background:#252530;border:none;border-radius:6px;color:#fff;font-size:1.2rem;cursor:pointer}
+        .modal-close:hover{background:#ef4444}
+        .modal-body{padding:20px}
+        .detail-row{display:flex;padding:10px 0;border-bottom:1px solid #252530}
+        .detail-row span:first-child{width:100px;color:#808090;font-size:.85rem}
+        .detail-row span:last-child{flex:1;color:#fff}
+        .status-sel{padding:8px 12px;background:#0a0a0f;border:2px solid #252530;border-radius:6px;color:#fff}
+        
+        .toast{position:fixed;bottom:20px;right:20px;padding:14px 20px;border-radius:10px;color:#fff;font-size:.9rem;transform:translateY(100px);opacity:0;transition:.3s;z-index:9999}
         .toast.show{transform:translateY(0);opacity:1}
-        .toast.success{background:var(--green)}
-        .toast.error{background:var(--red)}
-
-        .empty-state{text-align:center;padding:48px;color:var(--gray-400)}
-        .empty-state span{font-size:3rem;display:block;margin-bottom:16px}
-
-        @media(max-width:900px){
-            .stats-grid{grid-template-columns:repeat(2,1fr)}
-            .form-grid{grid-template-columns:1fr}
-        }
-        @media(max-width:600px){
-            .stats-grid{grid-template-columns:1fr}
-            .header-inner{flex-direction:column}
-            .tabs{justify-content:center}
-            .table-header{flex-direction:column;align-items:stretch}
-            .table-filters{justify-content:center}
-        }
+        .toast.success{background:#22c55e}
+        .toast.error{background:#ef4444}
+        
+        .empty{text-align:center;padding:40px;color:#808090}
+        .empty span{font-size:2.5rem;display:block;margin-bottom:10px}
     </style>
 </head>
 <body>
     <div class="toast" id="toast"></div>
-
-    <div class="login-screen" id="loginScreen">
+    
+    <div class="login-wrap" id="loginWrap">
         <div class="login-box">
             <h1>TEAM BRO</h1>
             <p>관리자 로그인</p>
-            <input type="password" class="login-input" id="pinInput" placeholder="••••" maxlength="4" autofocus>
-            <button class="login-btn" onclick="login()">로그인</button>
-            <div class="login-error" id="loginError"></div>
+            <input type="password" id="pinInput" placeholder="••••" maxlength="4">
+            <button id="loginBtn">로그인</button>
+            <div class="error" id="loginError"></div>
         </div>
     </div>
-
+    
     <div class="dashboard" id="dashboard">
-        <header class="header">
-            <div class="header-inner">
-                <a href="index.html" class="logo">TEAM BRO 관리자</a>
-                <div class="header-right">
-                    <span id="currentTime"></span>
-                    <button class="logout-btn" onclick="logout()">로그아웃</button>
-                </div>
-            </div>
-        </header>
-
-        <div class="tabs">
-            <div class="tab active" data-tab="submissions">📋 신청 관리</div>
-            <div class="tab" data-tab="popups">🎉 팝업 관리</div>
-            <div class="tab" data-tab="notice">📢 공지 배너</div>
+        <div class="header">
+            <h2>TEAM BRO 관리자</h2>
+            <button id="logoutBtn">로그아웃</button>
         </div>
-
+        
+        <div class="tabs">
+            <button class="active" data-tab="submissions">📋 신청관리</button>
+            <button data-tab="popups">🎉 팝업</button>
+            <button data-tab="notice">📢 공지</button>
+        </div>
+        
         <div class="content">
             <div class="panel active" id="submissionsPanel">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-value" id="statTotal">0</span>
-                        <span class="stat-label">전체 신청</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value" id="statNew">0</span>
-                        <span class="stat-label">신규</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value" id="statProgress">0</span>
-                        <span class="stat-label">진행중</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value" id="statDone">0</span>
-                        <span class="stat-label">완료</span>
-                    </div>
+                <div class="stats">
+                    <div class="stat"><span id="sTotal">0</span><small>전체</small></div>
+                    <div class="stat"><span id="sNew">0</span><small>신규</small></div>
+                    <div class="stat"><span id="sProgress">0</span><small>진행중</small></div>
+                    <div class="stat"><span id="sDone">0</span><small>완료</small></div>
                 </div>
-
-                <div class="table-wrap">
-                    <div class="table-header">
-                        <h3 class="table-title">신청 목록</h3>
-                        <div class="table-filters">
-                            <button class="filter-btn active" data-filter="all">전체</button>
-                            <button class="filter-btn" data-filter="협력사 신청">협력사</button>
-                            <button class="filter-btn" data-filter="라이더 신청">라이더</button>
-                            <button class="filter-btn" data-filter="선정산 신청">선정산</button>
+                <div class="table-box">
+                    <div class="table-head">
+                        <h3>신청 목록</h3>
+                        <div class="filters">
+                            <button class="active" data-filter="all">전체</button>
+                            <button data-filter="협력사 신청">협력사</button>
+                            <button data-filter="라이더 신청">라이더</button>
+                            <button data-filter="선정산 신청">선정산</button>
                         </div>
                     </div>
-                    <div class="table-container">
+                    <div class="table-wrap">
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>유형</th>
-                                    <th>이름</th>
-                                    <th>연락처</th>
-                                    <th>상세</th>
-                                    <th>상태</th>
-                                    <th>신청일</th>
-                                    <th>관리</th>
-                                </tr>
-                            </thead>
-                            <tbody id="submissionsTable"></tbody>
+                            <thead><tr><th>유형</th><th>이름</th><th>연락처</th><th>상세</th><th>상태</th><th>날짜</th><th>관리</th></tr></thead>
+                            <tbody id="subTable"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
+            
             <div class="panel" id="popupsPanel">
-                <div class="form-section">
-                    <h3>새 팝업 등록</h3>
+                <div class="form-box">
+                    <h3>새 팝업</h3>
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label>제목 *</label>
-                            <input type="text" id="popupTitle" placeholder="팝업 제목">
-                        </div>
-                        <div class="form-group">
-                            <label>아이콘 (이모지)</label>
-                            <input type="text" id="popupIcon" placeholder="📢">
-                        </div>
-                        <div class="form-group">
-                            <label>이미지 URL</label>
-                            <input type="text" id="popupImage" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>버튼 텍스트</label>
-                            <input type="text" id="popupBtnText" placeholder="자세히 보기 →">
-                        </div>
-                        <div class="form-group">
-                            <label>버튼 링크</label>
-                            <input type="text" id="popupBtnLink" placeholder="#contact">
-                        </div>
-                        <div class="form-group">
-                            <label>활성화</label>
-                            <select id="popupActive">
-                                <option value="true">활성</option>
-                                <option value="false">비활성</option>
-                            </select>
-                        </div>
+                        <div class="form-group"><label>제목*</label><input type="text" id="pTitle"></div>
+                        <div class="form-group"><label>아이콘</label><input type="text" id="pIcon" placeholder="📢"></div>
+                        <div class="form-group"><label>이미지URL</label><input type="text" id="pImg"></div>
+                        <div class="form-group"><label>버튼텍스트</label><input type="text" id="pBtnTxt" placeholder="자세히보기"></div>
+                        <div class="form-group"><label>버튼링크</label><input type="text" id="pBtnLink" placeholder="#contact"></div>
+                        <div class="form-group"><label>활성화</label><select id="pActive"><option value="true">활성</option><option value="false">비활성</option></select></div>
                     </div>
-                    <div class="form-group">
-                        <label>설명</label>
-                        <textarea id="popupDesc" placeholder="팝업 설명 내용"></textarea>
-                    </div>
-                    <div class="form-actions">
-                        <button class="btn btn-primary" id="savePopupBtn">팝업 저장</button>
-                    </div>
+                    <div class="form-group"><label>설명</label><textarea id="pDesc"></textarea></div>
+                    <button class="form-btn" id="savePopupBtn">저장</button>
                 </div>
-
-                <div class="table-wrap">
-                    <div class="table-header">
-                        <h3 class="table-title">팝업 목록</h3>
-                    </div>
-                    <div class="table-container">
+                <div class="table-box">
+                    <div class="table-head"><h3>팝업 목록</h3></div>
+                    <div class="table-wrap">
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>제목</th>
-                                    <th>아이콘</th>
-                                    <th>상태</th>
-                                    <th>관리</th>
-                                </tr>
-                            </thead>
-                            <tbody id="popupsTable"></tbody>
+                            <thead><tr><th>제목</th><th>아이콘</th><th>상태</th><th>관리</th></tr></thead>
+                            <tbody id="popupTable"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
+            
             <div class="panel" id="noticePanel">
-                <div class="form-section">
-                    <h3>공지 배너 설정</h3>
-                    <div class="form-group">
-                        <label>공지 내용</label>
-                        <input type="text" id="noticeText" placeholder="공지 배너에 표시될 내용">
-                    </div>
+                <div class="form-box">
+                    <h3>공지 배너</h3>
+                    <div class="form-group"><label>내용</label><input type="text" id="nText"></div>
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label>배너 색상</label>
-                            <select id="noticeColor">
-                                <option value="mint">민트 (기본)</option>
-                                <option value="orange">오렌지</option>
-                                <option value="red">빨강</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>표시 여부</label>
-                            <select id="noticeShow">
-                                <option value="true">표시</option>
-                                <option value="false">숨김</option>
-                            </select>
-                        </div>
+                        <div class="form-group"><label>색상</label><select id="nColor"><option value="mint">민트</option><option value="orange">오렌지</option><option value="red">빨강</option></select></div>
+                        <div class="form-group"><label>표시</label><select id="nShow"><option value="true">표시</option><option value="false">숨김</option></select></div>
                     </div>
-                    <div class="form-actions">
-                        <button class="btn btn-primary" id="saveNoticeBtn">저장</button>
-                    </div>
+                    <button class="form-btn" id="saveNoticeBtn">저장</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>신청 상세</h3>
-                <button class="modal-close" id="modalCloseBtn">✕</button>
-            </div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-box">
+            <div class="modal-head"><h3>신청 상세</h3><button class="modal-close" id="modalClose">✕</button></div>
             <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3NTYyMjAsImV4cCI6MjA1MjMzMjIyMH0.Ur_aRxihGz8aFj_VCl_gxLWKNyJAGnlFi4vY_KwDNME';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        const ADMIN_PIN = '1234';
+        var SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
+        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3NTYyMjAsImV4cCI6MjA1MjMzMjIyMH0.Ur_aRxihGz8aFj_VCl_gxLWKNyJAGnlFi4vY_KwDNME';
+        var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        var PIN = '1234';
+        var subs = [];
+        var filter = 'all';
 
-        let submissions = [];
-        let currentFilter = 'all';
-
-        function toast(msg, type) {
-            var t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = 'toast show ' + (type || 'success');
-            setTimeout(function() { t.classList.remove('show'); }, 3000);
+        function toast(m, t) {
+            var el = document.getElementById('toast');
+            el.textContent = m;
+            el.className = 'toast show ' + (t || 'success');
+            setTimeout(function() { el.className = 'toast'; }, 3000);
         }
 
-        window.login = function() {
+        // 로그인
+        document.getElementById('loginBtn').onclick = function() {
             var pin = document.getElementById('pinInput').value;
-            if (pin === ADMIN_PIN) {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').classList.add('active');
-                sessionStorage.setItem('admin', 'true');
-                loadData();
+            if (pin === PIN) {
+                document.getElementById('loginWrap').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                sessionStorage.setItem('admin', '1');
+                loadAll();
             } else {
-                document.getElementById('loginError').textContent = '비밀번호가 틀렸습니다';
+                document.getElementById('loginError').textContent = '비밀번호 오류';
             }
-        }
+        };
 
-        document.getElementById('pinInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') window.login();
-        });
+        document.getElementById('pinInput').onkeypress = function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        };
 
-        window.logout = function() {
+        document.getElementById('logoutBtn').onclick = function() {
             sessionStorage.removeItem('admin');
             location.reload();
-        }
+        };
 
+        // 세션체크
         if (sessionStorage.getItem('admin')) {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
-            loadData();
+            document.getElementById('loginWrap').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadAll();
         }
 
-        // 탭 전환
-        document.querySelectorAll('.tab').forEach(function(tab) {
-            tab.addEventListener('click', function() {
-                var tabName = this.getAttribute('data-tab');
-                document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-                document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
-                this.classList.add('active');
-                document.getElementById(tabName + 'Panel').classList.add('active');
-            });
+        // 탭
+        document.querySelectorAll('.tabs button').forEach(function(btn) {
+            btn.onclick = function() {
+                var tab = this.getAttribute('data-tab');
+                document.querySelectorAll('.tabs button').forEach(function(b) { b.className = ''; });
+                document.querySelectorAll('.panel').forEach(function(p) { p.className = 'panel'; });
+                this.className = 'active';
+                document.getElementById(tab + 'Panel').className = 'panel active';
+            };
         });
 
-        // 필터 버튼
-        document.querySelectorAll('.filter-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                currentFilter = this.getAttribute('data-filter');
-                document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-                renderSubmissions();
-            });
+        // 필터
+        document.querySelectorAll('.filters button').forEach(function(btn) {
+            btn.onclick = function() {
+                filter = this.getAttribute('data-filter');
+                document.querySelectorAll('.filters button').forEach(function(b) { b.className = ''; });
+                this.className = 'active';
+                renderSubs();
+            };
         });
 
-        async function loadData() {
-            await loadSubmissions();
-            await loadPopups();
-            await loadNotice();
-            updateTime();
-            setInterval(updateTime, 1000);
+        function loadAll() {
+            loadSubs();
+            loadPopups();
+            loadNotice();
         }
 
-        function updateTime() {
-            document.getElementById('currentTime').textContent = new Date().toLocaleString('ko-KR');
+        // 신청
+        function loadSubs() {
+            sb.from('submissions').select('*').order('created_at', { ascending: false }).then(function(res) {
+                subs = res.data || [];
+                document.getElementById('sTotal').textContent = subs.length;
+                document.getElementById('sNew').textContent = subs.filter(function(s) { return s.status === '신규'; }).length;
+                document.getElementById('sProgress').textContent = subs.filter(function(s) { return s.status === '진행중'; }).length;
+                document.getElementById('sDone').textContent = subs.filter(function(s) { return s.status === '완료'; }).length;
+                renderSubs();
+            });
         }
 
-        async function loadSubmissions() {
-            try {
-                var result = await supabase.from('submissions').select('*').order('created_at', { ascending: false });
-                submissions = result.data || [];
-                updateStats();
-                renderSubmissions();
-            } catch (e) {
-                console.error(e);
-                toast('데이터 로드 실패', 'error');
-            }
-        }
-
-        function updateStats() {
-            document.getElementById('statTotal').textContent = submissions.length;
-            document.getElementById('statNew').textContent = submissions.filter(function(s) { return s.status === '신규'; }).length;
-            document.getElementById('statProgress').textContent = submissions.filter(function(s) { return s.status === '진행중'; }).length;
-            document.getElementById('statDone').textContent = submissions.filter(function(s) { return s.status === '완료'; }).length;
-        }
-
-        function renderSubmissions() {
-            var filtered = currentFilter === 'all' ? submissions : submissions.filter(function(s) { return s.type === currentFilter; });
-            var tbody = document.getElementById('submissionsTable');
-            
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><span>📭</span>신청 내역이 없습니다</div></td></tr>';
+        function renderSubs() {
+            var list = filter === 'all' ? subs : subs.filter(function(s) { return s.type === filter; });
+            var tb = document.getElementById('subTable');
+            if (!list.length) {
+                tb.innerHTML = '<tr><td colspan="7"><div class="empty"><span>📭</span>없음</div></td></tr>';
                 return;
             }
-
             var html = '';
-            filtered.forEach(function(s) {
-                var typeClass = s.type === '협력사 신청' ? 'type-partner' : s.type === '라이더 신청' ? 'type-rider' : 'type-settlement';
-                var statusClass = s.status === '신규' ? 'new' : s.status === '진행중' ? 'progress' : 'done';
+            list.forEach(function(s) {
+                var tc = s.type === '협력사 신청' ? 'partner' : s.type === '라이더 신청' ? 'rider' : 'settlement';
+                var sc = s.status === '신규' ? 'new' : s.status === '진행중' ? 'progress' : 'done';
+                var tn = s.type ? s.type.replace(' 신청', '') : '-';
                 var detail = s.region || s.platform || '-';
                 var date = new Date(s.created_at).toLocaleDateString('ko-KR');
-                var typeName = s.type ? s.type.replace(' 신청', '') : '-';
-
                 html += '<tr>';
-                html += '<td><span class="badge ' + typeClass + '">' + typeName + '</span></td>';
+                html += '<td><span class="badge ' + tc + '">' + tn + '</span></td>';
                 html += '<td>' + (s.name || '-') + '</td>';
                 html += '<td>' + (s.phone || '-') + '</td>';
                 html += '<td>' + detail + '</td>';
-                html += '<td><span class="badge ' + statusClass + '">' + (s.status || '신규') + '</span></td>';
+                html += '<td><span class="badge ' + sc + '">' + (s.status || '신규') + '</span></td>';
                 html += '<td>' + date + '</td>';
-                html += '<td>';
-                html += '<button class="action-btn view" onclick="viewDetail(' + s.id + ')">상세</button>';
-                html += '<button class="action-btn delete" onclick="deleteSubmission(' + s.id + ')">삭제</button>';
-                html += '</td>';
+                html += '<td><button class="btn btn-view" onclick="viewSub(' + s.id + ')">상세</button><button class="btn btn-del" onclick="delSub(' + s.id + ')">삭제</button></td>';
                 html += '</tr>';
             });
-            tbody.innerHTML = html;
+            tb.innerHTML = html;
         }
 
-        window.viewDetail = function(id) {
-            var s = submissions.find(function(x) { return x.id === id; });
+        window.viewSub = function(id) {
+            var s = subs.find(function(x) { return x.id === id; });
             if (!s) return;
-
-            var html = '';
-            html += '<div class="detail-row"><span class="detail-label">유형</span><span class="detail-value">' + (s.type || '-') + '</span></div>';
-            html += '<div class="detail-row"><span class="detail-label">이름</span><span class="detail-value">' + (s.name || '-') + '</span></div>';
-            html += '<div class="detail-row"><span class="detail-label">연락처</span><span class="detail-value">' + (s.phone || '-') + '</span></div>';
-
+            var h = '';
+            h += '<div class="detail-row"><span>유형</span><span>' + (s.type || '-') + '</span></div>';
+            h += '<div class="detail-row"><span>이름</span><span>' + (s.name || '-') + '</span></div>';
+            h += '<div class="detail-row"><span>연락처</span><span>' + (s.phone || '-') + '</span></div>';
             if (s.type === '협력사 신청') {
-                html += '<div class="detail-row"><span class="detail-label">사업자번호</span><span class="detail-value">' + (s.biz_num || '-') + '</span></div>';
-                html += '<div class="detail-row"><span class="detail-label">희망 지역</span><span class="detail-value">' + (s.region || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>사업자번호</span><span>' + (s.biz_num || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>희망지역</span><span>' + (s.region || '-') + '</span></div>';
             } else if (s.type === '라이더 신청') {
-                html += '<div class="detail-row"><span class="detail-label">활동 지역</span><span class="detail-value">' + (s.region || '-') + '</span></div>';
-                html += '<div class="detail-row"><span class="detail-label">경력</span><span class="detail-value">' + (s.experience || '-') + '</span></div>';
-                html += '<div class="detail-row"><span class="detail-label">근무 시간대</span><span class="detail-value">' + (s.work_time || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>지역</span><span>' + (s.region || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>경력</span><span>' + (s.experience || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>시간대</span><span>' + (s.work_time || '-') + '</span></div>';
             } else if (s.type === '선정산 신청') {
-                html += '<div class="detail-row"><span class="detail-label">상호</span><span class="detail-value">' + (s.company || '-') + '</span></div>';
-                html += '<div class="detail-row"><span class="detail-label">신청 구분</span><span class="detail-value">' + (s.settlement_type || '-') + '</span></div>';
-                html += '<div class="detail-row"><span class="detail-label">플랫폼</span><span class="detail-value">' + (s.platform || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>상호</span><span>' + (s.company || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>구분</span><span>' + (s.settlement_type || '-') + '</span></div>';
+                h += '<div class="detail-row"><span>플랫폼</span><span>' + (s.platform || '-') + '</span></div>';
             }
+            h += '<div class="detail-row"><span>문의</span><span>' + (s.message || '-') + '</span></div>';
+            h += '<div class="detail-row"><span>날짜</span><span>' + new Date(s.created_at).toLocaleString('ko-KR') + '</span></div>';
+            h += '<div class="detail-row"><span>상태</span><span><select class="status-sel" onchange="updateSub(' + s.id + ',this.value)">';
+            h += '<option value="신규"' + (s.status === '신규' ? ' selected' : '') + '>신규</option>';
+            h += '<option value="진행중"' + (s.status === '진행중' ? ' selected' : '') + '>진행중</option>';
+            h += '<option value="완료"' + (s.status === '완료' ? ' selected' : '') + '>완료</option>';
+            h += '</select></span></div>';
+            document.getElementById('modalBody').innerHTML = h;
+            document.getElementById('modal').className = 'modal show';
+        };
 
-            html += '<div class="detail-row"><span class="detail-label">문의 내용</span><span class="detail-value">' + (s.message || '-') + '</span></div>';
-            html += '<div class="detail-row"><span class="detail-label">신청일</span><span class="detail-value">' + new Date(s.created_at).toLocaleString('ko-KR') + '</span></div>';
-            html += '<div class="detail-row"><span class="detail-label">상태 변경</span><span class="detail-value">';
-            html += '<select class="status-select" onchange="updateStatus(' + s.id + ', this.value)">';
-            html += '<option value="신규"' + (s.status === '신규' ? ' selected' : '') + '>신규</option>';
-            html += '<option value="진행중"' + (s.status === '진행중' ? ' selected' : '') + '>진행중</option>';
-            html += '<option value="완료"' + (s.status === '완료' ? ' selected' : '') + '>완료</option>';
-            html += '</select></span></div>';
+        window.updateSub = function(id, st) {
+            sb.from('submissions').update({ status: st }).eq('id', id).then(function() {
+                toast('변경됨');
+                loadSubs();
+            });
+        };
 
-            document.getElementById('modalBody').innerHTML = html;
-            document.getElementById('detailModal').classList.add('active');
-        }
+        window.delSub = function(id) {
+            if (!confirm('삭제?')) return;
+            sb.from('submissions').delete().eq('id', id).then(function() {
+                toast('삭제됨');
+                loadSubs();
+            });
+        };
 
-        document.getElementById('modalCloseBtn').addEventListener('click', function() {
-            document.getElementById('detailModal').classList.remove('active');
-        });
+        document.getElementById('modalClose').onclick = function() {
+            document.getElementById('modal').className = 'modal';
+        };
+        document.getElementById('modal').onclick = function(e) {
+            if (e.target === this) this.className = 'modal';
+        };
 
-        document.getElementById('detailModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('active');
-        });
-
-        window.updateStatus = async function(id, status) {
-            try {
-                await supabase.from('submissions').update({ status: status }).eq('id', id);
-                toast('상태가 변경되었습니다');
-                loadSubmissions();
-            } catch (e) {
-                toast('변경 실패', 'error');
-            }
-        }
-
-        window.deleteSubmission = async function(id) {
-            if (!confirm('정말 삭제하시겠습니까?')) return;
-            try {
-                await supabase.from('submissions').delete().eq('id', id);
-                toast('삭제되었습니다');
-                loadSubmissions();
-            } catch (e) {
-                toast('삭제 실패', 'error');
-            }
-        }
-
-        async function loadPopups() {
-            try {
-                var result = await supabase.from('popups').select('*').order('id', { ascending: false });
-                var data = result.data || [];
-                var tbody = document.getElementById('popupsTable');
-                
-                if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><span>🎈</span>등록된 팝업이 없습니다</div></td></tr>';
+        // 팝업
+        function loadPopups() {
+            sb.from('popups').select('*').order('id', { ascending: false }).then(function(res) {
+                var list = res.data || [];
+                var tb = document.getElementById('popupTable');
+                if (!list.length) {
+                    tb.innerHTML = '<tr><td colspan="4"><div class="empty"><span>🎈</span>없음</div></td></tr>';
                     return;
                 }
-
                 var html = '';
-                data.forEach(function(p) {
+                list.forEach(function(p) {
                     html += '<tr>';
                     html += '<td>' + p.title + '</td>';
                     html += '<td>' + (p.icon || '📢') + '</td>';
                     html += '<td><span class="badge ' + (p.active ? 'new' : 'done') + '">' + (p.active ? '활성' : '비활성') + '</span></td>';
-                    html += '<td>';
-                    html += '<button class="action-btn view" onclick="togglePopup(' + p.id + ', ' + !p.active + ')">' + (p.active ? '비활성화' : '활성화') + '</button>';
-                    html += '<button class="action-btn delete" onclick="deletePopup(' + p.id + ')">삭제</button>';
-                    html += '</td>';
+                    html += '<td><button class="btn btn-view" onclick="togglePopup(' + p.id + ',' + !p.active + ')">' + (p.active ? '비활성화' : '활성화') + '</button><button class="btn btn-del" onclick="delPopup(' + p.id + ')">삭제</button></td>';
                     html += '</tr>';
                 });
-                tbody.innerHTML = html;
-            } catch (e) {
-                console.error(e);
-            }
+                tb.innerHTML = html;
+            });
         }
 
-        document.getElementById('savePopupBtn').addEventListener('click', async function() {
-            var title = document.getElementById('popupTitle').value.trim();
-            var icon = document.getElementById('popupIcon').value.trim() || '📢';
-            var description = document.getElementById('popupDesc').value.trim();
-            var btn_text = document.getElementById('popupBtnText').value.trim() || '자세히 보기 →';
-            var btn_link = document.getElementById('popupBtnLink').value.trim() || '#contact';
-            var image_url = document.getElementById('popupImage').value.trim();
-            var active = document.getElementById('popupActive').value === 'true';
-
-            if (!title) {
-                toast('제목을 입력하세요', 'error');
-                return;
-            }
-
-            try {
-                await supabase.from('popups').insert([{
-                    title: title,
-                    icon: icon,
-                    description: description,
-                    btn_text: btn_text,
-                    btn_link: btn_link,
-                    image_url: image_url,
-                    active: active
-                }]);
-                toast('팝업이 저장되었습니다');
-                document.getElementById('popupTitle').value = '';
-                document.getElementById('popupIcon').value = '';
-                document.getElementById('popupDesc').value = '';
-                document.getElementById('popupBtnText').value = '';
-                document.getElementById('popupBtnLink').value = '';
-                document.getElementById('popupImage').value = '';
+        document.getElementById('savePopupBtn').onclick = function() {
+            var title = document.getElementById('pTitle').value.trim();
+            if (!title) { toast('제목입력', 'error'); return; }
+            sb.from('popups').insert([{
+                title: title,
+                icon: document.getElementById('pIcon').value.trim() || '📢',
+                image_url: document.getElementById('pImg').value.trim(),
+                description: document.getElementById('pDesc').value.trim(),
+                btn_text: document.getElementById('pBtnTxt').value.trim() || '자세히보기',
+                btn_link: document.getElementById('pBtnLink').value.trim() || '#contact',
+                active: document.getElementById('pActive').value === 'true'
+            }]).then(function() {
+                toast('저장됨');
+                document.getElementById('pTitle').value = '';
+                document.getElementById('pIcon').value = '';
+                document.getElementById('pImg').value = '';
+                document.getElementById('pDesc').value = '';
+                document.getElementById('pBtnTxt').value = '';
+                document.getElementById('pBtnLink').value = '';
                 loadPopups();
-            } catch (e) {
-                toast('저장 실패', 'error');
-            }
-        });
+            });
+        };
 
-        window.togglePopup = async function(id, active) {
-            try {
-                await supabase.from('popups').update({ active: active }).eq('id', id);
-                toast('변경되었습니다');
+        window.togglePopup = function(id, active) {
+            sb.from('popups').update({ active: active }).eq('id', id).then(function() {
+                toast('변경됨');
                 loadPopups();
-            } catch (e) {
-                toast('변경 실패', 'error');
-            }
-        }
+            });
+        };
 
-        window.deletePopup = async function(id) {
-            if (!confirm('정말 삭제하시겠습니까?')) return;
-            try {
-                await supabase.from('popups').delete().eq('id', id);
-                toast('삭제되었습니다');
+        window.delPopup = function(id) {
+            if (!confirm('삭제?')) return;
+            sb.from('popups').delete().eq('id', id).then(function() {
+                toast('삭제됨');
                 loadPopups();
-            } catch (e) {
-                toast('삭제 실패', 'error');
-            }
-        }
+            });
+        };
 
-        async function loadNotice() {
-            try {
-                var result = await supabase.from('notice').select('*').limit(1).single();
-                if (result.data) {
-                    document.getElementById('noticeText').value = result.data.text || '';
-                    document.getElementById('noticeColor').value = result.data.color || 'mint';
-                    document.getElementById('noticeShow').value = result.data.show ? 'true' : 'false';
+        // 공지
+        function loadNotice() {
+            sb.from('notice').select('*').limit(1).single().then(function(res) {
+                if (res.data) {
+                    document.getElementById('nText').value = res.data.text || '';
+                    document.getElementById('nColor').value = res.data.color || 'mint';
+                    document.getElementById('nShow').value = res.data.show ? 'true' : 'false';
                 }
-            } catch (e) {
-                console.log('No notice data');
-            }
+            });
         }
 
-        document.getElementById('saveNoticeBtn').addEventListener('click', async function() {
-            var text = document.getElementById('noticeText').value;
-            var color = document.getElementById('noticeColor').value;
-            var show = document.getElementById('noticeShow').value === 'true';
-
-            try {
-                await supabase.from('notice').delete().neq('id', 0);
-                await supabase.from('notice').insert([{ text: text, color: color, show: show }]);
-                toast('공지가 저장되었습니다');
-            } catch (e) {
-                toast('저장 실패', 'error');
-                console.error(e);
-            }
-        });
+        document.getElementById('saveNoticeBtn').onclick = function() {
+            sb.from('notice').delete().neq('id', 0).then(function() {
+                sb.from('notice').insert([{
+                    text: document.getElementById('nText').value,
+                    color: document.getElementById('nColor').value,
+                    show: document.getElementById('nShow').value === 'true'
+                }]).then(function() {
+                    toast('저장됨');
+                });
+            });
+        };
     </script>
 </body>
 </html>
