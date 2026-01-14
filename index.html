@@ -877,40 +877,15 @@ body.has-notice .scroll-indicator{top:44px}
                 const { data } = await supabase.from('popups').select('*').eq('active', true);
                 popups = data || [];
                 if (popups.length === 0 || localStorage.getItem('popupClosed') === new Date().toDateString()) {
-                    document.getElementById('popupOverlay').classList.add('hidden');
                     return;
                 }
-                document.getElementById('popupOverlay').classList.remove('hidden');
-                document.getElementById('popupSlides').innerHTML = popups.map((p, i) => `
-                    <div class="popup-slide ${i===0?'active':''}" data-popup="${i}">
-                        <div class="popup-image">
-                            ${p.image_url ? `<img src="${p.image_url}">` : `<div class="no-image">${p.icon||'📢'}</div>`}
-                        </div>
-                        <div class="popup-content">
-                            <h3 class="popup-title">${p.title}</h3>
-                            <p class="popup-desc">${p.description||''}</p>
-                            <a href="${p.btn_link||'#contact'}" class="popup-btn" onclick="closePopup()">${p.btn_text||'자세히 보기 →'}</a>
-                        </div>
-                    </div>
-                `).join('');
-                document.getElementById('popupNav').innerHTML = popups.map((_, i) => `
-                    <button class="popup-dot ${i===0?'active':''}" onclick="goToPopup(${i})"></button>
-                `).join('');
+                // 새 창으로 팝업 열기
+                window.open('popup.html', 'popup', 'width=550,height=700,scrollbars=yes');
+                localStorage.setItem('popupClosed', new Date().toDateString());
             } catch(e) { console.log('Popup error', e); }
         }
 
-        function showPopup(index) {
-            document.querySelectorAll('.popup-slide').forEach((s,i) => s.classList.toggle('active', i===index));
-            document.querySelectorAll('.popup-dot').forEach((d,i) => d.classList.toggle('active', i===index));
-            currentPopup = index;
-        }
-        function nextPopup() { if(popups.length) showPopup((currentPopup+1)%popups.length); }
-        function prevPopup() { if(popups.length) showPopup((currentPopup-1+popups.length)%popups.length); }
-        function goToPopup(i) { showPopup(i); }
-        function closePopup() {
-            document.getElementById('popupOverlay').classList.add('hidden');
-            if(document.getElementById('todayClose').checked) localStorage.setItem('popupClosed', new Date().toDateString());
-        }
+        function closePopup() {}
 
         async function loadNotice() {
             try {
