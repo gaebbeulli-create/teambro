@@ -3,324 +3,1034 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>중개사 안내 | TEAM BRO</title>
+    <title>TEAM BRO | 배민커넥트비즈+ 공식 중개사</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#fff;line-height:1.7}
-        .container{max-width:1000px;margin:0 auto;padding:0 20px}
-        
-        header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 20px;background:rgba(10,10,15,.95);backdrop-filter:blur(10px);border-bottom:1px solid #252530}
-        nav{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-        .logo{font-size:1.5rem;color:#2dd4bf;text-decoration:none;font-weight:bold}
-        .nav-links{display:flex;gap:24px;list-style:none}
-        .nav-links a{color:#808090;text-decoration:none;font-size:.9rem}
-        .nav-links a:hover,.nav-links a.active{color:#2dd4bf}
-        .nav-cta{background:#2dd4bf;color:#000;padding:10px 20px;border-radius:50px;text-decoration:none;font-size:.9rem;font-weight:bold}
-        .mobile-menu{display:none;font-size:1.5rem;color:#fff;cursor:pointer}
-        
-        .mobile-nav{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99;display:none;flex-direction:column;align-items:center;justify-content:center}
-        .mobile-nav.active{display:flex}
-        .mobile-nav a{color:#fff;text-decoration:none;font-size:1.3rem;padding:16px;display:block}
-        .mobile-nav a:hover{color:#2dd4bf}
-        
-        .hero{padding:140px 20px 80px;text-align:center}
-        .hero-badge{display:inline-block;background:#16161f;border:1px solid #252530;padding:10px 20px;border-radius:50px;color:#2dd4bf;font-size:.9rem;margin-bottom:20px}
-        .hero h1{font-size:2.5rem;margin-bottom:16px}
-        .hero h1 span{color:#2dd4bf}
-        .hero p{color:#808090;font-size:1.1rem;max-width:500px;margin:0 auto}
-        
-        section{padding:80px 20px}
-        .section-header{text-align:center;margin-bottom:40px}
-        .section-badge{display:inline-block;background:#16161f;border:1px solid #252530;padding:6px 14px;border-radius:50px;color:#2dd4bf;font-size:.8rem;margin-bottom:12px}
-        .section-header h2{font-size:1.8rem;margin-bottom:8px}
-        .section-header p{color:#808090}
-        
-        .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-        .card{background:#16161f;border:2px solid #252530;border-radius:16px;padding:28px;text-align:center;transition:.3s}
-        .card:hover{border-color:#2dd4bf;transform:translateY(-5px)}
-        .card-icon{font-size:2.5rem;margin-bottom:16px}
-        .card h3{font-size:1.1rem;margin-bottom:8px}
-        .card p{color:#808090;font-size:.9rem}
-        
-        .bg-light{background:#12121a}
-        
-        .timeline{max-width:600px;margin:0 auto}
-        .step{display:flex;gap:20px;margin-bottom:32px;align-items:flex-start}
-        .step:last-child{margin-bottom:0}
-        .step-num{width:50px;height:50px;background:#2dd4bf;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#000;font-size:1.2rem;flex-shrink:0}
-        .step-content{background:#16161f;border:2px solid #252530;border-radius:12px;padding:20px;flex:1}
-        .step-content h3{margin-bottom:6px;font-size:1rem}
-        .step-content p{color:#808090;font-size:.9rem}
-        
-        .why-section{background:linear-gradient(135deg,#2dd4bf,#5eead4);color:#000}
-        .why-section .section-badge{background:rgba(0,0,0,.2);border:none;color:#000}
-        .why-section .section-header h2,.why-section .section-header p{color:#000}
-        .why-card{background:rgba(0,0,0,.15);border:none;color:#000}
-        .why-card h3{color:#000}
-        .why-card p{color:rgba(0,0,0,.7)}
-        
-        .cta-section{text-align:center;padding:60px 20px}
-        .cta-box{background:#16161f;border:2px solid #2dd4bf;border-radius:20px;padding:40px;max-width:600px;margin:0 auto}
-        .cta-box h2{font-size:1.5rem;margin-bottom:12px}
-        .cta-box p{color:#808090;margin-bottom:24px}
-        .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .btn{padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block}
-        .btn-primary{background:#2dd4bf;color:#000}
-        .btn-outline{background:transparent;border:2px solid #252530;color:#fff}
-        
-        footer{background:#000;padding:40px 20px;border-top:1px solid #252530}
-        .footer-content{max-width:1000px;margin:0 auto}
-        .footer-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-bottom:30px}
-        .footer-col h4{color:#2dd4bf;margin-bottom:12px;font-size:.9rem}
-        .footer-col p,.footer-col a{color:#606070;font-size:.85rem;text-decoration:none;display:block;margin-bottom:6px}
-        .footer-col a:hover{color:#2dd4bf}
-        .footer-bottom{padding-top:20px;border-top:1px solid #252530;color:#606070;font-size:.8rem}
-        .footer-bottom p{margin-bottom:4px}
-        .footer-links{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap}
-        .footer-links a{color:#606070;text-decoration:none;font-size:.8rem}
-        .footer-links a:hover{color:#2dd4bf}
-        
-        .float-btns{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:1000}
-        .float-btn{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.3rem}
-        .float-btn.kakao{background:#FEE500}
-        .float-btn.phone{background:#2dd4bf}
-        
-        @media(max-width:768px){
-            .nav-links,.nav-cta{display:none}
-            .mobile-menu{display:block}
-            .hero h1{font-size:1.8rem}
-            .cards{grid-template-columns:1fr}
-            section{padding:60px 16px}
-        }
+@font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
+@font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
+@font-face{font-family:'Pretendard';src:url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff')}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg-light:#12121a;--card:#16161f;--card-border:#252530;--white:#fff;--gray-300:#b0b0c0;--gray-400:#808090;--gray-500:#606070;--mint:#2dd4bf;--mint-light:#5eead4;--mint-glow:rgba(45,212,191,.2);--orange:#f97316;--orange-glow:rgba(249,115,22,.2)}
+html{scroll-behavior:smooth}
+body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--white);line-height:1.7;font-size:15px;overflow-x:hidden}
+body.has-notice{padding-top:44px}
+body.menu-open{overflow:hidden}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* 애니메이션 */
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes rgb-flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes wave{0%,100%{transform:rotate(0deg)}25%{transform:rotate(20deg)}75%{transform:rotate(-20deg)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}25%{transform:scale(1.1)}50%{transform:scale(1)}75%{transform:scale(1.1)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+/* 공지 배너 */
+.notice-banner{background:linear-gradient(90deg,var(--mint),var(--mint-light));padding:12px 24px;text-align:center;position:fixed;top:0;left:0;right:0;z-index:200;animation:slideDown .5s ease}
+.notice-banner.hidden{display:none}
+.notice-banner.orange{background:linear-gradient(90deg,#f97316,#fb923c)}
+.notice-banner.red{background:linear-gradient(90deg,#ef4444,#f87171)}
+.notice-text{font-family:'BMJUA',sans-serif;color:#000;font-size:.95rem}
+.notice-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.2rem;cursor:pointer;color:#000}
+
+/* 팝업 */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.popup-overlay.hidden{display:none}
+.popup-container{position:relative;width:90%;max-width:480px}
+.popup-slide{display:none;background:var(--card);border:2px solid var(--mint);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.popup-slide.active{display:block}
+.popup-image{width:100%;height:250px;background:var(--bg-light);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.popup-image img{width:100%;height:100%;object-fit:cover}
+.popup-image .no-image{font-size:4rem;animation:float 3s ease-in-out infinite}
+.popup-content{padding:24px}
+.popup-title{font-family:'BMHANNAPro',sans-serif;font-size:1.5rem;margin-bottom:8px}
+.popup-desc{color:var(--gray-300);font-size:.95rem;margin-bottom:16px;line-height:1.6}
+.popup-btn{display:inline-block;background:var(--mint);color:#000;padding:12px 24px;border-radius:100px;font-family:'BMJUA',sans-serif;text-decoration:none;font-size:.95rem;transition:all .3s}
+.popup-btn:hover{transform:scale(1.05);background:var(--mint-light)}
+.popup-close{position:absolute;top:16px;right:16px;width:40px;height:40px;background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.2rem;cursor:pointer;z-index:10;transition:all .3s}
+.popup-close:hover{background:#ef4444;transform:rotate(90deg)}
+.popup-nav{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.popup-dot{width:12px;height:12px;border-radius:50%;background:var(--card-border);border:none;cursor:pointer;transition:all .3s}
+.popup-dot.active{background:var(--mint);width:28px;border-radius:6px}
+.popup-arrow{position:absolute;top:50%;width:44px;height:44px;background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.3rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.popup-arrow:hover{background:var(--mint);color:#000}
+.popup-arrow.prev{left:-22px;transform:translateY(-50%)}
+.popup-arrow.next{right:-22px;transform:translateY(-50%)}
+.popup-footer{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--card-border)}
+.popup-today{display:flex;align-items:center;gap:8px;color:var(--gray-400);font-size:.85rem;cursor:pointer}
+.popup-today input{width:18px;height:18px;accent-color:var(--mint)}
+
+/* 플로팅 버튼 */
+.floating-btns{position:fixed;right:20px;bottom:20px;z-index:1000;display:flex;flex-direction:column;gap:10px}
+.float-btn{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:24px;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.float-btn:hover{transform:translateY(-5px) scale(1.1)}
+.float-btn.kakao{background:#FEE500;color:#391B1B}
+.float-btn.phone{background:var(--mint);color:#000}
+
+/* 헤더 */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .3s}
+header.scrolled{border-bottom-color:var(--card-border)}
+body.has-notice header{top:44px}
+nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'BMHANNAPro',sans-serif;font-size:1.6rem;color:var(--mint);text-decoration:none}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{color:var(--gray-400);text-decoration:none;font-size:.95rem;font-weight:500;transition:all .3s;padding:8px 0;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--mint);transition:width .3s}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-links a:hover,.nav-links a.active{color:var(--mint)}
+.nav-cta{background:var(--mint);color:#000;padding:12px 24px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.95rem;text-decoration:none;font-weight:600;transition:all .3s}
+.nav-cta:hover{transform:scale(1.05);background:var(--mint-light)}
+.mobile-menu{display:none;font-size:1.8rem;color:#fff;cursor:pointer;z-index:101;padding:8px}
+
+/* 모바일 메뉴 오버레이 */
+.mobile-nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
+.mobile-nav-overlay.active{opacity:1;visibility:visible}
+.mobile-nav-links{list-style:none;text-align:center;display:flex;flex-direction:column;gap:24px}
+.mobile-nav-links a{color:#fff;text-decoration:none;font-family:'BMJUA',sans-serif;font-size:1.5rem;transition:all .3s;display:block;padding:12px 24px}
+.mobile-nav-links a:hover,.mobile-nav-links a.active{color:var(--mint)}
+.mobile-nav-cta{margin-top:32px;background:var(--mint);color:#000;padding:16px 40px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:1.1rem;text-decoration:none;display:inline-block}
+
+/* 버튼 */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border-radius:14px;font-family:'BMJUA',sans-serif;font-size:1rem;text-decoration:none;transition:all .3s;font-weight:600}
+.btn-primary{background:var(--mint);color:#000}
+.btn-primary:hover{background:var(--mint-light);transform:translateY(-3px)}
+.btn-outline{background:transparent;color:var(--white);border:2px solid var(--card-border)}
+.btn-outline:hover{border-color:var(--mint);color:var(--mint)}
+.btn-dark{background:#000;color:#fff}
+.btn-light{background:rgba(255,255,255,.2);color:#000}
+
+/* 히어로 */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-bg::before{content:'';position:absolute;top:-20%;left:-10%;width:50%;height:50%;background:radial-gradient(circle,var(--mint-glow),transparent 60%);filter:blur(100px);animation:float 6s ease-in-out infinite}
+.hero-bg::after{content:'';position:absolute;bottom:-10%;right:-10%;width:40%;height:40%;background:radial-gradient(circle,var(--orange-glow),transparent 60%);filter:blur(100px);animation:float 8s ease-in-out infinite reverse}
+.hero-content{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card-border);border-radius:100px;padding:14px 24px;margin-bottom:24px}
+.badge-team{font-family:'BMHANNAPro',sans-serif;font-size:1.2rem;background:linear-gradient(135deg,#60efff,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge-x{color:var(--gray-500);font-size:.9rem}
+.badge-baemin{font-family:'BMHANNAPro',sans-serif;font-size:1.1rem;color:#fff}
+.badge-plus{font-size:1rem;animation:bounce 2s ease infinite}
+.hero h1{font-family:'BMHANNAPro',sans-serif;font-size:3.2rem;line-height:1.35;margin-bottom:20px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--mint),var(--mint-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{color:var(--gray-300);font-size:1.15rem;margin-bottom:32px;line-height:1.8}
+.hero-buttons{display:flex;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+.social-proof{display:flex;align-items:center;gap:16px;color:var(--gray-400)}
+.social-proof strong{color:#fff}
+.avatar-stack{display:flex}
+.avatar{width:40px;height:40px;border-radius:50%;border:3px solid var(--bg);margin-left:-12px;background:var(--card-border);display:flex;align-items:center;justify-content:center;font-size:14px}
+.avatar:first-child{margin-left:0}
+.avatar.more{background:var(--mint);color:#000;font-family:'BMJUA',sans-serif;font-size:.8rem}
+
+/* 인스타 카드 */
+.story-card{position:relative;width:100%;max-width:360px;animation:float 4s ease-in-out infinite}
+.story-card::before{content:'';position:absolute;inset:-4px;border-radius:28px;background:linear-gradient(45deg,#ff0000,#ff7300,#fffb00,#48ff00,#00ffd5,#002bff,#7a00ff,#ff00c8,#ff0000);background-size:400% 400%;z-index:-1;animation:rgb-flow 3s ease infinite}
+.story-inner{background:var(--card);border-radius:24px;padding:20px}
+.story-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.story-avatar{width:48px;height:48px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-family:'BMJUA',sans-serif;font-size:12px;color:#000}
+.story-info{flex:1}
+.story-name{font-family:'BMJUA',sans-serif;font-size:1rem}
+.story-badge-text{font-size:.85rem;color:var(--mint)}
+.story-more{color:var(--gray-500);font-size:1.2rem}
+.story-image{background:linear-gradient(145deg,#0d1a1a,#081010);border-radius:16px;padding:28px 20px;text-align:center;margin-bottom:14px;border:1px solid rgba(45,212,191,.1)}
+.story-emoji{font-size:3rem;margin-bottom:16px;animation:wave 2s ease infinite}
+.story-slogan{font-family:'BMHANNAPro',sans-serif;font-size:1.1rem;color:var(--mint);margin-bottom:20px}
+.story-stats{display:flex;justify-content:center;gap:32px}
+.stat{text-align:center}
+.stat-value{display:block;font-family:'BMJUA',sans-serif;font-size:1.5rem;color:var(--mint)}
+.stat-label{font-size:.8rem;color:var(--gray-400)}
+.story-actions{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--card-border)}
+.action{font-size:1.4rem;cursor:pointer}
+.action.liked{animation:heartbeat 1s ease infinite}
+.action.bookmark{margin-left:auto}
+.story-likes{font-family:'BMJUA',sans-serif;font-size:.95rem;margin:12px 0 8px}
+.story-caption{font-size:.9rem;color:var(--gray-300);line-height:1.6}
+.story-caption strong{color:#fff;font-family:'BMJUA',sans-serif}
+.story-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.story-tags .tag{background:rgba(45,212,191,.1);color:var(--mint);padding:5px 12px;border-radius:100px;font-size:.8rem;font-family:'BMJUA',sans-serif}
+
+/* 섹션 */
+section{padding:100px 24px}
+.section-header{text-align:center;margin-bottom:48px}
+.section-badge{display:inline-block;background:var(--card);border:1px solid var(--card-border);padding:8px 18px;border-radius:100px;font-family:'BMJUA',sans-serif;font-size:.85rem;color:var(--mint);margin-bottom:16px}
+.section-header h2{font-family:'BMHANNAPro',sans-serif;font-size:2.2rem;margin-bottom:12px}
+.section-header p{color:var(--gray-400);font-size:1.05rem}
+.section-cta{text-align:center;margin-top:48px}
+
+/* 서비스 */
+.services-preview{background:var(--bg-light)}
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.service-card{background:var(--card);border:2px solid var(--card-border);border-radius:20px;padding:28px;text-decoration:none;color:inherit;transition:all .4s;display:flex;flex-direction:column;align-items:center;text-align:center}
+.service-card:hover{border-color:var(--mint);transform:translateY(-8px)}
+.service-card.featured{grid-column:span 2;background:var(--mint);border:none;color:#000}
+.service-icon{font-size:2.5rem;margin-bottom:16px}
+.service-card h3{font-family:'BMJUA',sans-serif;font-size:1.15rem;margin-bottom:8px}
+.service-card p{font-size:.9rem;color:var(--gray-400);line-height:1.5}
+.service-card.featured p{color:rgba(0,0,0,.7)}
+
+/* 프로세스 */
+.process-section{background:var(--bg)}
+.process-box{background:linear-gradient(145deg,#16161f,#1a1a24);border:2px solid var(--mint);border-radius:32px;padding:50px 40px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.process-steps-visual{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.p-step{flex:1;text-align:center}
+.p-step-icon{width:100px;height:100px;background:linear-gradient(145deg,#1e1e28,#252530);border:3px solid var(--mint);border-radius:24px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;position:relative;transition:all .4s}
+.p-step:hover .p-step-icon{transform:translateY(-10px) scale(1.1)}
+.p-step-num{position:absolute;top:-10px;right:-10px;width:32px;height:32px;background:linear-gradient(135deg,#2dd4bf,#22d3ee);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'BMJUA',sans-serif;font-size:1rem;color:#000}
+.p-step-title{font-family:'BMHANNAPro',sans-serif;font-size:1.3rem;color:#fff;margin-bottom:6px}
+.p-step-desc{font-family:'BMJUA',sans-serif;font-size:.9rem;color:#808090}
+.p-arrow{font-size:2rem;color:var(--mint);animation:pulse 2s ease-in-out infinite}
+
+/* 파트너 */
+.partner-section{background:var(--bg-light)}
+.target-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.target-card{background:var(--card);border:2px solid var(--card-border);border-radius:20px;padding:24px;text-align:center;transition:all .4s}
+.target-card:hover{border-color:var(--mint);transform:translateY(-8px)}
+.target-icon{font-size:2.5rem;margin-bottom:12px}
+.target-card h3{font-family:'BMJUA',sans-serif;font-size:1.1rem;margin-bottom:6px;color:#fff}
+.target-card p{font-size:.85rem;color:var(--gray-400)}
+
+/* 혜택 */
+.benefit-section{background:linear-gradient(135deg,var(--orange),#fb923c);position:relative;overflow:hidden}
+.benefit-section .section-header h2,.benefit-section .section-header p{color:#000}
+.benefit-section .section-badge{background:rgba(0,0,0,.2);color:#000;border:none}
+.benefit-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.benefit-card{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border-radius:20px;padding:28px;text-align:center;transition:all .4s}
+.benefit-card:hover{background:rgba(255,255,255,.25);transform:translateY(-10px)}
+.benefit-icon{font-size:2.5rem;margin-bottom:16px}
+.benefit-card h3{font-family:'BMJUA',sans-serif;font-size:1.2rem;margin-bottom:16px;color:#000}
+.benefit-card ul{list-style:none;text-align:left}
+.benefit-card li{padding:6px 0;color:rgba(0,0,0,.8);font-size:.95rem}
+
+/* 문의 */
+.contact-section{background:var(--bg)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:48px}
+.contact-channels h2{font-family:'BMHANNAPro',sans-serif;font-size:1.8rem;margin-bottom:8px}
+.contact-channels>p{color:var(--gray-400);margin-bottom:28px}
+.channel-cards{display:flex;flex-direction:column;gap:16px}
+.channel-card{display:flex;align-items:center;gap:20px;background:var(--card);border:2px solid var(--card-border);border-radius:16px;padding:24px;text-decoration:none;color:inherit;transition:all .4s}
+.channel-card:hover{border-color:var(--mint);transform:translateX(10px)}
+.channel-icon{font-size:2.5rem}
+.channel-info h3{font-family:'BMJUA',sans-serif;font-size:1.1rem;margin-bottom:4px}
+.channel-info p{color:var(--gray-400);font-size:.9rem}
+.phone-number{font-family:'BMJUA',sans-serif;font-size:1.3rem!important;color:var(--mint)!important}
+.channel-action{color:var(--mint);font-size:.85rem}
+.channel-time{font-size:.8rem;color:var(--gray-500)}
+
+/* 폼 */
+.contact-form-wrap h2{font-family:'BMHANNAPro',sans-serif;font-size:1.8rem;margin-bottom:24px}
+.contact-form{background:var(--card);border:2px solid var(--card-border);border-radius:24px;padding:32px;transition:all .3s}
+.contact-form:focus-within{border-color:var(--mint)}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-family:'Pretendard',sans-serif;font-size:.9rem;margin-bottom:8px;color:var(--white);font-weight:600}
+.form-tabs{display:flex;gap:8px;margin-bottom:24px}
+.form-tab{flex:1}
+.form-tab input{display:none}
+.form-tab span{display:block;padding:14px 12px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;text-align:center;font-family:'Pretendard',sans-serif;font-size:.9rem;color:var(--gray-300);cursor:pointer;transition:all .3s;font-weight:600}
+.form-tab input:checked+span{background:var(--mint);border-color:var(--mint);color:#000}
+.form-tab span:hover{border-color:var(--mint)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 18px;background:var(--bg);border:2px solid var(--card-border);border-radius:12px;color:#fff;font-family:'Pretendard',sans-serif;font-size:.95rem;transition:all .3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--mint)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-group select{cursor:pointer}
+.form-group select option{background:var(--bg);color:#fff}
+.form-submit{width:100%;padding:18px;background:var(--mint);border:none;border-radius:14px;font-family:'Pretendard',sans-serif;font-size:1rem;font-weight:700;color:#000;cursor:pointer;transition:all .3s}
+.form-submit:hover{transform:translateY(-3px)}
+.form-submit:disabled{opacity:.6;cursor:not-allowed}
+
+/* 동적 폼 필드 */
+.form-fields{display:none}
+.form-fields.active{display:block}
+
+/* CTA */
+.cta-section{background:var(--mint);text-align:center;padding:80px 24px}
+.cta-section h2{font-family:'BMHANNAPro',sans-serif;font-size:2rem;color:#000;margin-bottom:12px}
+.cta-section p{color:rgba(0,0,0,.7);margin-bottom:28px;font-size:1.1rem}
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* 푸터 */
+footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-border)}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--card-border)}
+.footer-brand .logo{display:block;margin-bottom:12px}
+.footer-brand p{color:var(--gray-500);font-size:.9rem;line-height:1.6}
+.footer-social{display:flex;gap:10px;margin-top:16px}
+.footer-social a{width:40px;height:40px;background:var(--card);border:1px solid var(--card-border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;transition:all .3s}
+.footer-social a:hover{border-color:var(--mint)}
+.footer-links h4{font-family:'BMJUA',sans-serif;font-size:1rem;margin-bottom:16px}
+.footer-links ul{list-style:none}
+.footer-links li{margin-bottom:10px}
+.footer-links a{color:var(--gray-500);text-decoration:none;font-size:.9rem;transition:color .3s}
+.footer-links a:hover{color:var(--mint)}
+.footer-bottom{padding-top:24px;font-size:.85rem;color:var(--gray-500)}
+.footer-company{margin-bottom:16px;line-height:1.8}
+.footer-company p{margin:0}
+.footer-legal{display:flex;gap:16px;flex-wrap:wrap}
+.footer-legal a{color:var(--gray-500);text-decoration:none;transition:color .3s}
+.footer-legal a:hover{color:var(--mint)}
+
+/* 스크롤 인디케이터 */
+.scroll-indicator{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--mint),var(--mint-light));z-index:9999}
+body.has-notice .scroll-indicator{top:44px}
+
+/* 토스트 */
+.toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:16px 24px;border-radius:12px;font-family:'BMJUA',sans-serif;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#22c55e}
+.toast.error{background:#ef4444}
+
+/* 약관 모달 */
+.terms-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:all .3s}
+.terms-modal.active{opacity:1;visibility:visible}
+.terms-box{background:var(--card);border:2px solid var(--card-border);border-radius:24px;width:100%;max-width:600px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+.terms-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--card-border)}
+.terms-header h3{font-family:'BMHANNAPro',sans-serif;font-size:1.3rem}
+.terms-close{width:40px;height:40px;background:var(--bg);border:none;border-radius:10px;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .3s}
+.terms-close:hover{background:#ef4444}
+.terms-content{padding:24px;overflow-y:auto;line-height:1.8;color:var(--gray-300);font-size:.95rem}
+.terms-content h4{font-family:'BMJUA',sans-serif;color:#fff;margin:20px 0 12px;font-size:1.1rem}
+.terms-content h4:first-child{margin-top:0}
+.terms-content p{margin-bottom:12px}
+
+/* 반응형 */
+@media(max-width:900px){
+    .hero-content,.contact-grid{grid-template-columns:1fr}
+    .service-grid,.benefit-cards{grid-template-columns:1fr 1fr}
+    .target-cards{grid-template-columns:1fr 1fr}
+    .service-card.featured{grid-column:span 2}
+    .footer-top{grid-template-columns:1fr 1fr}
+    .nav-links,.nav-cta{display:none}
+    .mobile-menu{display:block}
+    .hero-card{margin-top:40px}
+    .process-steps-visual{flex-wrap:wrap}
+    .p-arrow{display:none}
+    .p-step{min-width:45%}
+    .popup-arrow{display:none}
+    .process-box{padding:40px 24px}
+}
+@media(max-width:600px){
+    .hero{padding:100px 16px 60px}
+    .hero h1{font-size:2rem}
+    .hero-badge{padding:10px 16px;gap:8px}
+    .badge-team,.badge-baemin{font-size:1rem}
+    .service-grid,.benefit-cards{grid-template-columns:1fr}
+    .target-cards{grid-template-columns:1fr 1fr}
+    .service-card.featured{grid-column:span 1}
+    .form-row{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr}
+    .footer-bottom{flex-direction:column;text-align:center}
+    .cta-buttons,.hero-buttons{flex-direction:column;align-items:stretch}
+    .btn{justify-content:center}
+    .p-step{min-width:100%}
+    .form-tabs{flex-direction:column}
+    section{padding:60px 16px}
+    .section-header h2{font-size:1.8rem}
+    .process-box{padding:32px 20px}
+    .p-step-icon{width:80px;height:80px;font-size:2rem}
+    .story-card{max-width:100%}
+    .contact-form{padding:24px 20px}
+}
     </style>
 </head>
 <body>
-    <div class="mobile-nav" id="mobileNav">
-        <a href="index.html">홈</a>
-        <a href="about.html">중개사 안내</a>
-        <a href="index.html#process">진행 절차</a>
-        <a href="index.html#contact">상담 요청</a>
+    <div class="toast" id="toast"></div>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <!-- 약관 모달 -->
+    <div class="terms-modal" id="termsModal">
+        <div class="terms-box">
+            <div class="terms-header">
+                <h3 id="termsTitle">이용약관</h3>
+                <button class="terms-close" onclick="closeTerms()">✕</button>
+            </div>
+            <div class="terms-content" id="termsContent"></div>
+        </div>
     </div>
-    
-    <div class="float-btns">
+
+    <div class="notice-banner hidden" id="noticeBanner">
+        <span class="notice-text" id="noticeText"></span>
+        <button class="notice-close" onclick="closeBanner()">✕</button>
+    </div>
+
+    <div class="popup-overlay hidden" id="popupOverlay">
+        <button class="popup-close" onclick="closePopup()">✕</button>
+        <button class="popup-arrow prev" onclick="prevPopup()">‹</button>
+        <button class="popup-arrow next" onclick="nextPopup()">›</button>
+        <div class="popup-container">
+            <div id="popupSlides"></div>
+            <div class="popup-nav" id="popupNav"></div>
+            <div class="popup-footer">
+                <label class="popup-today"><input type="checkbox" id="todayClose">오늘 하루 보지 않기</label>
+                <button onclick="closePopup()" style="background:none;border:none;color:var(--gray-400);cursor:pointer">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모바일 메뉴 오버레이 -->
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="#home" onclick="closeMobileMenu()">홈</a></li>
+            <li><a href="about.html" onclick="closeMobileMenu()">중개사 안내</a></li>
+            <li><a href="#process" onclick="closeMobileMenu()">진행 절차</a></li>
+            <li><a href="#partner" onclick="closeMobileMenu()">협력사 모집</a></li>
+            <li><a href="#contact" onclick="closeMobileMenu()">문의하기</a></li>
+        </ul>
+        <a href="#contact" class="mobile-nav-cta" onclick="closeMobileMenu()">상담 요청</a>
+    </div>
+
+    <div class="floating-btns">
         <a href="https://pf.kakao.com/_xxxxx" class="float-btn kakao">💬</a>
         <a href="tel:1660-3543" class="float-btn phone">📞</a>
     </div>
-    
-    <header>
+
+    <header id="header">
         <nav>
             <a href="index.html" class="logo">TEAM BRO</a>
             <ul class="nav-links">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="about.html" class="active">중개사 안내</a></li>
-                <li><a href="index.html#process">진행 절차</a></li>
-                <li><a href="index.html#contact">문의하기</a></li>
+                <li><a href="#home" class="active">홈</a></li>
+                <li><a href="about.html">중개사 안내</a></li>
+                <li><a href="#process">진행 절차</a></li>
+                <li><a href="#partner">협력사 모집</a></li>
+                <li><a href="#contact">문의하기</a></li>
             </ul>
-            <a href="index.html#contact" class="nav-cta">상담 요청</a>
-            <div class="mobile-menu" id="menuBtn">☰</div>
+            <a href="#contact" class="nav-cta">상담 요청</a>
+            <div class="mobile-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()">☰</div>
         </nav>
     </header>
-    
-    <section class="hero">
-        <div class="hero-badge">배민커넥트비즈+ 공식 중개사</div>
-        <h1>TEAM BRO <span>중개사 안내</span></h1>
-        <p>배민커넥트비즈+ 협력사가 되고 싶은 분들을 배민과 연결해드리는 공식 중개사입니다.</p>
-    </section>
-    
-    <section class="bg-light">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">What We Do</span>
-                <h2>중개사 하는 일</h2>
-                <p>TEAM BRO는 딱 하나의 일만 합니다</p>
-            </div>
-            <div class="cards">
-                <div class="card">
-                    <div class="card-icon">🤝</div>
-                    <h3>협력사 모집</h3>
-                    <p>배민커넥트비즈+ 협력사가 되고 싶은 사업자를 모집합니다.</p>
+
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-team">TEAM BRO</span>
+                    <span class="badge-x">✕</span>
+                    <span class="badge-baemin">배민커넥트비즈</span>
+                    <span class="badge-plus">➕</span>
                 </div>
-                <div class="card">
-                    <div class="card-icon">📋</div>
-                    <h3>상담 · 안내</h3>
-                    <p>협력사 조건, 절차, 혜택 등을 상세히 안내해드립니다.</p>
+                <h1>배민커넥트비즈+<br><em>협력사 모집</em> 중개사</h1>
+                <p class="hero-desc">TEAM BRO는 배민커넥트비즈+ 공식 중개사입니다.<br>협력사가 되고 싶은 분들을 배민과 연결해드립니다.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">상담 요청하기 →</a>
+                    <a href="about.html" class="btn btn-outline">중개사 안내</a>
                 </div>
-                <div class="card">
-                    <div class="card-icon">🔗</div>
-                    <h3>배민 연결</h3>
-                    <p>모집된 협력사를 배민과 연결하여 계약을 진행합니다.</p>
+                <div class="social-proof">
+                    <div class="avatar-stack">
+                        <div class="avatar">👤</div>
+                        <div class="avatar">👤</div>
+                        <div class="avatar">👤</div>
+                        <div class="avatar more">+150</div>
+                    </div>
+                    <span><strong>150+</strong> 협력사 연결 완료</span>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <section>
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Process</span>
-                <h2>진행 절차</h2>
-                <p>간단한 4단계로 협력사가 됩니다</p>
-            </div>
-            <div class="timeline">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <div class="step-content">
-                        <h3>📞 문의하기</h3>
-                        <p>전화, 카카오톡, 또는 홈페이지 폼으로 문의해주세요.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <div class="step-content">
-                        <h3>💬 상담 진행</h3>
-                        <p>협력사 조건, 혜택, 절차 등을 상세히 안내해드립니다.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <div class="step-content">
-                        <h3>🤝 배민 연결</h3>
-                        <p>TEAM BRO가 배민과의 계약을 연결해드립니다.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <div class="step-content">
-                        <h3>✅ 협력사 등록</h3>
-                        <p>계약 완료 후 정식 협력사로 등록됩니다.</p>
+            <div class="hero-card">
+                <div class="story-card">
+                    <div class="story-inner">
+                        <div class="story-header">
+                            <div class="story-avatar">BRO</div>
+                            <div class="story-info">
+                                <div class="story-name">teambro_official</div>
+                                <div class="story-badge-text">배민커넥트비즈+ 공식 중개사 ✓</div>
+                            </div>
+                            <div class="story-more">•••</div>
+                        </div>
+                        <div class="story-image">
+                            <div class="story-emoji">🤝</div>
+                            <div class="story-slogan">협력사와 배민을 연결합니다.</div>
+                            <div class="story-stats">
+                                <div class="stat"><span class="stat-value">150+</span><span class="stat-label">연결 완료</span></div>
+                                <div class="stat"><span class="stat-value">전국</span><span class="stat-label">모집 지역</span></div>
+                                <div class="stat"><span class="stat-value">공식</span><span class="stat-label">중개사</span></div>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <span class="action liked">❤️</span>
+                            <span class="action">💬</span>
+                            <span class="action">📤</span>
+                            <span class="action bookmark">🔖</span>
+                        </div>
+                        <div class="story-likes">좋아요 1,818개</div>
+                        <div class="story-caption"><strong>teambro_official</strong> 배민커넥트비즈+ 협력사 모집 중 🚀<br>사업자라면 지금 바로 문의하세요!</div>
+                        <div class="story-tags">
+                            <span class="tag">#협력사모집</span>
+                            <span class="tag">#배민커넥트</span>
+                            <span class="tag">#공식중개사</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <section class="bg-light">
+
+    <section class="services-preview" id="about">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">Target</span>
+                <span class="section-badge">About Us</span>
+                <h2>TEAM BRO는 배민 공식 중개사입니다</h2>
+                <p>우리가 하는 일은 딱 하나, 협력사 모집과 연결</p>
+            </div>
+            <div class="service-grid">
+                <div class="service-card featured">
+                    <div class="service-icon">🤝</div>
+                    <h3>협력사 모집 · 연결</h3>
+                    <p>배민커넥트비즈+ 협력사가 되고 싶은 사업자를 모집하고 배민과 연결해드립니다.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📋</div>
+                    <h3>제휴 상담</h3>
+                    <p>협력사 조건, 절차 안내</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✅</div>
+                    <h3>계약 연결</h3>
+                    <p>배민과의 계약 진행 지원</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📍</div>
+                    <h3>지역 매칭</h3>
+                    <p>희망 지역 협력사 연결</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💬</div>
+                    <h3>문의 응대</h3>
+                    <p>제휴 관련 궁금증 해결</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section" id="process">
+        <div class="container">
+            <div class="process-box">
+                <div class="section-header">
+                    <span class="section-badge">Partnership Process</span>
+                    <h2>협력사 진행 절차</h2>
+                    <p>TEAM BRO가 배민과 연결해드립니다</p>
+                </div>
+                <div class="process-steps-visual">
+                    <div class="p-step">
+                        <div class="p-step-icon">📞<span class="p-step-num">01</span></div>
+                        <h3 class="p-step-title">문의</h3>
+                        <p class="p-step-desc">전화 · 카톡 · 폼</p>
+                    </div>
+                    <div class="p-arrow">→</div>
+                    <div class="p-step">
+                        <div class="p-step-icon">💬<span class="p-step-num">02</span></div>
+                        <h3 class="p-step-title">상담</h3>
+                        <p class="p-step-desc">조건 · 절차 안내</p>
+                    </div>
+                    <div class="p-arrow">→</div>
+                    <div class="p-step">
+                        <div class="p-step-icon">🤝<span class="p-step-num">03</span></div>
+                        <h3 class="p-step-title">연결</h3>
+                        <p class="p-step-desc">배민과 계약</p>
+                    </div>
+                    <div class="p-arrow">→</div>
+                    <div class="p-step">
+                        <div class="p-step-icon">✅<span class="p-step-num">04</span></div>
+                        <h3 class="p-step-title">완료</h3>
+                        <p class="p-step-desc">협력사 등록</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="partner-section" id="partner">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">협력사 모집</span>
                 <h2>이런 분들이 연락합니다</h2>
+                <p>TEAM BRO를 통해 협력사가 된 분들의 공통점입니다.</p>
             </div>
-            <div class="cards">
-                <div class="card">
-                    <div class="card-icon">📄</div>
+            <div class="target-cards">
+                <div class="target-card">
+                    <div class="target-icon">📄</div>
                     <h3>사업자 없어도 OK</h3>
                     <p>개인사업자, 법인사업자 없어도 가능</p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">🚀</div>
+                <div class="target-card">
+                    <div class="target-icon">🚀</div>
                     <h3>배달대행 창업 희망자</h3>
                     <p>기사만 있으면 창업 가능!</p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">📍</div>
+                <div class="target-card">
+                    <div class="target-icon">📍</div>
                     <h3>특정 지역에서 사업하고 싶은 분</h3>
                     <p>본인 지역 기반으로 시작</p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">🏢</div>
+                <div class="target-card">
+                    <div class="target-icon">🏢</div>
                     <h3>배민 플랫폼 활용하고 싶은 분</h3>
                     <p>배민커넥트비즈+ 시스템 이용</p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">💰</div>
+                <div class="target-card">
+                    <div class="target-icon">💰</div>
                     <h3>선정산(익일정산)</h3>
                     <p>오늘 일한거 내일 받자!</p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">🛵</div>
+                <div class="target-card">
+                    <div class="target-icon">🛵</div>
                     <h3>이륜차 리스 & 렌트</h3>
                     <p>신차 리스 & 렌트 전문 팀브로 (신용 상관없음)</p>
                 </div>
             </div>
+            <div class="section-cta"><a href="#contact" class="btn btn-primary">상담 요청하기 →</a></div>
         </div>
     </section>
-    
-    <section class="why-section">
+
+    <section class="benefit-section" id="benefit">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">Why TEAM BRO</span>
-                <h2>왜 TEAM BRO인가요?</h2>
+                <span class="section-badge">Partnership Benefits</span>
+                <h2>TEAM BRO 제휴 혜택</h2>
+                <p>협력사를 위한 실질적인 지원</p>
             </div>
-            <div class="cards">
-                <div class="card why-card">
-                    <div class="card-icon">🏆</div>
-                    <h3>공식 중개사</h3>
-                    <p>배민커넥트비즈+ 공식 인증 중개사로 신뢰할 수 있습니다.</p>
+            <div class="benefit-cards">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>선정산 연계</h3>
+                    <ul>
+                        <li>✓ 협력사 운영 구조에 맞춘 선정산 서비스 연계</li>
+                        <li>✓ 정산 일정·조건 사전 안내</li>
+                        <li>✓ 운영 초기 자금 흐름 부담 완화</li>
+                    </ul>
                 </div>
-                <div class="card why-card">
-                    <div class="card-icon">⚡</div>
-                    <h3>빠른 진행</h3>
-                    <p>문의부터 계약까지 신속하게 진행해드립니다.</p>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📞</div>
+                    <h3>24/7 실시간 상담</h3>
+                    <ul>
+                        <li>✓ 연중무휴 상담 채널 제공</li>
+                        <li>✓ 운영·상담 요청 즉시 연결</li>
+                        <li>✓ 협력사 상황에 맞춘 실무 안내</li>
+                    </ul>
                 </div>
-                <div class="card why-card">
-                    <div class="card-icon">📞</div>
-                    <h3>24시간 상담</h3>
-                    <p>언제든 편하게 문의하실 수 있습니다.</p>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛵</div>
+                    <h3>리스·렌트 연계</h3>
+                    <ul>
+                        <li>✓ 배달용 차량 리스·렌트 제휴 연계</li>
+                        <li>✓ 월 10,000원~ 조건 안내</li>
+                        <li>✓ 차량 조건·계약 절차 중개 지원</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="section-cta"><a href="#contact" class="btn btn-dark">지금 바로 문의하기 →</a></div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Contact</span>
+                <h2>상담 요청</h2>
+                <p>협력사, 라이더, 선정산 신청을 받습니다</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-channels">
+                    <h2>연락처</h2>
+                    <p>편한 방법으로 문의하세요</p>
+                    <div class="channel-cards">
+                        <a href="https://pf.kakao.com/_xxxxx" class="channel-card">
+                            <div class="channel-icon">💬</div>
+                            <div class="channel-info">
+                                <h3>카카오톡 채널</h3>
+                                <p>실시간 상담</p>
+                                <span class="channel-action">채널 추가하기 →</span>
+                            </div>
+                        </a>
+                        <a href="tel:1660-3543" class="channel-card">
+                            <div class="channel-icon">📞</div>
+                            <div class="channel-info">
+                                <h3>전화 문의</h3>
+                                <p class="phone-number">1660-3543</p>
+                                <span class="channel-time">09:00 ~ 익일 08:00</span>
+                            </div>
+                        </a>
+                        <div class="channel-card">
+                            <div class="channel-icon">✉️</div>
+                            <div class="channel-info">
+                                <h3>이메일</h3>
+                                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e9999b86b6dcdbd8d8a987889f8c9bc78a8684">[email&#160;protected]</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrap">
+                    <h2>상담 요청</h2>
+                    <form class="contact-form" id="contactForm">
+                        <!-- 타입 선택 탭 -->
+                        <div class="form-tabs">
+                            <label class="form-tab">
+                                <input type="radio" name="type" value="협력사 신청" checked onchange="switchForm('partner')">
+                                <span>🏢 협력사 신청</span>
+                            </label>
+                            <label class="form-tab">
+                                <input type="radio" name="type" value="라이더 신청" onchange="switchForm('rider')">
+                                <span>🛵 라이더 신청</span>
+                            </label>
+                            <label class="form-tab">
+                                <input type="radio" name="type" value="선정산 신청" onchange="switchForm('settlement')">
+                                <span>💰 선정산 신청</span>
+                            </label>
+                        </div>
+
+                        <!-- 협력사 신청 폼 -->
+                        <div class="form-fields active" id="partnerForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>이름/상호 *</label>
+                                    <input type="text" name="partner_name" placeholder="상호명 또는 대표자명">
+                                </div>
+                                <div class="form-group">
+                                    <label>연락처 *</label>
+                                    <input type="tel" name="partner_phone" placeholder="010-0000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>사업자등록번호</label>
+                                <input type="text" name="partner_biznum" placeholder="000-00-00000 (없어도 가능)">
+                            </div>
+                            <div class="form-group">
+                                <label>희망 지역</label>
+                                <input type="text" name="partner_region" placeholder="ex) 서울 강남구, 경기 수원시">
+                            </div>
+                            <div class="form-group">
+                                <label>문의 내용</label>
+                                <textarea name="partner_message" placeholder="궁금한 점이나 요청사항을 적어주세요"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 라이더 신청 폼 -->
+                        <div class="form-fields" id="riderForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>이름 *</label>
+                                    <input type="text" name="rider_name" placeholder="이름">
+                                </div>
+                                <div class="form-group">
+                                    <label>연락처 *</label>
+                                    <input type="tel" name="rider_phone" placeholder="010-0000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>활동 지역 *</label>
+                                <input type="text" name="rider_region" placeholder="ex) 서울 강남구, 경기 수원시">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>경력 여부 *</label>
+                                    <select name="rider_experience">
+                                        <option value="">선택하세요</option>
+                                        <option value="신입">신입</option>
+                                        <option value="경력">경력</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>근무 가능 시간대 *</label>
+                                    <select name="rider_time">
+                                        <option value="">선택하세요</option>
+                                        <option value="오전 (06:00~12:00)">오전 (06:00~12:00)</option>
+                                        <option value="오후 (12:00~18:00)">오후 (12:00~18:00)</option>
+                                        <option value="저녁 (18:00~24:00)">저녁 (18:00~24:00)</option>
+                                        <option value="심야 (24:00~06:00)">심야 (24:00~06:00)</option>
+                                        <option value="풀타임">풀타임</option>
+                                        <option value="협의 가능">협의 가능</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>문의 내용</label>
+                                <textarea name="rider_message" placeholder="추가 문의사항이 있으시면 적어주세요"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 선정산 신청 폼 -->
+                        <div class="form-fields" id="settlementForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>이름 *</label>
+                                    <input type="text" name="settlement_name" placeholder="이름">
+                                </div>
+                                <div class="form-group">
+                                    <label>상호</label>
+                                    <input type="text" name="settlement_company" placeholder="상호명 (없으면 생략)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>연락처 *</label>
+                                <input type="tel" name="settlement_phone" placeholder="010-0000-0000">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>신청 구분 *</label>
+                                    <select name="settlement_type">
+                                        <option value="">선택하세요</option>
+                                        <option value="라이더">라이더</option>
+                                        <option value="협력사">협력사</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>이용 플랫폼 *</label>
+                                    <select name="settlement_platform">
+                                        <option value="">선택하세요</option>
+                                        <option value="배민">배민</option>
+                                        <option value="쿠팡">쿠팡</option>
+                                        <option value="배민+쿠팡">배민+쿠팡</option>
+                                        <option value="기타">기타</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>문의 내용</label>
+                                <textarea name="settlement_message" placeholder="추가 문의사항이 있으시면 적어주세요"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="form-submit" id="submitBtn">상담 요청하기</button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <section class="cta-section">
-        <div class="cta-box">
-            <h2>지금 바로 상담받아보세요</h2>
-            <p>협력사 신청부터 계약까지 TEAM BRO가 도와드립니다.</p>
-            <div class="cta-btns">
-                <a href="index.html#contact" class="btn btn-primary">상담 요청하기 →</a>
-                <a href="tel:1660-3543" class="btn btn-outline">📞 1660-3543</a>
+        <div class="container">
+            <h2>배민커넥트비즈+ 협력사, 지금 신청하세요</h2>
+            <p>TEAM BRO가 배민과 연결해드립니다.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-dark">상담 요청</a>
+                <a href="tel:1660-3543" class="btn btn-light">📞 1660-3543</a>
             </div>
         </div>
     </section>
-    
+
     <footer>
-        <div class="footer-content">
+        <div class="container">
             <div class="footer-top">
-                <div class="footer-col">
-                    <h4>TEAM BRO</h4>
-                    <p>배민커넥트비즈+ 공식 중개사</p>
-                    <p>(주)팀브로</p>
+                <div class="footer-brand">
+                    <span class="logo">TEAM BRO</span>
+                    <p>배민커넥트비즈+ 공식 중개사<br>(주)팀브로</p>
+                    <div class="footer-social"><a href="#">📸</a><a href="#">💬</a></div>
                 </div>
-                <div class="footer-col">
-                    <h4>안내</h4>
-                    <a href="about.html">중개사 안내</a>
-                    <a href="index.html#process">진행 절차</a>
-                </div>
-                <div class="footer-col">
-                    <h4>문의</h4>
-                    <a href="index.html#contact">상담 요청</a>
-                    <a href="tel:1660-3543">1660-3543</a>
-                </div>
-                <div class="footer-col">
-                    <h4>연락처</h4>
-                    <p>📞 1660-3543</p>
-                    <p>✉️ pro_5211@naver.com</p>
-                    <p>🕐 09:00~익일 08:00</p>
-                </div>
+                <div class="footer-links"><h4>안내</h4><ul><li><a href="about.html">중개사 안내</a></li><li><a href="#process">진행 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
+                <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 요청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
+                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e8989a87b7dddad9d9a886899e8d9ac68b8785">[email&#160;protected]</a></li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
             <div class="footer-bottom">
-                <p>© 2024 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p>
-                <p>상호명 : 주식회사 팀브로 | 사업자등록번호 : 445-87-03031</p>
-                <p>주소 : 대구광역시 달서구 야외음악당로7길 57</p>
-                <div class="footer-links">
+                <div class="footer-company">
+                    <p>© 2024 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p>
+                    <p>상호명 : 주식회사 팀브로 | 사업자등록번호 : 445-87-03031</p>
+                    <p>주소 : 대구광역시 달서구 야외음악당로7길 57</p>
+                </div>
+                <div class="footer-legal">
                     <a href="terms.html">이용약관</a>
                     <a href="privacy.html">개인정보처리방침</a>
+                    <a href="admin.html">관리자</a>
                 </div>
             </div>
         </div>
     </footer>
-    
-    <script>
-        var menuBtn = document.getElementById('menuBtn');
-        var mobileNav = document.getElementById('mobileNav');
-        menuBtn.onclick = function() {
-            if (mobileNav.classList.contains('active')) {
-                mobileNav.classList.remove('active');
-                menuBtn.textContent = '☰';
-            } else {
-                mobileNav.classList.add('active');
-                menuBtn.textContent = '✕';
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        const SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3NTYyMjAsImV4cCI6MjA1MjMzMjIyMH0.Ur_aRxihGz8aFj_VCl_gxLWKNyJAGnlFi4vY_KwDNME';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 모바일 메뉴 토글
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mobileNav');
+            const btn = document.getElementById('mobileMenuBtn');
+            const isOpen = nav.classList.toggle('active');
+            btn.textContent = isOpen ? '✕' : '☰';
+            document.body.classList.toggle('menu-open', isOpen);
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').classList.remove('active');
+            document.getElementById('mobileMenuBtn').textContent = '☰';
+            document.body.classList.remove('menu-open');
+        }
+
+        // 폼 전환 함수
+        function switchForm(formType) {
+            document.querySelectorAll('.form-fields').forEach(f => f.classList.remove('active'));
+            document.getElementById(formType + 'Form').classList.add('active');
+            
+            // 버튼 텍스트 변경
+            const btn = document.getElementById('submitBtn');
+            btn.textContent = '상담 요청하기';
+        }
+
+        function toast(msg, type='success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show ' + type;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        let currentPopup = 0;
+        let popups = [];
+
+        async function loadPopups() {
+            try {
+                const { data } = await supabase.from('popups').select('*').eq('active', true);
+                popups = data || [];
+                if (popups.length === 0 || localStorage.getItem('popupClosed') === new Date().toDateString()) {
+                    document.getElementById('popupOverlay').classList.add('hidden');
+                    return;
+                }
+                document.getElementById('popupOverlay').classList.remove('hidden');
+                document.getElementById('popupSlides').innerHTML = popups.map((p, i) => `
+                    <div class="popup-slide ${i===0?'active':''}" data-popup="${i}">
+                        <div class="popup-image">
+                            ${p.image_url ? `<img src="${p.image_url}">` : `<div class="no-image">${p.icon||'📢'}</div>`}
+                        </div>
+                        <div class="popup-content">
+                            <h3 class="popup-title">${p.title}</h3>
+                            <p class="popup-desc">${p.description||''}</p>
+                            <a href="${p.btn_link||'#contact'}" class="popup-btn" onclick="closePopup()">${p.btn_text||'자세히 보기 →'}</a>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('popupNav').innerHTML = popups.map((_, i) => `
+                    <button class="popup-dot ${i===0?'active':''}" onclick="goToPopup(${i})"></button>
+                `).join('');
+            } catch(e) { console.log('Popup error', e); }
+        }
+
+        function showPopup(index) {
+            document.querySelectorAll('.popup-slide').forEach((s,i) => s.classList.toggle('active', i===index));
+            document.querySelectorAll('.popup-dot').forEach((d,i) => d.classList.toggle('active', i===index));
+            currentPopup = index;
+        }
+        function nextPopup() { if(popups.length) showPopup((currentPopup+1)%popups.length); }
+        function prevPopup() { if(popups.length) showPopup((currentPopup-1+popups.length)%popups.length); }
+        function goToPopup(i) { showPopup(i); }
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.add('hidden');
+            if(document.getElementById('todayClose').checked) localStorage.setItem('popupClosed', new Date().toDateString());
+        }
+
+        async function loadNotice() {
+            try {
+                const { data } = await supabase.from('notice').select('*').limit(1).single();
+                if (data && data.show) {
+                    const banner = document.getElementById('noticeBanner');
+                    banner.classList.remove('hidden');
+                    if (data.color) banner.classList.add(data.color);
+                    document.getElementById('noticeText').textContent = data.text || '';
+                    document.body.classList.add('has-notice');
+                }
+            } catch(e) { console.log('Notice error', e); }
+        }
+        function closeBanner() { 
+            document.getElementById('noticeBanner').classList.add('hidden');
+            document.body.classList.remove('has-notice');
+        }
+
+        // 폼 제출
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            const originalText = btn.textContent;
+            btn.textContent = '신청 중...';
+
+            const formType = document.querySelector('input[name="type"]:checked').value;
+            let formData = { type: formType, status: '신규' };
+
+            // 타입별 데이터 수집
+            if (formType === '협력사 신청') {
+                formData.name = document.querySelector('input[name="partner_name"]').value;
+                formData.phone = document.querySelector('input[name="partner_phone"]').value;
+                formData.biz_num = document.querySelector('input[name="partner_biznum"]').value;
+                formData.region = document.querySelector('input[name="partner_region"]').value;
+                formData.message = document.querySelector('textarea[name="partner_message"]').value;
+            } else if (formType === '라이더 신청') {
+                formData.name = document.querySelector('input[name="rider_name"]').value;
+                formData.phone = document.querySelector('input[name="rider_phone"]').value;
+                formData.region = document.querySelector('input[name="rider_region"]').value;
+                formData.experience = document.querySelector('select[name="rider_experience"]').value;
+                formData.work_time = document.querySelector('select[name="rider_time"]').value;
+                formData.message = document.querySelector('textarea[name="rider_message"]').value;
+            } else if (formType === '선정산 신청') {
+                formData.name = document.querySelector('input[name="settlement_name"]').value;
+                formData.company = document.querySelector('input[name="settlement_company"]').value;
+                formData.phone = document.querySelector('input[name="settlement_phone"]').value;
+                formData.settlement_type = document.querySelector('select[name="settlement_type"]').value;
+                formData.platform = document.querySelector('select[name="settlement_platform"]').value;
+                formData.message = document.querySelector('textarea[name="settlement_message"]').value;
+            }
+
+            try {
+                const { error } = await supabase.from('submissions').insert([formData]);
+                if (error) { 
+                    toast('신청 실패. 다시 시도해주세요.', 'error'); 
+                    console.log(error);
+                } else { 
+                    toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); 
+                    this.reset();
+                    switchForm('partner');
+                }
+            } catch(e) { 
+                toast('신청 실패. 다시 시도해주세요.', 'error'); 
+                console.log(e);
+            }
+            btn.disabled = false;
+            btn.textContent = originalText;
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('scrollIndicator').style.width = (scrollTop/docHeight*100) + '%';
+            document.getElementById('header').classList.toggle('scrolled', scrollTop > 50);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if(target) {
+                        closeMobileMenu();
+                        target.scrollIntoView({behavior:'smooth'});
+                    }
+                }
+            });
+        });
+
+        loadPopups();
+        loadNotice();
+
+        // 약관 모달
+        const termsData = {
+            terms: {
+                title: '이용약관',
+                content: `
+                    <h4>이용약관</h4>
+                    <p>본 약관은 주식회사 팀브로(이하 "회사")가 제공하는 배달 중개 및 관련 서비스의 이용과 관련하여 회사와 이용자 간의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+                    <p>회사는 라이더와 협력사를 연결하는 중개 플랫폼으로서, 라이더와 협력사 간의 개별 계약, 거래, 정산에 직접 관여하지 않습니다. 서비스 이용자는 본 약관에 동의함으로써 관련 법령 및 본 약관을 준수할 의무가 있습니다.</p>
+                    <p>본 약관에 명시되지 않은 사항은 관계 법령 및 상관례에 따릅니다.</p>
+                `
+            },
+            privacy: {
+                title: '개인정보처리방침',
+                content: `
+                    <h4>개인정보처리방침</h4>
+                    <p>주식회사 팀브로(이하 "회사")는 「개인정보 보호법」 등 관련 법령을 준수하며, 이용자의 개인정보를 보호하기 위하여 최선을 다하고 있습니다.</p>
+                    <p>회사는 서비스 제공을 위하여 최소한의 개인정보를 수집·이용하며, 수집된 개인정보는 목적 외 용도로 이용되지 않습니다. 이용자는 언제든지 개인정보 열람, 정정, 삭제를 요청할 수 있습니다.</p>
+                    <p>회사는 개인정보 보호를 위하여 기술적·관리적 보호조치를 시행하고 있습니다.</p>
+                `
             }
         };
-    </script>
-</body>
-</html>
+
+        function openTerms(type) {
+            const data = termsData[type];
+            if (!data) return;
+            document.getElementById('termsTitle').textContent = data.title;
+            document.getElementById('termsContent').innerHTML = data.content;
+            document.getElementById('termsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
