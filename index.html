@@ -853,7 +853,7 @@ body.has-notice .scroll-indicator{top:44px}
         }
 
         // 폼 전환 함수
-        function switchForm(formType) {
+        window.switchForm = function(formType) {
             document.querySelectorAll('.form-fields').forEach(f => f.classList.remove('active'));
             document.getElementById(formType + 'Form').classList.add('active');
             
@@ -971,7 +971,7 @@ body.has-notice .scroll-indicator{top:44px}
                 } else { 
                     toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); 
                     this.reset();
-                    switchForm('partner');
+                    window.switchForm('partner');
                 }
             } catch(e) { 
                 toast('신청 실패. 다시 시도해주세요.', 'error'); 
