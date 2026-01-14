@@ -276,8 +276,8 @@ footer{background:#000;padding:60px 24px 24px;border-top:1px solid var(--card-bo
 body.has-notice .scroll-indicator{top:44px}
 
 /* 토스트 */
-.toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:16px 24px;border-radius:12px;font-family:'BMJUA',sans-serif;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s}
-.toast.show{transform:translateY(0);opacity:1}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:#1e293b;color:#fff;padding:24px 40px;border-radius:16px;font-family:'BMJUA',sans-serif;font-size:1.2rem;z-index:99999;opacity:0;transition:all .3s;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.toast.show{transform:translate(-50%,-50%) scale(1);opacity:1}
 .toast.success{background:#22c55e}
 .toast.error{background:#ef4444}
 
@@ -665,15 +665,15 @@ body.has-notice .scroll-indicator{top:44px}
                         <!-- 타입 선택 탭 -->
                         <div class="form-tabs">
                             <label class="form-tab">
-                                <input type="radio" name="type" value="협력사 신청" checked onchange="switchForm('partner')">
+                                <input type="radio" name="type" value="협력사 신청" data-form="partner" checked>
                                 <span>🏢 협력사 신청</span>
                             </label>
                             <label class="form-tab">
-                                <input type="radio" name="type" value="라이더 신청" onchange="switchForm('rider')">
+                                <input type="radio" name="type" value="라이더 신청" data-form="rider">
                                 <span>🛵 라이더 신청</span>
                             </label>
                             <label class="form-tab">
-                                <input type="radio" name="type" value="선정산 신청" onchange="switchForm('settlement')">
+                                <input type="radio" name="type" value="선정산 신청" data-form="settlement">
                                 <span>💰 선정산 신청</span>
                             </label>
                         </div>
@@ -856,14 +856,16 @@ body.has-notice .scroll-indicator{top:44px}
         }
 
         // 폼 전환 함수
-        window.switchForm = function(formType) {
-            document.querySelectorAll('.form-fields').forEach(f => f.classList.remove('active'));
-            document.getElementById(formType + 'Form').classList.add('active');
-            
-            // 버튼 텍스트 변경
-            const btn = document.getElementById('submitBtn');
-            btn.textContent = '상담 요청하기';
-        }
+        // 폼 전환
+        document.querySelectorAll('input[name="type"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                var formType = this.getAttribute('data-form');
+                document.querySelectorAll('.form-fields').forEach(function(f) {
+                    f.classList.remove('active');
+                });
+                document.getElementById(formType + 'Form').classList.add('active');
+            });
+        });
 
         function toast(msg, type='success') {
             const t = document.getElementById('toast');
@@ -910,6 +912,8 @@ body.has-notice .scroll-indicator{top:44px}
         // 폼 제출
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             const originalText = btn.textContent;
@@ -949,7 +953,11 @@ body.has-notice .scroll-indicator{top:44px}
                 } else { 
                     toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); 
                     this.reset();
-                    window.switchForm('partner');
+                    document.querySelectorAll('.form-fields').forEach(function(f) { f.classList.remove('active'); });
+                    document.getElementById('partnerForm').classList.add('active');
+                    document.querySelector('input[data-form="partner"]').checked = true;
+                    // 폼 위치로 스크롤
+                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             } catch(e) { 
                 toast('신청 실패. 다시 시도해주세요.', 'error'); 
@@ -957,6 +965,7 @@ body.has-notice .scroll-indicator{top:44px}
             }
             btn.disabled = false;
             btn.textContent = originalText;
+            return false;
         });
 
         window.addEventListener('scroll', () => {
