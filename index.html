@@ -34,6 +34,41 @@ body.menu-open{overflow:hidden}
 .notice-text{font-family:'BMJUA',sans-serif;color:#000;font-size:.95rem}
 .notice-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.2rem;cursor:pointer;color:#000}
 
+/* 팝업 */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.popup-overlay.hidden{display:none}
+.popup-container{position:relative;width:100%;max-width:480px}
+.popup-close{position:absolute;top:-50px;right:0;width:40px;height:40px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.2rem;cursor:pointer;z-index:10;transition:all .3s}
+.popup-close:hover{background:#ef4444;border-color:#ef4444;transform:rotate(90deg)}
+.popup-slide{display:none;background:var(--card);border:2px solid var(--mint);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.popup-slide.active{display:block}
+.popup-image{width:100%;height:280px;background:var(--bg-light);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.popup-image img{width:100%;height:100%;object-fit:cover}
+.popup-image .no-image{font-size:5rem;animation:float 3s ease-in-out infinite}
+.popup-content{padding:24px}
+.popup-title{font-family:'BMHANNAPro',sans-serif;font-size:1.5rem;margin-bottom:10px;color:#fff}
+.popup-desc{color:var(--gray-300);font-size:.95rem;margin-bottom:20px;line-height:1.7}
+.popup-btn{display:inline-block;background:var(--mint);color:#000;padding:14px 28px;border-radius:100px;font-family:'BMJUA',sans-serif;text-decoration:none;font-size:1rem;transition:all .3s}
+.popup-btn:hover{transform:scale(1.05);background:var(--mint-light)}
+.popup-nav{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.popup-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:all .3s}
+.popup-dot.active{background:var(--mint);width:28px;border-radius:6px}
+.popup-arrow{position:absolute;top:50%;width:44px;height:44px;background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.5rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.popup-arrow:hover{background:var(--mint);color:#000;border-color:var(--mint)}
+.popup-arrow.prev{left:-60px;transform:translateY(-50%)}
+.popup-arrow.next{right:-60px;transform:translateY(-50%)}
+.popup-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:0 4px}
+.popup-today{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.6);font-size:.85rem;cursor:pointer}
+.popup-today input{width:18px;height:18px;accent-color:var(--mint)}
+.popup-close-btn{background:none;border:none;color:rgba(255,255,255,.6);font-size:.9rem;cursor:pointer}
+.popup-close-btn:hover{color:#fff}
+
+@media(max-width:600px){
+    .popup-arrow.prev{left:10px}
+    .popup-arrow.next{right:10px}
+    .popup-close{top:-45px;right:5px}
+}
+
 /* 플로팅 버튼 */
 .floating-btns{position:fixed;right:20px;bottom:20px;z-index:1000;display:flex;flex-direction:column;gap:10px}
 .float-btn{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:24px;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.3)}
@@ -300,6 +335,21 @@ body.has-notice .scroll-indicator{top:44px}
     <div class="notice-banner hidden" id="noticeBanner">
         <span class="notice-text" id="noticeText"></span>
         <button class="notice-close" onclick="closeBanner()">✕</button>
+    </div>
+
+    <!-- 팝업 오버레이 -->
+    <div class="popup-overlay hidden" id="popupOverlay">
+        <div class="popup-container">
+            <button class="popup-close" onclick="closePopup()">✕</button>
+            <button class="popup-arrow prev" onclick="prevPopup()">‹</button>
+            <button class="popup-arrow next" onclick="nextPopup()">›</button>
+            <div id="popupSlides"></div>
+            <div class="popup-nav" id="popupNav"></div>
+            <div class="popup-footer">
+                <label class="popup-today"><input type="checkbox" id="todayClose">오늘 하루 보지 않기</label>
+                <button class="popup-close-btn" onclick="closePopup()">닫기</button>
+            </div>
+        </div>
     </div>
 
     <!-- 모바일 메뉴 오버레이 -->
@@ -808,6 +858,105 @@ body.has-notice .scroll-indicator{top:44px}
             setTimeout(function() { t.classList.remove('show'); }, 3000);
         }
 
+        // 팝업 관련 변수 및 함수
+        var popups = [];
+        var currentPopup = 0;
+
+        async function loadPopups() {
+            // 오늘 하루 보지 않기 체크
+            if (localStorage.getItem('popupClosed') === new Date().toDateString()) {
+                return;
+            }
+            
+            try {
+                var result = await supabase.from('popups').select('*').eq('active', true).order('id', { ascending: false });
+                popups = result.data || [];
+                
+                if (popups.length === 0) return;
+                
+                renderPopups();
+                document.getElementById('popupOverlay').classList.remove('hidden');
+            } catch(e) { 
+                console.log('Popup error', e); 
+            }
+        }
+
+        function renderPopups() {
+            var slidesHtml = '';
+            var dotsHtml = '';
+            
+            popups.forEach(function(p, i) {
+                slidesHtml += '<div class="popup-slide' + (i === currentPopup ? ' active' : '') + '">';
+                slidesHtml += '<div class="popup-image">';
+                if (p.image_url) {
+                    slidesHtml += '<img src="' + p.image_url + '" alt="' + p.title + '">';
+                } else {
+                    slidesHtml += '<span class="no-image">' + (p.icon || '📢') + '</span>';
+                }
+                slidesHtml += '</div>';
+                slidesHtml += '<div class="popup-content">';
+                slidesHtml += '<h3 class="popup-title">' + p.title + '</h3>';
+                if (p.description) {
+                    slidesHtml += '<p class="popup-desc">' + p.description + '</p>';
+                }
+                if (p.btn_link) {
+                    slidesHtml += '<a href="' + p.btn_link + '" class="popup-btn" onclick="closePopup()">' + (p.btn_text || '자세히보기') + '</a>';
+                }
+                slidesHtml += '</div></div>';
+                
+                dotsHtml += '<button class="popup-dot' + (i === currentPopup ? ' active' : '') + '" onclick="goToPopup(' + i + ')"></button>';
+            });
+            
+            document.getElementById('popupSlides').innerHTML = slidesHtml;
+            document.getElementById('popupNav').innerHTML = popups.length > 1 ? dotsHtml : '';
+            
+            // 화살표 표시/숨김
+            var prevBtn = document.querySelector('.popup-arrow.prev');
+            var nextBtn = document.querySelector('.popup-arrow.next');
+            if (prevBtn && nextBtn) {
+                prevBtn.style.display = popups.length > 1 ? 'flex' : 'none';
+                nextBtn.style.display = popups.length > 1 ? 'flex' : 'none';
+            }
+        }
+
+        function updatePopupSlide() {
+            var slides = document.querySelectorAll('.popup-slide');
+            var dots = document.querySelectorAll('.popup-dot');
+            
+            slides.forEach(function(slide, i) {
+                slide.classList.toggle('active', i === currentPopup);
+            });
+            dots.forEach(function(dot, i) {
+                dot.classList.toggle('active', i === currentPopup);
+            });
+        }
+
+        window.prevPopup = function() {
+            if (currentPopup > 0) {
+                currentPopup--;
+                updatePopupSlide();
+            }
+        };
+
+        window.nextPopup = function() {
+            if (currentPopup < popups.length - 1) {
+                currentPopup++;
+                updatePopupSlide();
+            }
+        };
+
+        window.goToPopup = function(index) {
+            currentPopup = index;
+            updatePopupSlide();
+        };
+
+        window.closePopup = function() {
+            if (document.getElementById('todayClose').checked) {
+                localStorage.setItem('popupClosed', new Date().toDateString());
+            }
+            document.getElementById('popupOverlay').classList.add('hidden');
+        };
+
         async function loadNotice() {
             try {
                 var result = await supabase.from('notice').select('*').limit(1).maybeSingle();
@@ -908,6 +1057,7 @@ body.has-notice .scroll-indicator{top:44px}
             });
         });
 
+        loadPopups();
         loadNotice();
     </script>
 </body>
