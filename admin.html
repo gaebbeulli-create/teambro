@@ -97,6 +97,17 @@
         
         .empty{text-align:center;padding:40px;color:#808090}
         .empty span{font-size:2.5rem;display:block;margin-bottom:10px}
+        
+        .upload-box{background:#0a0a0f;border:2px dashed #252530;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .3s;position:relative}
+        .upload-box:hover{border-color:#2dd4bf}
+        .upload-box.dragover{border-color:#2dd4bf;background:rgba(45,212,191,.1)}
+        .upload-preview{padding:20px}
+        .upload-icon{font-size:3rem;display:block;margin-bottom:10px}
+        .upload-preview p{color:#808090;margin-bottom:4px}
+        .upload-preview small{color:#606070;font-size:.8rem}
+        .remove-img{position:absolute;top:10px;right:10px;background:#ef4444;border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:.8rem}
+        .remove-img:hover{background:#dc2626}
+        .thumb-img{width:60px;height:40px;object-fit:cover;border-radius:6px;background:#252530}
     </style>
 </head>
 <body>
@@ -165,7 +176,22 @@
                     <div class="form-grid">
                         <div class="form-group"><label>제목 *</label><input type="text" id="pTitle"></div>
                         <div class="form-group"><label>아이콘</label><input type="text" id="pIcon" placeholder="📢"></div>
-                        <div class="form-group"><label>이미지 URL</label><input type="text" id="pImg" placeholder="https://..."></div>
+                    </div>
+                    <div class="form-group">
+                        <label>이미지 업로드</label>
+                        <div class="upload-box" id="uploadBox">
+                            <input type="file" id="pImageFile" accept="image/*" style="display:none">
+                            <div class="upload-preview" id="uploadPreview">
+                                <span class="upload-icon">📷</span>
+                                <p>클릭하여 이미지 선택</p>
+                                <small>JPG, PNG, GIF (최대 5MB)</small>
+                            </div>
+                            <img id="previewImg" style="display:none;max-width:100%;max-height:200px;border-radius:8px;">
+                            <button type="button" class="remove-img" id="removeImg" style="display:none">✕ 이미지 삭제</button>
+                        </div>
+                        <input type="hidden" id="pImg">
+                    </div>
+                    <div class="form-grid">
                         <div class="form-group"><label>버튼 텍스트</label><input type="text" id="pBtnTxt" placeholder="자세히보기"></div>
                         <div class="form-group"><label>버튼 링크</label><input type="text" id="pBtnLink" placeholder="#contact"></div>
                         <div class="form-group"><label>활성화</label><select id="pActive"><option value="true">활성</option><option value="false">비활성</option></select></div>
@@ -177,7 +203,7 @@
                     <div class="table-head"><h3>팝업 목록</h3></div>
                     <div class="table-wrap">
                         <table>
-                            <thead><tr><th>제목</th><th>아이콘</th><th>상태</th><th>관리</th></tr></thead>
+                            <thead><tr><th>미리보기</th><th>제목</th><th>상태</th><th>관리</th></tr></thead>
                             <tbody id="popupTable"></tbody>
                         </table>
                     </div>
@@ -428,6 +454,105 @@
         };
 
         // 팝업 관리
+        var uploadedImageUrl = '';
+        
+        // 이미지 업로드 박스 클릭
+        document.getElementById('uploadBox').onclick = function(e) {
+            if (e.target.id !== 'removeImg') {
+                document.getElementById('pImageFile').click();
+            }
+        };
+        
+        // 드래그 앤 드롭
+        var uploadBox = document.getElementById('uploadBox');
+        uploadBox.ondragover = function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        };
+        uploadBox.ondragleave = function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        };
+        uploadBox.ondrop = function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            var files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleImageUpload(files[0]);
+            }
+        };
+        
+        // 파일 선택
+        document.getElementById('pImageFile').onchange = function(e) {
+            if (e.target.files.length > 0) {
+                handleImageUpload(e.target.files[0]);
+            }
+        };
+        
+        // 이미지 삭제
+        document.getElementById('removeImg').onclick = function(e) {
+            e.stopPropagation();
+            uploadedImageUrl = '';
+            document.getElementById('pImg').value = '';
+            document.getElementById('previewImg').style.display = 'none';
+            document.getElementById('uploadPreview').style.display = 'block';
+            document.getElementById('removeImg').style.display = 'none';
+            document.getElementById('pImageFile').value = '';
+        };
+        
+        async function handleImageUpload(file) {
+            // 파일 크기 체크 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                toast('파일 크기는 5MB 이하만 가능합니다', 'error');
+                return;
+            }
+            
+            // 이미지 파일 체크
+            if (!file.type.startsWith('image/')) {
+                toast('이미지 파일만 업로드 가능합니다', 'error');
+                return;
+            }
+            
+            // 미리보기 표시
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('previewImg').style.display = 'block';
+                document.getElementById('uploadPreview').style.display = 'none';
+                document.getElementById('removeImg').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            
+            // Supabase Storage에 업로드
+            toast('이미지 업로드 중...');
+            
+            var fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.]/g, '_');
+            
+            try {
+                var result = await sb.storage.from('popups').upload(fileName, file, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+                
+                if (result.error) {
+                    console.log('업로드 에러:', result.error);
+                    toast('업로드 실패: ' + result.error.message, 'error');
+                    return;
+                }
+                
+                // 공개 URL 가져오기
+                var urlResult = sb.storage.from('popups').getPublicUrl(fileName);
+                uploadedImageUrl = urlResult.data.publicUrl;
+                document.getElementById('pImg').value = uploadedImageUrl;
+                
+                toast('이미지 업로드 완료!');
+                console.log('업로드된 URL:', uploadedImageUrl);
+            } catch(e) {
+                console.log('업로드 예외:', e);
+                toast('업로드 실패', 'error');
+            }
+        }
+
         function loadPopups() {
             sb.from('popups').select('*').order('id', { ascending: false }).then(function(res) {
                 var list = res.data || [];
@@ -439,8 +564,14 @@
                 var html = '';
                 list.forEach(function(p) {
                     html += '<tr>';
+                    html += '<td>';
+                    if (p.image_url) {
+                        html += '<img src="' + p.image_url + '" class="thumb-img">';
+                    } else {
+                        html += '<span style="font-size:1.5rem">' + (p.icon || '📢') + '</span>';
+                    }
+                    html += '</td>';
                     html += '<td>' + p.title + '</td>';
-                    html += '<td>' + (p.icon || '📢') + '</td>';
                     html += '<td><span class="badge ' + (p.active ? 'new' : 'done') + '">' + (p.active ? '활성' : '비활성') + '</span></td>';
                     html += '<td><button class="btn btn-view" onclick="togglePopup(' + p.id + ',' + !p.active + ')">' + (p.active ? '비활성화' : '활성화') + '</button><button class="btn btn-del" onclick="delPopup(' + p.id + ')">삭제</button></td>';
                     html += '</tr>';
@@ -452,22 +583,32 @@
         document.getElementById('savePopupBtn').onclick = function() {
             var title = document.getElementById('pTitle').value.trim();
             if (!title) { toast('제목을 입력하세요', 'error'); return; }
+            
+            var imageUrl = document.getElementById('pImg').value || uploadedImageUrl;
+            
             sb.from('popups').insert([{
                 title: title,
                 icon: document.getElementById('pIcon').value.trim() || '📢',
-                image_url: document.getElementById('pImg').value.trim(),
+                image_url: imageUrl,
                 description: document.getElementById('pDesc').value.trim(),
                 btn_text: document.getElementById('pBtnTxt').value.trim() || '자세히보기',
                 btn_link: document.getElementById('pBtnLink').value.trim() || '#contact',
                 active: document.getElementById('pActive').value === 'true'
             }]).then(function() {
                 toast('팝업 추가됨');
+                // 폼 초기화
                 document.getElementById('pTitle').value = '';
                 document.getElementById('pIcon').value = '';
                 document.getElementById('pImg').value = '';
                 document.getElementById('pDesc').value = '';
                 document.getElementById('pBtnTxt').value = '';
                 document.getElementById('pBtnLink').value = '';
+                // 이미지 업로드 초기화
+                uploadedImageUrl = '';
+                document.getElementById('previewImg').style.display = 'none';
+                document.getElementById('uploadPreview').style.display = 'block';
+                document.getElementById('removeImg').style.display = 'none';
+                document.getElementById('pImageFile').value = '';
                 loadPopups();
             });
         };
