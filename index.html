@@ -35,11 +35,11 @@ body.menu-open{overflow:hidden}
 .notice-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.2rem;cursor:pointer;color:#000}
 
 /* 팝업 */
-.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:20px;backdrop-filter:blur(8px);overflow-y:auto}
 .popup-overlay.hidden{display:none}
-.popup-container{position:relative;width:100%;max-width:480px}
-.popup-close{position:absolute;top:-50px;right:0;width:40px;height:40px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.2rem;cursor:pointer;z-index:10;transition:all .3s}
-.popup-close:hover{background:#ef4444;border-color:#ef4444;transform:rotate(90deg)}
+.popup-container{position:relative;width:100%;max-width:480px;margin:auto}
+.popup-close{position:absolute;top:10px;right:10px;width:36px;height:36px;background:rgba(0,0,0,.7);border:2px solid rgba(255,255,255,.3);border-radius:50%;color:#fff;font-size:1.2rem;cursor:pointer;z-index:10;transition:all .3s}
+.popup-close:hover{background:#ef4444;border-color:#ef4444}
 .popup-slide{display:none;background:var(--card);border:2px solid var(--mint);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .popup-slide.active{display:block}
 .popup-image{width:100%;background:var(--bg-light);display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -53,10 +53,10 @@ body.menu-open{overflow:hidden}
 .popup-nav{display:flex;justify-content:center;gap:8px;margin-top:16px}
 .popup-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:all .3s}
 .popup-dot.active{background:var(--mint);width:28px;border-radius:6px}
-.popup-arrow{position:absolute;top:50%;width:44px;height:44px;background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.5rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.popup-arrow{position:absolute;top:50%;width:40px;height:40px;background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:1.3rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
 .popup-arrow:hover{background:var(--mint);color:#000;border-color:var(--mint)}
-.popup-arrow.prev{left:-60px;transform:translateY(-50%)}
-.popup-arrow.next{right:-60px;transform:translateY(-50%)}
+.popup-arrow.prev{left:10px;transform:translateY(-50%)}
+.popup-arrow.next{right:10px;transform:translateY(-50%)}
 .popup-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:0 4px}
 .popup-today{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.6);font-size:.85rem;cursor:pointer}
 .popup-today input{width:18px;height:18px;accent-color:var(--mint)}
@@ -64,9 +64,14 @@ body.menu-open{overflow:hidden}
 .popup-close-btn:hover{color:#fff}
 
 @media(max-width:600px){
-    .popup-arrow.prev{left:10px}
-    .popup-arrow.next{right:10px}
-    .popup-close{top:-45px;right:5px}
+    .popup-overlay{padding:10px;align-items:flex-start}
+    .popup-container{margin:10px auto}
+    .popup-close{top:10px;right:10px;width:32px;height:32px;font-size:1rem}
+    .popup-content{padding:16px}
+    .popup-title{font-size:1.2rem}
+    .popup-arrow{width:32px;height:32px;font-size:1rem}
+    .popup-arrow.prev{left:5px}
+    .popup-arrow.next{right:5px}
 }
 
 /* 플로팅 버튼 */
