@@ -215,12 +215,16 @@
         }
 
         async function apiCall(action, data) {
-            try {
-                var res = await fetch(API_BASE + '/admin-api?action=' + action, {
-                    method: data ? 'POST' : 'GET',
-                    headers: { 'Content-Type': 'application/json', 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMDc0OTgsImV4cCI6MjA4Mzg4MzQ5OH0.R1IbWF0f_5bSFCCkSV_ZGJY9_PjwKYLC8ZW4GFW-Jv8', 'Authorization': 'Bearer ' + authToken },
-                    body: data ? JSON.stringify(data) : undefined
-                });
+    try {
+        var res = await fetch(API_BASE + '/admin-api?action=' + action, {
+            method: data ? 'POST' : 'GET',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMDc0OTgsImV4cCI6MjA4Mzg4MzQ5OH0.R1IbWF0f_5bSFCCkSV_ZGJY9_PjwKYLC8ZW4GFW-Jv8', 
+                'Authorization': 'Bearer ' + authToken 
+            },
+            body: data ? JSON.stringify(data) : undefined
+        });
                 var json = await res.json();
                 if (res.status === 401) { toast('세션 만료', 'error'); logout(); return null; }
                 return json;
