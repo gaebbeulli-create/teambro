@@ -420,7 +420,7 @@ body.has-notice .scroll-indicator{top:44px}
 
     <header id="header">
         <nav>
-            <a href="index.html" class="logo">TEAM BRO</a>
+            <a href="index.html" class="logo" id="headerLogo">TEAM BRO</a>
             <ul class="nav-links">
                 <li><a href="#home" class="active">홈</a></li>
                 <li><a href="about.html">중개사 안내</a></li>
@@ -1143,10 +1143,10 @@ body.has-notice .scroll-indicator{top:44px}
             loadNotice();
         }
 
-        // 🔒 비상버튼: 로고 5번 클릭 → 관리자 페이지
+        // 🔒 비상버튼: 헤더 로고 5번 클릭 → 관리자 페이지
         var logoClickCount = 0;
         var logoClickTimer = null;
-        document.querySelector('.logo').addEventListener('click', function(e) {
+        document.getElementById('headerLogo').addEventListener('click', function(e) {
             logoClickCount++;
             if (logoClickCount >= 5) {
                 e.preventDefault();
