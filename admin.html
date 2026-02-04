@@ -226,7 +226,7 @@
             body: data ? JSON.stringify(data) : undefined
         });
                 var json = await res.json();
-                if (res.status === 401) { toast('세션 만료', 'error'); logout(); return null; }
+                if (res.status === 401) { toast('세션 만료', 'error'); return null; }
                 return json;
             } catch(e) { toast('서버 연결 실패', 'error'); return null; }
         }
