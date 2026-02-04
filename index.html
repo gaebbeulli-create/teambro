@@ -39,7 +39,14 @@
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
     <link rel="apple-touch-icon" href="favicon-192.png">
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase SDK: 광고 URL(?ad=1)에서는 로드하지 않음 -->
+    <script>
+        if (!window.location.search.includes('ad=1')) {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+            document.head.appendChild(script);
+        }
+    </script>
     <style>
 @font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
 @font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
@@ -405,7 +412,7 @@ body.has-notice .scroll-indicator{top:44px}
     </div>
 
     <div class="floating-btns">
-        <a href="http://pf.kakao.com/_mxkZbn/chat" target="_blank" class="float-btn kakao">
+        <a href="https://pf.kakao.com/_mxkZbn/chat" target="_blank" class="float-btn kakao">
             <svg viewBox="0 0 24 24" width="28" height="28" fill="#391B1B"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.83 1.88 5.31 4.71 6.73-.17.6-.63 2.19-.72 2.53-.12.43.16.42.33.31.14-.09 2.19-1.46 3.08-2.05.52.08 1.06.12 1.6.12 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>
         </a>
         <a href="tel:1660-3543" class="float-btn phone">📞</a>
@@ -575,8 +582,8 @@ body.has-notice .scroll-indicator{top:44px}
             <div class="target-cards">
                 <div class="target-card">
                     <div class="target-icon">📄</div>
-                    <h3>사업자 없어도 OK</h3>
-                    <p>개인사업자, 법인사업자 없어도 가능</p>
+                    <h3>예비 창업자도 OK</h3>
+                    <p>사업자 없어도 상담·준비 가능</p>
                 </div>
                 <div class="target-card">
                     <div class="target-icon">🚀</div>
@@ -660,7 +667,7 @@ body.has-notice .scroll-indicator{top:44px}
                     <h2>연락처</h2>
                     <p>편한 방법으로 문의하세요</p>
                     <div class="channel-cards">
-                        <a href="http://pf.kakao.com/_mxkZbn/chat" target="_blank" class="channel-card">
+                        <a href="https://pf.kakao.com/_mxkZbn/chat" target="_blank" class="channel-card">
                             <div class="channel-icon">
                                 <svg viewBox="0 0 24 24" width="40" height="40" fill="#FEE500"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.83 1.88 5.31 4.71 6.73-.17.6-.63 2.19-.72 2.53-.12.43.16.42.33.31.14-.09 2.19-1.46 3.08-2.05.52.08 1.06.12 1.6.12 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>
                             </div>
@@ -682,7 +689,7 @@ body.has-notice .scroll-indicator{top:44px}
                             <div class="channel-icon">✉️</div>
                             <div class="channel-info">
                                 <h3>이메일</h3>
-                                <p>pro_5211@naver.com</p>
+                                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2c5c5e4373191e1d1d6c424d5a495e024f4341">[email&#160;protected]</a></p>
                             </div>
                         </div>
                     </div>
@@ -719,8 +726,8 @@ body.has-notice .scroll-indicator{top:44px}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>사업자등록번호</label>
-                                <input type="text" name="partner_biznum" placeholder="000-00-00000 (없어도 가능)">
+                                <label>사업자등록번호 (보유 시 입력)</label>
+                                <input type="text" name="partner_biznum" placeholder="없으면 비워도 됩니다 (예비 상담 접수)">
                             </div>
                             <div class="form-group">
                                 <label>희망 지역</label>
@@ -730,6 +737,7 @@ body.has-notice .scroll-indicator{top:44px}
                                 <label>문의 내용</label>
                                 <textarea name="partner_message" placeholder="궁금한 점이나 요청사항을 적어주세요"></textarea>
                             </div>
+                            <p style="font-size:.85rem;color:#808090;margin-top:12px;line-height:1.6">※ 비사업자도 상담 및 준비는 가능하며, 실제 계약·정산 진행 시 사업자 등록 등 요건이 필요할 수 있습니다.</p>
                         </div>
 
                         <!-- 라이더 신청 폼 -->
@@ -846,7 +854,7 @@ body.has-notice .scroll-indicator{top:44px}
                 </div>
                 <div class="footer-links"><h4>안내</h4><ul><li><a href="about.html">중개사 안내</a></li><li><a href="#process">진행 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
                 <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 요청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
-                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ pro_5211@naver.com</li><li>🕐 09:00~익일 08:00</li></ul></div>
+                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b7b7964543e393a3a4b656a7d6e7925686466">[email&#160;protected]</a></li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
             <div class="footer-bottom">
                 <div class="footer-company">
@@ -857,16 +865,24 @@ body.has-notice .scroll-indicator{top:44px}
                 <div class="footer-legal">
                     <a href="terms.html">이용약관</a>
                     <a href="privacy.html">개인정보처리방침</a>
-                    <a href="admin.html">관리자</a>
+                    <!-- 관리자 링크는 직접 접속: /admin.html -->
                 </div>
             </div>
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         var SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMDc0OTgsImV4cCI6MjA4Mzg4MzQ5OH0.R1IbWF0f_5bSFCCkSV_ZGJY9_PjwKYLC8ZW4GFW-Jv8';
-        var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // 광고 URL 체크
+        var isAdLanding = window.location.search.includes('ad=1');
+        var supabase = null;
+        
+        // 광고가 아닐 때만 Supabase 초기화
+        if (!isAdLanding && window.supabase) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
 
         // 모바일 메뉴 토글
         function toggleMobileMenu() {
@@ -907,6 +923,12 @@ body.has-notice .scroll-indicator{top:44px}
         var currentPopup = 0;
 
         async function loadPopups() {
+            // 광고 랜딩이면 팝업 안 띄움
+            if (isAdLanding) return;
+            
+            // Supabase 없으면 리턴
+            if (!supabase) return;
+            
             // 오늘 하루 보지 않기 체크
             if (localStorage.getItem('popupClosed') === new Date().toDateString()) {
                 return;
@@ -1002,6 +1024,12 @@ body.has-notice .scroll-indicator{top:44px}
         };
 
         async function loadNotice() {
+            // 광고 랜딩이면 공지 안 띄움
+            if (isAdLanding) return;
+            
+            // Supabase 없으면 리턴
+            if (!supabase) return;
+            
             try {
                 var result = await supabase.from('notice').select('*').limit(1).maybeSingle();
                 if (result.data && result.data.show) {
@@ -1057,6 +1085,14 @@ body.has-notice .scroll-indicator{top:44px}
 
             console.log('제출 데이터:', formData);
 
+            // 광고 URL에서는 전화/카톡 안내
+            if (!supabase) {
+                toast('📞 1660-3543으로 전화 또는 카카오톡으로 문의해주세요!');
+                btn.disabled = false;
+                btn.textContent = originalText;
+                return false;
+            }
+
             try {
                 var result = await supabase.from('submissions').insert([formData]);
                 console.log('Supabase 응답:', result);
@@ -1092,17 +1128,5 @@ body.has-notice .scroll-indicator{top:44px}
                 var href = a.getAttribute('href');
                 if (href.length > 1) {
                     e.preventDefault();
-                    var target = document.querySelector(href);
+                    const target = document.querySelector(href);
                     if(target) {
-                        closeMobileMenu();
-                        target.scrollIntoView({behavior:'smooth'});
-                    }
-                }
-            });
-        });
-
-        loadPopups();
-        loadNotice();
-    </script>
-</body>
-</html>
