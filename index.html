@@ -39,14 +39,8 @@
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
     <link rel="apple-touch-icon" href="favicon-192.png">
     
-    <!-- Supabase SDK: 광고 URL(?ad=1)에서는 로드하지 않음 -->
-    <script>
-        if (!window.location.search.includes('ad=1')) {
-            var script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-            document.head.appendChild(script);
-        }
-    </script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
 @font-face{font-family:'BMHANNAPro';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff')}
 @font-face{font-family:'BMJUA';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff')}
@@ -128,7 +122,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;backgro
 header.scrolled{border-bottom-color:var(--card-border)}
 body.has-notice header{top:44px}
 nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:'BMHANNAPro',sans-serif;font-size:1.6rem;color:var(--mint);text-decoration:none}
+.logo{font-family:'Pretendard',sans-serif;font-size:1.6rem;font-weight:800;color:#2dd4bf;text-shadow:0 0 10px rgba(45,212,191,0.5);text-decoration:none}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{color:var(--gray-400);text-decoration:none;font-size:.95rem;font-weight:500;transition:all .3s;padding:8px 0;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--mint);transition:width .3s}
@@ -582,8 +576,8 @@ body.has-notice .scroll-indicator{top:44px}
             <div class="target-cards">
                 <div class="target-card">
                     <div class="target-icon">📄</div>
-                    <h3>예비 창업자도 OK</h3>
-                    <p>사업자 없어도 상담·준비 가능</p>
+                    <h3>창업 상담 가능</h3>
+                    <p>최종 계약 시 사업자 등록 필요</p>
                 </div>
                 <div class="target-card">
                     <div class="target-icon">🚀</div>
@@ -602,8 +596,8 @@ body.has-notice .scroll-indicator{top:44px}
                 </div>
                 <div class="target-card">
                     <div class="target-icon">💰</div>
-                    <h3>선정산(익일정산)</h3>
-                    <p>오늘 일한거 내일 받자!</p>
+                    <h3>정산 서비스 연계</h3>
+                    <p>오늘 일한거 내일 받자! (플랫폼 연계)</p>
                 </div>
                 <div class="target-card">
                     <div class="target-icon">🛵</div>
@@ -625,9 +619,9 @@ body.has-notice .scroll-indicator{top:44px}
             <div class="benefit-cards">
                 <div class="benefit-card">
                     <div class="benefit-icon">💰</div>
-                    <h3>선정산 연계</h3>
+                    <h3>정산 서비스 연계</h3>
                     <ul>
-                        <li>✔ 협력사 운영 구조에 맞춘 선정산 서비스 연계</li>
+                        <li>✔ 협력사 운영 구조에 맞춘 정산 서비스 연계</li>
                         <li>✔ 정산 일정·조건 사전 안내</li>
                         <li>✔ 운영 초기 자금 흐름 부담 완화</li>
                     </ul>
@@ -660,7 +654,7 @@ body.has-notice .scroll-indicator{top:44px}
             <div class="section-header">
                 <span class="section-badge">Contact</span>
                 <h2>BRO 24/7</h2>
-                <p>협력사, 라이더, 선정산 신청을 받습니다</p>
+                <p>협력사, 라이더, 정산 서비스 문의를 받습니다</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-channels">
@@ -689,7 +683,7 @@ body.has-notice .scroll-indicator{top:44px}
                             <div class="channel-icon">✉️</div>
                             <div class="channel-info">
                                 <h3>이메일</h3>
-                                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2c5c5e4373191e1d1d6c424d5a495e024f4341">[email&#160;protected]</a></p>
+                                <p><a href="/cdn-cgi/l/email-protection#7101031e2e44434040311f100714035f121e1c" style="color:var(--gray-300);text-decoration:none;"><span class="__cf_email__" data-cfemail="4737352818727576760729263122356924282a">[email&#160;protected]</span></a></p>
                             </div>
                         </div>
                     </div>
@@ -708,8 +702,8 @@ body.has-notice .scroll-indicator{top:44px}
                                 <span>🛵 라이더 신청</span>
                             </label>
                             <label class="form-tab">
-                                <input type="radio" name="type" value="선정산 신청" data-form="settlement">
-                                <span>💰 선정산 신청</span>
+                                <input type="radio" name="type" value="정산문의" data-form="settlement">
+                                <span>💰 정산 문의</span>
                             </label>
                         </div>
 
@@ -737,7 +731,7 @@ body.has-notice .scroll-indicator{top:44px}
                                 <label>문의 내용</label>
                                 <textarea name="partner_message" placeholder="궁금한 점이나 요청사항을 적어주세요"></textarea>
                             </div>
-                            <p style="font-size:.85rem;color:#808090;margin-top:12px;line-height:1.6">※ 비사업자도 상담 및 준비는 가능하며, 실제 계약·정산 진행 시 사업자 등록 등 요건이 필요할 수 있습니다.</p>
+                            <p style="font-size:.85rem;color:#808090;margin-top:12px;line-height:1.6">※ 상담은 누구나 가능하며, 최종 계약 및 정산은 사업자 등록 후 진행됩니다.</p>
                         </div>
 
                         <!-- 라이더 신청 폼 -->
@@ -854,13 +848,14 @@ body.has-notice .scroll-indicator{top:44px}
                 </div>
                 <div class="footer-links"><h4>안내</h4><ul><li><a href="about.html">중개사 안내</a></li><li><a href="#process">진행 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
                 <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 요청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
-                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b7b7964543e393a3a4b656a7d6e7925686466">[email&#160;protected]</a></li><li>🕐 09:00~익일 08:00</li></ul></div>
+                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection#3e4e4c51610b0c0f0f7e505f485b4c105d5153" style="color:var(--gray-500);text-decoration:none;"><span class="__cf_email__" data-cfemail="b6c6c4d9e983848787f6d8d7c0d3c498d5d9db">[email&#160;protected]</span></a></li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
             <div class="footer-bottom">
                 <div class="footer-company">
                     <p>© 2024 TEAM BRO. 배민커넥트비즈+ 공식 중개사</p>
-                    <p>상호명 : 주식회사 팀브로 | 사업자등록번호 : 445-87-03031</p>
+                    <p>상호명 : 주식회사 팀브로 | 대표자 : 이인실 | 사업자등록번호 : 445-87-03031</p>
                     <p>주소 : 대구광역시 달서구 야외음악당로7길 57</p>
+                    <p style="margin-top:12px;font-size:.8rem;color:#505060">본 사이트는 주식회사 팀브로에서 운영합니다. 정산 서비스는 금융상품이 아니며, 배달 플랫폼 연계 서비스입니다.</p>
                 </div>
                 <div class="footer-legal">
                     <a href="terms.html">이용약관</a>
@@ -875,14 +870,9 @@ body.has-notice .scroll-indicator{top:44px}
         var SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMDc0OTgsImV4cCI6MjA4Mzg4MzQ5OH0.R1IbWF0f_5bSFCCkSV_ZGJY9_PjwKYLC8ZW4GFW-Jv8';
         
-        // 광고 URL 체크
+        // 광고 URL 체크 (팝업/공지만 비활성화, 폼은 정상 동작)
         var isAdLanding = window.location.search.includes('ad=1');
-        var supabase = null;
-        
-        // 광고가 아닐 때만 Supabase 초기화
-        if (!isAdLanding && window.supabase) {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        }
+        var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // 모바일 메뉴 토글
         function toggleMobileMenu() {
@@ -926,9 +916,6 @@ body.has-notice .scroll-indicator{top:44px}
             // 광고 랜딩이면 팝업 안 띄움
             if (isAdLanding) return;
             
-            // Supabase 없으면 리턴
-            if (!supabase) return;
-            
             // 오늘 하루 보지 않기 체크
             if (localStorage.getItem('popupClosed') === new Date().toDateString()) {
                 return;
@@ -942,9 +929,7 @@ body.has-notice .scroll-indicator{top:44px}
                 
                 renderPopups();
                 document.getElementById('popupOverlay').classList.remove('hidden');
-            } catch(e) { 
-                console.log('Popup error', e); 
-            }
+            } catch(e) { /* 팝업 로딩 실패 무시 */ }
         }
 
         function renderPopups() {
@@ -1027,11 +1012,8 @@ body.has-notice .scroll-indicator{top:44px}
             // 광고 랜딩이면 공지 안 띄움
             if (isAdLanding) return;
             
-            // Supabase 없으면 리턴
-            if (!supabase) return;
-            
             try {
-                var result = await supabase.from('notice').select('*').limit(1).maybeSingle();
+                var result = await supabase.from('notice').select('*').eq('show', true).order('updated_at', { ascending: false }).limit(1).maybeSingle();
                 if (result.data && result.data.show) {
                     var banner = document.getElementById('noticeBanner');
                     banner.classList.remove('hidden');
@@ -1039,7 +1021,7 @@ body.has-notice .scroll-indicator{top:44px}
                     document.getElementById('noticeText').textContent = result.data.text || '';
                     document.body.classList.add('has-notice');
                 }
-            } catch(e) { console.log('Notice error', e); }
+            } catch(e) { /* 공지 로딩 실패 무시 */ }
         }
         
         function closeBanner() { 
@@ -1053,6 +1035,15 @@ body.has-notice .scroll-indicator{top:44px}
             e.stopPropagation();
             
             var btn = document.getElementById('submitBtn');
+            
+            // 스팸방지: 2분 쿨타임 체크 (DB와 동일)
+            var lastSubmit = localStorage.getItem('lastSubmit');
+            if (lastSubmit && (Date.now() - parseInt(lastSubmit)) < 120000) {
+                var remaining = Math.ceil((120000 - (Date.now() - parseInt(lastSubmit))) / 1000);
+                toast('잠시 후 다시 시도해주세요. (' + remaining + '초)', 'error');
+                return false;
+            }
+            
             btn.disabled = true;
             var originalText = btn.textContent;
             btn.textContent = '신청 중...';
@@ -1060,56 +1051,112 @@ body.has-notice .scroll-indicator{top:44px}
             var formType = document.querySelector('input[name="type"]:checked').value;
             var formData = { type: formType, status: '신규' };
 
-            // 타입별 데이터 수집
-            if (formType === '협력사 신청') {
-                formData.name = document.querySelector('input[name="partner_name"]').value;
-                formData.phone = document.querySelector('input[name="partner_phone"]').value;
-                formData.biz_num = document.querySelector('input[name="partner_biznum"]').value;
-                formData.region = document.querySelector('input[name="partner_region"]').value;
-                formData.message = document.querySelector('textarea[name="partner_message"]').value;
-            } else if (formType === '라이더 신청') {
-                formData.name = document.querySelector('input[name="rider_name"]').value;
-                formData.phone = document.querySelector('input[name="rider_phone"]').value;
-                formData.region = document.querySelector('input[name="rider_region"]').value;
-                formData.experience = document.querySelector('select[name="rider_experience"]').value;
-                formData.work_time = document.querySelector('select[name="rider_time"]').value;
-                formData.message = document.querySelector('textarea[name="rider_message"]').value;
-            } else if (formType === '선정산 신청') {
-                formData.name = document.querySelector('input[name="settlement_name"]').value;
-                formData.company = document.querySelector('input[name="settlement_company"]').value;
-                formData.phone = document.querySelector('input[name="settlement_phone"]').value;
-                formData.settlement_type = document.querySelector('select[name="settlement_type"]').value;
-                formData.platform = document.querySelector('select[name="settlement_platform"]').value;
-                formData.message = document.querySelector('textarea[name="settlement_message"]').value;
+            // 전화번호 정규화 함수
+            function normalizePhone(phone) {
+                return phone.replace(/[^0-9]/g, '');
             }
 
-            console.log('제출 데이터:', formData);
+            // 전화번호 검증 (국내번호: 010/011/016/017/018/019, 10~11자리)
+            function isValidPhone(normalizedPhone) {
+                if (normalizedPhone.length < 10 || normalizedPhone.length > 11) return false;
+                var validPrefixes = ['010', '011', '016', '017', '018', '019', '02', '031', '032', '033', '041', '042', '043', '044', '051', '052', '053', '054', '055', '061', '062', '063', '064'];
+                var prefix2 = normalizedPhone.substring(0, 2);
+                var prefix3 = normalizedPhone.substring(0, 3);
+                return validPrefixes.indexOf(prefix2) !== -1 || validPrefixes.indexOf(prefix3) !== -1;
+            }
 
-            // 광고 URL에서는 전화/카톡 안내
-            if (!supabase) {
-                toast('📞 1660-3543으로 전화 또는 카카오톡으로 문의해주세요!');
-                btn.disabled = false;
-                btn.textContent = originalText;
+            // 사업자번호 정규화 (숫자만)
+            function normalizeBizNum(bizNum) {
+                return bizNum.replace(/[^0-9]/g, '');
+            }
+
+            // 사업자번호 검증 (10자리 숫자, 비어있으면 OK)
+            function isValidBizNum(normalizedBizNum) {
+                if (!normalizedBizNum) return true; // 선택 항목이므로 비어있으면 통과
+                return normalizedBizNum.length === 10;
+            }
+
+            // 메시지 스팸 필터 (링크 과다, 반복문자)
+            function isSpamMessage(msg) {
+                if (!msg) return false;
+                // URL 3개 이상
+                var urlCount = (msg.match(/https?:\/\//gi) || []).length;
+                if (urlCount >= 3) return true;
+                // 동일 문자 10회 이상 반복
+                if (/(.)\1{9,}/.test(msg)) return true;
                 return false;
+            }
+
+            // 타입별 데이터 수집 + 검증
+            if (formType === '협력사 신청') {
+                formData.name = document.querySelector('input[name="partner_name"]').value.trim();
+                formData.phone = normalizePhone(document.querySelector('input[name="partner_phone"]').value);
+                formData.biz_num = normalizeBizNum(document.querySelector('input[name="partner_biznum"]').value);
+                formData.region = document.querySelector('input[name="partner_region"]').value.trim();
+                formData.message = document.querySelector('textarea[name="partner_message"]').value.trim();
+                
+                // 필수값 검증
+                if (!formData.name) { toast('이름/상호를 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!isValidPhone(formData.phone)) { toast('올바른 연락처를 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!isValidBizNum(formData.biz_num)) { toast('사업자번호는 10자리 숫자입니다.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (isSpamMessage(formData.message)) { toast('문의 내용을 다시 확인해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                
+            } else if (formType === '라이더 신청') {
+                formData.name = document.querySelector('input[name="rider_name"]').value.trim();
+                formData.phone = normalizePhone(document.querySelector('input[name="rider_phone"]').value);
+                formData.region = document.querySelector('input[name="rider_region"]').value.trim();
+                formData.experience = document.querySelector('select[name="rider_experience"]').value;
+                formData.work_time = document.querySelector('select[name="rider_time"]').value;
+                formData.message = document.querySelector('textarea[name="rider_message"]').value.trim();
+                
+                // 필수값 검증
+                if (!formData.name) { toast('이름을 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!isValidPhone(formData.phone)) { toast('올바른 연락처를 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!formData.region) { toast('활동 지역을 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!formData.experience) { toast('경력 여부를 선택해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!formData.work_time) { toast('근무 시간대를 선택해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (isSpamMessage(formData.message)) { toast('문의 내용을 다시 확인해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                
+            } else if (formType === '정산문의') {
+                formData.name = document.querySelector('input[name="settlement_name"]').value.trim();
+                formData.company = document.querySelector('input[name="settlement_company"]').value.trim();
+                formData.phone = normalizePhone(document.querySelector('input[name="settlement_phone"]').value);
+                formData.settlement_type = document.querySelector('select[name="settlement_type"]').value;
+                formData.platform = document.querySelector('select[name="settlement_platform"]').value;
+                formData.message = document.querySelector('textarea[name="settlement_message"]').value.trim();
+                
+                // 필수값 검증
+                if (!formData.name) { toast('이름을 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!isValidPhone(formData.phone)) { toast('올바른 연락처를 입력해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!formData.settlement_type) { toast('신청 구분을 선택해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (!formData.platform) { toast('이용 플랫폼을 선택해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
+                if (isSpamMessage(formData.message)) { toast('문의 내용을 다시 확인해주세요.', 'error'); btn.disabled = false; btn.textContent = originalText; return false; }
             }
 
             try {
                 var result = await supabase.from('submissions').insert([formData]);
-                console.log('Supabase 응답:', result);
                 
                 if (result.error) { 
-                    toast('신청 실패. 다시 시도해주세요.', 'error'); 
-                    console.log('에러:', result.error);
+                    // 에러 타입별 메시지
+                    var errMsg = '신청 실패. 다시 시도해주세요.';
+                    if (result.error.message && result.error.message.includes('Too many requests')) {
+                        errMsg = '잠시 후 다시 시도해주세요. (2분 후)';
+                        localStorage.setItem('lastSubmit', Date.now()); // 로컬 쿨타임도 동기화
+                    } else if (result.error.code === '23514') errMsg = '입력값을 확인해주세요.';
+                    else if (result.error.code === '23505') errMsg = '이미 접수된 신청입니다.';
+                    else if (result.error.message && result.error.message.includes('network')) errMsg = '네트워크 오류. 잠시 후 다시 시도해주세요.';
+                    toast(errMsg, 'error'); 
                 } else { 
                     toast('✅ 신청 완료! 담당자가 연락드리겠습니다.'); 
                     document.getElementById('contactForm').reset();
                     document.querySelectorAll('.form-fields').forEach(function(f) { f.classList.remove('active'); });
                     document.getElementById('partnerForm').classList.add('active');
                     document.querySelector('input[data-form="partner"]').checked = true;
+                    // 스팸방지: 2분 쿨타임
+                    localStorage.setItem('lastSubmit', Date.now());
                 }
             } catch(e) { 
                 toast('신청 실패. 다시 시도해주세요.', 'error'); 
-                console.log('예외:', e);
             }
             btn.disabled = false;
             btn.textContent = originalText;
@@ -1137,7 +1184,7 @@ body.has-notice .scroll-indicator{top:44px}
             });
         });
 
-        // 팝업/공지 로드 (광고가 아닐 때만)
+        // 팝업/공지 로드 (광고가 아닐 때만 - 의도된 기능)
         if (!isAdLanding) {
             loadPopups();
             loadNotice();
@@ -1147,15 +1194,11 @@ body.has-notice .scroll-indicator{top:44px}
         var logoClickCount = 0;
         var logoClickTimer = null;
         document.getElementById('headerLogo').addEventListener('click', function(e) {
+            e.preventDefault();
             logoClickCount++;
             if (logoClickCount >= 5) {
-                e.preventDefault();
                 window.location.href = 'admin.html';
                 logoClickCount = 0;
-            }
-            clearTimeout(logoClickTimer);
-            logoClickTimer = setTimeout(function() { logoClickCount = 0; }, 2000);
-        });
-    </script>
-</body>
-</html>
+                clearTimeout(logoClickTimer);
+            } else {
+     
