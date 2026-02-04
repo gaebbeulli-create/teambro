@@ -1128,5 +1128,34 @@ body.has-notice .scroll-indicator{top:44px}
                 var href = a.getAttribute('href');
                 if (href.length > 1) {
                     e.preventDefault();
-                    const target = document.querySelector(href);
+                    var target = document.querySelector(href);
                     if(target) {
+                        closeMobileMenu();
+                        target.scrollIntoView({behavior:'smooth'});
+                    }
+                }
+            });
+        });
+
+        // 팝업/공지 로드 (광고가 아닐 때만)
+        if (!isAdLanding) {
+            loadPopups();
+            loadNotice();
+        }
+
+        // 🔒 비상버튼: 로고 5번 클릭 → 관리자 페이지
+        var logoClickCount = 0;
+        var logoClickTimer = null;
+        document.querySelector('.logo').addEventListener('click', function(e) {
+            logoClickCount++;
+            if (logoClickCount >= 5) {
+                e.preventDefault();
+                window.location.href = 'admin.html';
+                logoClickCount = 0;
+            }
+            clearTimeout(logoClickTimer);
+            logoClickTimer = setTimeout(function() { logoClickCount = 0; }, 2000);
+        });
+    </script>
+</body>
+</html>
