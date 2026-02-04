@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지 | TEAM BRO</title>
+    <title>ê³µì§€ | TEAM BRO</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
@@ -34,7 +34,7 @@
 <body>
     <div class="popup-wrap">
         <div id="popupContent"></div>
-        <a href="index.html" class="close-btn">닫기</a>
+        <a href="index.html" class="close-btn">ë‹«ê¸°</a>
     </div>
 
     <script>
@@ -48,7 +48,7 @@
         sb.from('popups').select('*').eq('active', true).order('id', { ascending: false }).then(function(res) {
             popups = res.data || [];
             if (popups.length === 0) {
-                document.getElementById('popupContent').innerHTML = '<div class="empty"><span>📭</span>등록된 공지가 없습니다</div>';
+                document.getElementById('popupContent').innerHTML = '<div class="empty"><span>ðŸ“­</span>ë“±ë¡ëœ ê³µì§€ê°€ ì—†ìŠµë‹ˆë‹¤</div>';
                 return;
             }
             renderPopup();
@@ -60,8 +60,8 @@
             
             if (popups.length > 1) {
                 html += '<div class="nav-arrows">';
-                html += '<button class="arrow" onclick="prev()"' + (currentIndex === 0 ? ' disabled' : '') + '>← 이전</button>';
-                html += '<button class="arrow" onclick="next()"' + (currentIndex === popups.length - 1 ? ' disabled' : '') + '>다음 →</button>';
+                html += '<button class="arrow" onclick="prev()"' + (currentIndex === 0 ? ' disabled' : '') + '>â† ì´ì „</button>';
+                html += '<button class="arrow" onclick="next()"' + (currentIndex === popups.length - 1 ? ' disabled' : '') + '>ë‹¤ìŒ â†’</button>';
                 html += '</div>';
                 
                 html += '<div class="nav-dots">';
@@ -76,14 +76,14 @@
             if (p.image_url) {
                 html += '<img src="' + p.image_url + '" alt="' + p.title + '">';
             } else {
-                html += '<span class="no-img">' + (p.icon || '📢') + '</span>';
+                html += '<span class="no-img">' + (p.icon || 'ðŸ“¢') + '</span>';
             }
             html += '</div>';
             html += '<div class="popup-body">';
             html += '<h2 class="popup-title">' + p.title + '</h2>';
             html += '<p class="popup-desc">' + (p.description || '') + '</p>';
             if (p.btn_link) {
-                html += '<a href="' + p.btn_link + '" class="popup-btn">' + (p.btn_text || '자세히 보기') + '</a>';
+                html += '<a href="' + p.btn_link + '" class="popup-btn">' + (p.btn_text || 'ìžì„¸ížˆ ë³´ê¸°') + '</a>';
             }
             html += '</div>';
             html += '</div>';
