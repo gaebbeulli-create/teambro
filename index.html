@@ -122,7 +122,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;backgro
 header.scrolled{border-bottom-color:var(--card-border)}
 body.has-notice header{top:44px}
 nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:'Pretendard',sans-serif;font-size:1.6rem;font-weight:800;color:#2dd4bf;text-shadow:0 0 10px rgba(45,212,191,0.5);text-decoration:none}
+.logo{font-family:'Pretendard',sans-serif;font-size:1.6rem;font-weight:800;color:#2dd4bf;text-decoration:none;text-shadow:0 0 8px rgba(45,212,191,0.5),0 0 20px rgba(45,212,191,0.25),0 0 40px rgba(45,212,191,0.1)}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{color:var(--gray-400);text-decoration:none;font-size:.95rem;font-weight:500;transition:all .3s;padding:8px 0;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--mint);transition:width .3s}
@@ -683,7 +683,7 @@ body.has-notice .scroll-indicator{top:44px}
                             <div class="channel-icon">✉️</div>
                             <div class="channel-info">
                                 <h3>이메일</h3>
-                                <p><a href="mailto:pro_5211@naver.com" style="color:var(--gray-300);text-decoration:none;">pro_5211@naver.com</a></p>
+                                <p><a href="/cdn-cgi/l/email-protection#d9a9abb686ecebe8e899b7b8afbcabf7bab6b4" style="color:var(--gray-300);text-decoration:none;"><span class="__cf_email__" data-cfemail="0474766b5b31363535446a657261762a676b69">[email&#160;protected]</span></a></p>
                             </div>
                         </div>
                     </div>
@@ -848,7 +848,7 @@ body.has-notice .scroll-indicator{top:44px}
                 </div>
                 <div class="footer-links"><h4>안내</h4><ul><li><a href="about.html">중개사 안내</a></li><li><a href="#process">진행 절차</a></li><li><a href="#partner">협력사 모집</a></li></ul></div>
                 <div class="footer-links"><h4>문의</h4><ul><li><a href="#contact">상담 요청</a></li><li><a href="tel:1660-3543">1660-3543</a></li></ul></div>
-                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="mailto:pro_5211@naver.com" style="color:var(--gray-500);text-decoration:none;">pro_5211@naver.com</a></li><li>🕐 09:00~익일 08:00</li></ul></div>
+                <div class="footer-links"><h4>연락처</h4><ul><li>📞 1660-3543</li><li>✉️ <a href="/cdn-cgi/l/email-protection#0676746959333437374668677063742865696b" style="color:var(--gray-500);text-decoration:none;"><span class="__cf_email__" data-cfemail="1a6a6875452f282b2b5a747b6c7f6834797577">[email&#160;protected]</span></a></li><li>🕐 09:00~익일 08:00</li></ul></div>
             </div>
             <div class="footer-bottom">
                 <div class="footer-company">
@@ -866,7 +866,7 @@ body.has-notice .scroll-indicator{top:44px}
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         var SUPABASE_URL = 'https://ohxnhqlcdisqsgicbbwt.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oeG5ocWxjZGlzcXNnaWNiYnd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMDc0OTgsImV4cCI6MjA4Mzg4MzQ5OH0.R1IbWF0f_5bSFCCkSV_ZGJY9_PjwKYLC8ZW4GFW-Jv8';
         
@@ -1190,14 +1190,6 @@ body.has-notice .scroll-indicator{top:44px}
             loadNotice();
         }
 
-        // 🔒 비상버튼: 헤더 로고 5번 클릭 → 관리자 페이지
-        var logoClickCount = 0;
-        var logoClickTimer = null;
-        document.getElementById('headerLogo').addEventListener('click', function(e) {
-            e.preventDefault();
-            logoClickCount++;
-            if (logoClickCount >= 5) {
-                window.location.href = 'admin.html';
-                logoClickCount = 0;
-                clearTimeout(logoClickTimer);
-            } else {
+    </script>
+</body>
+</html>
